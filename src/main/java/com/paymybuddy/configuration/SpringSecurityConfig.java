@@ -17,20 +17,22 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
 		auth.inMemoryAuthentication()
-			.withUser("BobLazar").password("Zone51").roles("USER")
+			.withUser("BobLazar").password(passwordEncoder().encode("Zone51"))
+			.roles("USER")
 			.and()
-			.withUser("xGuix").password("adminAdmin").roles("ADMIN,USER");
+			.withUser("xGuix").password(passwordEncoder().encode("Admin"))
+			.roles("ADMIN","USER");
 	}
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests()
-		.antMatchers("/admin").hasRole("ADMIN")
-		.antMatchers("/user").hasRole("USER")
-		.anyRequest().authenticated()
-		.and()
-		.formLogin();
+			.antMatchers("/admin").hasRole("ADMIN")
+			.antMatchers("/user").hasRole("USER")
+			.anyRequest().authenticated()
+			.and()
+			.formLogin();
 	}
 	
 	@Bean
