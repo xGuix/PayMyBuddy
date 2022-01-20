@@ -1,2 +1,2 @@
 # PayMyBuddy
-Money exchange with friends
+Money exchange with your buddies
