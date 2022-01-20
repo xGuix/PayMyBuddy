@@ -32,7 +32,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 			.antMatchers("/user").hasRole("USER")
 			.anyRequest().authenticated()
 			.and()
-			.formLogin();
+			.formLogin()
+			.and()
+			.oauth2Login();
 	}
 	
 	@Bean
