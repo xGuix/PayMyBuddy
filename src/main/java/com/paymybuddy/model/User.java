@@ -41,9 +41,22 @@ public class User
 	@Column(name="balance")
 	private float balance;
 
-	@OneToMany( cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	@JoinColumn(name = "user_friends")
+	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
 	List<User> userFriends = new ArrayList<>();
+	
+    public User()
+    {}
+    
+    public User(String firstname, String lastname, String city, String email, String password, float balance)
+    {
+        this.firstname = firstname;
+        this.lastname = lastname;
+        this.city = city;
+        this.email = email;
+        this.password = password;
+        this.balance = balance;
+    }
 	
 	public List<User> getUserFriends()
 	{
@@ -53,6 +66,16 @@ public class User
 	public void setUserFriends(List<User> userFriends)
 	{
 		this.userFriends = userFriends;
+	}
+	
+	public void addUserFriend(User user)
+	{
+		userFriends.add(user);
+	}
+	 
+	public void removeUserFirend(User user)
+	{
+		userFriends.remove(user);
 	}
 	
 	public int getIdUser()

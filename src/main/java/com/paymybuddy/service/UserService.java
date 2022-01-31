@@ -7,7 +7,6 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
@@ -18,7 +17,7 @@ public class UserService
 	
 	@Autowired
 	private UserRepository userRepository;
-	
+	   
 	public Iterable<User> getUsers()
 	{
 		return userRepository.findAll();
@@ -33,15 +32,16 @@ public class UserService
 	{
 	    return Optional.of(userRepository.findByEmail(email).orElseThrow());
 	}
-	  
-	public User addUser(UserDTO userDto)
-	{
-		return userRepository.save(userDto);
+	 
+	public User addUser(User user)
+	{	
+		logger.info("New user saved");		
+		return userRepository.save(user);
 	}
-
+    
 	public void deleteUserById(int id)
 	{
-		logger.info("Delete user done");
 		userRepository.deleteById(id);
+		logger.info("Delete user done");
 	}
 }

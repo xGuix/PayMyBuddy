@@ -5,19 +5,20 @@ import java.util.Objects;
 public class UserDTO
 {
 	private int id;
-	private String firstName;
-	private String lastName;
+	private String firstname;
+	private String lastname;
 	private String email;
 	private float balance;
 	
-    public UserDTO() {}
+    public UserDTO()
+    {}
     
-	public UserDTO(int id, String firstName, String lastName, String email, float balance)
+	public UserDTO(int id, String firstname, String lastname, String email, float balance)
 	{
 		super();
 		this.id = id;
-		this.firstName = firstName;
-		this.lastName = lastName;
+		this.firstname = firstname;
+		this.lastname = lastname;
 		this.email = email;
 		this.balance = balance;
 	}
@@ -32,24 +33,24 @@ public class UserDTO
 		this.id = id;
 	}
 
-	public String getFirstName()
+	public String getFirstname()
 	{
-		return firstName;
+		return firstname;
 	}
 
-	public void setFirstName(String firstName)
+	public void setFirstname(String firstName)
 	{
-		this.firstName = firstName;
+		this.firstname = firstName;
 	}
 
-	public String getLastName()
+	public String getLastname()
 	{
-		return lastName;
+		return lastname;
 	}
 
-	public void setLastName(String lastName)
+	public void setLastname(String lastName)
 	{
-		this.lastName = lastName;
+		this.lastname = lastName;
 	}
 
 	public String getEmail()
@@ -76,8 +77,8 @@ public class UserDTO
 	public String toString()
 	{
 		return "UserDTO [id=" + id 
-				+ ", firstName=" + firstName 
-				+ ", lastName=" + lastName 
+				+ ", firstName=" + firstname 
+				+ ", lastName=" + lastname 
 				+ ", email=" + email
 				+ ", balance=" + balance 
 				+ "]";
@@ -86,7 +87,7 @@ public class UserDTO
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(balance, email, firstName, id, lastName);
+		return Objects.hash(balance, email, firstname, id, lastname);
 	}
 
 	@Override
@@ -102,7 +103,7 @@ public class UserDTO
 		UserDTO other = (UserDTO) obj;
 		
 		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance)
-				&& Objects.equals(email, other.email) && Objects.equals(firstName, other.firstName) && id == other.id
-				&& Objects.equals(lastName, other.lastName);
+				&& Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
+				&& Objects.equals(lastname, other.lastname);
 	}
 }

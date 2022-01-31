@@ -7,14 +7,14 @@ import javax.annotation.security.RolesAllowed;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 
@@ -26,17 +26,28 @@ public class UserController
 	@Autowired
 	private UserService userService;
 
-	@RequestMapping("/users")
+	/**
+	 * Read All list :
+	 * Get all users
+	 * 
+	 * @return UsersList Full users list
+	 */
+	@RequestMapping(value = "/users")
 	@RolesAllowed("USER")
-	public Iterable<User> getUsers()
+	public ResponseEntity<Iterable<User>> getUsers()
 	{
-		logger.info("Get users list");
-		return userService.getUsers();
+		logger.info("Get users list");		
+		return new ResponseEntity<>(userService.getUsers(), HttpStatus.FOUND);
 	}
 	
-	@RequestMapping("/user")
+	/**
+	 * Get one user by id
+	 * 
+	 * @return User A user with id
+	 */
+	@RequestMapping(value = "/user")
 	@RolesAllowed("USER")
-	public Optional<User> getUserById(int id)
+	public ResponseEntity<Optional<User>> getUserById(int id)
 	{
 		logger.info("Get user with id={}",id);		
 		Optional<User> optUser = userService.getUserById(id);
@@ -46,31 +57,49 @@ public class UserController
 			User userId = optUser.get();
 			userId.getUserFriends().forEach(User::getEmail);
 		}
-		return optUser;
+		return new ResponseEntity<>(optUser, HttpStatus.FOUND);
 	}	
 	
-	@GetMapping("/userEmail")
+	/**
+	 * Get one user by email
+	 * 
+	 * @return User A user with email
+	 */
+	@RequestMapping(value = "/userEmail")
 	@RolesAllowed("USER")
-	public Optional<User> getUserByEmail(String email)
+	public ResponseEntity<Optional<User>> getUserByEmail(String email)
 	{
-		logger.info("Get user with email={}",email);
-		return userService.getUserByEmail(email);
+		logger.info("Get user with email={}",email);		
+		return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.FOUND);
 	}
 	
-	@PostMapping("/addUser")
+	/**
+	 * Add one user to list
+	 * 
+	 * @return User user added
+	 */
+	@PostMapping(value = "/addUser")
 	@RolesAllowed("USER")
-	public User addUser(@RequestBody UserDTO userDto)
-	{
-		logger.info("Get users list");
-		return userService.addUser(userDto);
+	public ResponseEntity<User> addUser(@RequestBody User user)
+	{	
+		userService.addUser(user);
+		logger.info("User added");	
+		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/deleteUser")
+	/**
+	 * Delete one user from list
+	 * 
+	 * @return User User deleted 
+	 */
+	@DeleteMapping(value = "/deleteUser")
 	@RolesAllowed("USER")
-	public void deleteUser(int id)
+	public ResponseEntity<Optional<User>> deleteUser(int id)
 	{
-		logger.info("DeleteUser");
+		Optional<User> userDel = userService.getUserById(id);
 		userService.deleteUserById(id);
+		logger.info("DeleteUser");
+		return new ResponseEntity<>(userDel,HttpStatus.OK);
 	}
 	
 	/***********************************
