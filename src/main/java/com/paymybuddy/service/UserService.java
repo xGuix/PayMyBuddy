@@ -33,15 +33,15 @@ public class UserService
 	    return userRepository.findByEmail(email);
 	}
 	 
-	public User addUser(User user)
+	public User saveUser(User user)
 	{	
-		logger.info("New user saved");		
+		logger.info("User saved");		
 		return userRepository.save(user);
 	}
     
 	public void deleteUserById(int id)
 	{
 		userRepository.deleteById(id);
-		logger.info("Delete user done");
+		logger.info("User deleted");
 	}
 }

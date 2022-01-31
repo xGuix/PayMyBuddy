@@ -74,15 +74,15 @@ public class UserController
 	}
 	
 	/**
-	 * Add one user to list
+	 * Add  or update one user to list
 	 * 
-	 * @return User user added
+	 * @return User user saved
 	 */
-	@PostMapping(value = "/addUser")
+	@PostMapping(value = "/saveUser")
 	@RolesAllowed("USER")
-	public ResponseEntity<User> addUser(@RequestBody User user)
+	public ResponseEntity<User> saveUser(@RequestBody User user)
 	{	
-		userService.addUser(user);
+		userService.saveUser(user);
 		logger.info("User added");	
 		return new ResponseEntity<>(user, HttpStatus.CREATED);
 	}
