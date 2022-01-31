@@ -30,7 +30,7 @@ public class UserService
 	
 	public Optional<User> getUserByEmail(String email)
 	{
-	    return Optional.of(userRepository.findByEmail(email).orElseThrow());
+	    return userRepository.findByEmail(email);
 	}
 	 
 	public User addUser(User user)

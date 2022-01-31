@@ -8,7 +8,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class PayMyBuddyApplication
 {
-
 	private static Logger loggerMain = LogManager.getLogger("PayMyBuddyApplication");
 	
 	public static void main(String[] args)
