@@ -10,9 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymybuddy.model.User;
@@ -32,7 +32,7 @@ public class UserController
 	 * 
 	 * @return UsersList Full users list
 	 */
-	@RequestMapping(value = "/users")
+	@GetMapping(value = "/users")
 	@RolesAllowed("USER")
 	public ResponseEntity<Iterable<User>> getUsers()
 	{
@@ -45,18 +45,17 @@ public class UserController
 	 * 
 	 * @return User A user with id
 	 */
-	@RequestMapping(value = "/user")
+	@GetMapping(value = "/user")
 	@RolesAllowed("USER")
 	public ResponseEntity<Optional<User>> getUserById(int id)
 	{
-		logger.info("Get user with id={}",id);		
-		Optional<User> optUser = userService.getUserById(id);
-		
+		Optional<User> optUser = userService.getUserById(id);		
 		if(optUser.isPresent())
 		{	
 			User userId = optUser.get();
 			userId.getUserFriends().forEach(User::getEmail);
 		}
+		logger.info("Get user with id={}",id);		
 		return new ResponseEntity<>(optUser, HttpStatus.FOUND);
 	}	
 	
@@ -65,7 +64,7 @@ public class UserController
 	 * 
 	 * @return User A user with email
 	 */
-	@RequestMapping(value = "/userEmail")
+	@GetMapping(value = "/userEmail")
 	@RolesAllowed("USER")
 	public ResponseEntity<Optional<User>> getUserByEmail(String email)
 	{
@@ -78,7 +77,7 @@ public class UserController
 	 * 
 	 * @return User user saved
 	 */
-	@PostMapping(value = "/saveUser")
+	@PostMapping(value = "/user")
 	@RolesAllowed("USER")
 	public ResponseEntity<User> saveUser(@RequestBody User user)
 	{	
@@ -92,7 +91,7 @@ public class UserController
 	 * 
 	 * @return User User deleted 
 	 */
-	@DeleteMapping(value = "/deleteUser")
+	@DeleteMapping(value = "/user")
 	@RolesAllowed("USER")
 	public ResponseEntity<Optional<User>> deleteUser(int id)
 	{

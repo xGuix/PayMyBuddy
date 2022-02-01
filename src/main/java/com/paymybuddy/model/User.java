@@ -15,9 +15,11 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLUpdate;
 
 @Entity
 @DynamicUpdate
+@SQLUpdate(sql = "user")
 @Table(name ="user")
 public class User
 {
