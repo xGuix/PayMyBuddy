@@ -11,15 +11,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.SQLUpdate;
 
 @Entity
 @DynamicUpdate
-@SQLUpdate(sql = "user")
 @Table(name ="user")
 public class User
 {
@@ -45,9 +44,12 @@ public class User
 	
 	@Column(name="balance")
 	private float balance;
-
-	@JoinColumn(name = "user_friends")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	
+	@OneToMany(cascade = CascadeType.ALL, mappedBy="user", orphanRemoval = true, fetch = FetchType.EAGER)
+	@JoinTable(name = "user_friends", 
+			joinColumns = @JoinColumn( name="id_user"),
+			inverseJoinColumns = @JoinColumn(name="id_friend")
+	)
 	List<User> userFriends = new ArrayList<>();
 
 	public List<User> getUserFriends()

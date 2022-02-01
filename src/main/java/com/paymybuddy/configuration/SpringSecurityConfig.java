@@ -13,6 +13,10 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 {
+	
+	//@Autowired
+	//UserDetailService userDetailSerice
+	
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception
 	{
@@ -22,18 +26,25 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 			.and()
 			.withUser("xGuix").password(passwordEncoder().encode("Admin"))
 			.roles("ADMIN","USER");
+		
+		//auth.userDetailsService(userDetailSerice).passwordEncoder(passwordEncore().Encode("?"))
 	}
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{
-		//http.csrf().disable().authorizeRequests().antMatchers("/").permitAll()	
 		http.authorizeRequests()
-			.antMatchers("/").hasRole("ADMIN")
-			.antMatchers("/*").hasRole("USER")
-			.anyRequest().authenticated()
+			.antMatchers("/")
+			.permitAll()
 			.and()
-			.formLogin();
+			.csrf().disable();
+		
+		//http.authorizeRequests()
+		//	.antMatchers("/").hasRole("ADMIN")
+		//	.antMatchers("/*").hasRole("USER")
+		//	.anyRequest().authenticated()
+		//	.and()
+		//	.formLogin()
 	}
 
 	@Bean

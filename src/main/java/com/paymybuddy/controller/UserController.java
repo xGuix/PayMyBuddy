@@ -12,9 +12,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 
@@ -53,7 +55,7 @@ public class UserController
 		if(optUser.isPresent())
 		{	
 			User userId = optUser.get();
-			userId.getUserFriends().forEach(User::getEmail);
+			userId.getUserFriends().forEach(User::getIdUser);
 		}
 		logger.info("Get user with id={}",id);		
 		return new ResponseEntity<>(optUser, HttpStatus.FOUND);
@@ -73,17 +75,31 @@ public class UserController
 	}
 	
 	/**
-	 * Add  or update one user to list
+	 * Add one user to list
 	 * 
 	 * @return User user saved
 	 */
 	@PostMapping(value = "/user")
 	@RolesAllowed("USER")
-	public ResponseEntity<User> saveUser(@RequestBody User user)
+	public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userdto)
 	{	
-		userService.saveUser(user);
+		userService.addUser(userdto);
 		logger.info("User added");	
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+		return new ResponseEntity<>(userdto, HttpStatus.CREATED);
+	}
+	
+	/**
+	 * Update one user of list
+	 * 
+	 * @return User user saved
+	 */
+	@PutMapping(value = "/user")
+	@RolesAllowed("USER")
+	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDto)
+	{	
+		userService.updateUser(userDto);
+		logger.info("User added");	
+		return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 	}
 	
 	/**
@@ -93,12 +109,21 @@ public class UserController
 	 */
 	@DeleteMapping(value = "/user")
 	@RolesAllowed("USER")
-	public ResponseEntity<Optional<User>> deleteUser(int id)
+	public ResponseEntity<String> deleteUser(int id)
 	{
+		String info = null;
 		Optional<User> userDel = userService.getUserById(id);
-		userService.deleteUserById(id);
-		logger.info("DeleteUser");
-		return new ResponseEntity<>(userDel,HttpStatus.OK);
+		if (userDel.isPresent())
+		{
+			User toDel = userDel.get();
+			info = toDel.getFirstname()+" "+toDel.getLastname();
+			userService.deleteUserById(id);
+			logger.info("User Deleted:{}",info);
+		}
+		else {
+			logger.info("User does not exists");
+		}
+		return new ResponseEntity<>(info,HttpStatus.OK);
 	}
 	
 	/***********************************
