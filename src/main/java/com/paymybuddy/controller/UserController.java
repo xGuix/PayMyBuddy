@@ -81,11 +81,12 @@ public class UserController
 	 */
 	@PostMapping(value = "/user")
 	@RolesAllowed("USER")
-	public ResponseEntity<UserDTO> addUser(@RequestBody UserDTO userdto)
+	public ResponseEntity<UserDTO> addUser(@RequestBody User user)
 	{	
-		userService.addUser(userdto);
+		UserDTO userDto;
+		userDto = userService.entityToDto(userService.addUser(user));
 		logger.info("User added");	
-		return new ResponseEntity<>(userdto, HttpStatus.CREATED);
+		return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 	}
 	
 	/**
@@ -95,9 +96,11 @@ public class UserController
 	 */
 	@PutMapping(value = "/user")
 	@RolesAllowed("USER")
-	public ResponseEntity<UserDTO> updateUser(@RequestBody UserDTO userDto)
+	public ResponseEntity<UserDTO> updateUser(@RequestBody User user)
 	{	
-		userService.updateUser(userDto);
+		UserDTO userDto;
+		userDto = userService.entityToDto(userService.updateUser(user));
+		
 		logger.info("User added");	
 		return new ResponseEntity<>(userDto, HttpStatus.CREATED);
 	}
@@ -121,9 +124,9 @@ public class UserController
 			logger.info("User Deleted:{}",info);
 		}
 		else {
-			logger.info("User does not exists");
+			logger.info("User does not exists: {}", info);
 		}
-		return new ResponseEntity<>(info,HttpStatus.OK);
+		return new ResponseEntity<>("User is "+ info,HttpStatus.OK);
 	}
 	
 	/***********************************

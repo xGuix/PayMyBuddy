@@ -4,7 +4,7 @@ import java.util.Objects;
 
 public class UserDTO
 {
-	private int id;
+	private int idUser;
 	private String firstname;
 	private String lastname;
 	private String email;
@@ -13,10 +13,10 @@ public class UserDTO
     public UserDTO()
     {}
     
-	public UserDTO(int id, String firstname, String lastname, String email, float balance)
+	public UserDTO(int idUser, String firstname, String lastname, String email, float balance)
 	{
 		super();
-		this.id = id;
+		this.idUser = idUser;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.email = email;
@@ -25,12 +25,12 @@ public class UserDTO
 
 	public int getId()
 	{
-		return id;
+		return idUser;
 	}
 
-	public void setId(int id)
+	public void setId(int idUser)
 	{
-		this.id = id;
+		this.idUser = idUser;
 	}
 
 	public String getFirstname()
@@ -76,7 +76,7 @@ public class UserDTO
 	@Override
 	public String toString()
 	{
-		return "UserDTO [id=" + id 
+		return "UserDTO [id=" + idUser 
 				+ ", firstName=" + firstname 
 				+ ", lastName=" + lastname 
 				+ ", email=" + email
@@ -87,7 +87,7 @@ public class UserDTO
 	@Override
 	public int hashCode()
 	{
-		return Objects.hash(balance, email, firstname, id, lastname);
+		return Objects.hash(balance, email, firstname, idUser, lastname);
 	}
 
 	@Override
@@ -103,7 +103,7 @@ public class UserDTO
 		UserDTO other = (UserDTO) obj;
 		
 		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance)
-				&& Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && id == other.id
+				&& Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname) && idUser == other.idUser
 				&& Objects.equals(lastname, other.lastname);
 	}
 }
