@@ -27,6 +27,21 @@ public class UserService
     @Autowired
     private ModelMapper modelMapper;
 	   
+    public UserDTO entityToDto(User user)
+    {
+        return modelMapper.map(user, UserDTO.class);
+    }
+
+    public List<UserDTO> convertListToDTOList(List<User> userList)
+    {
+        List<UserDTO> userListDto = new ArrayList<>();
+        for(User u : userList)
+        {
+        	userListDto.add(entityToDto(u));
+        }
+        return userListDto;
+    }
+    
 	public Iterable<User> getUsers()
 	{
 		logger.info("Users list found");	
@@ -39,22 +54,34 @@ public class UserService
 		return userRepository.findById(id);
 	}
 	
-	public Optional<User> getUserByEmail(String email)
+	public User getUserByEmail(String email)
 	{
 		logger.info("User found with email: {}",email);
 	    return userRepository.findByEmail(email);
 	}
 	 
-	public User addUser(User user)
+	public User addUser(UserDTO userDto)
 	{	
 		logger.info("User add and saved");		
-		return userRepository.save(user);
+		return userRepository.save(userDto);
 	}
 	
-	public User updateUser(User user)
+	public User updateUser(String email, UserDTO userDto)
 	{	
+		User userToUpdate = userRepository.findByEmail(email);
+		if(userToUpdate.getEmail().equals(email))
+		{
+			userToUpdate.setFirstname(userDto.getFirstname());
+			userToUpdate.setLastname(userDto.getLastname());
+			userToUpdate.setCity(userDto.getCity());
+			userToUpdate.setBalance(userDto.getBalance());		
+			userRepository.save(userToUpdate);
+		}
+		else {
+			logger.info("User does not exists!");
+		}
 		logger.info("User update and saved");		
-		return userRepository.save(user);
+		return userToUpdate;
 	}
 	
 	public void deleteUserById(int id)
@@ -62,18 +89,4 @@ public class UserService
 		userRepository.deleteById(id);
 		logger.info("User deleted");
 	}
-	
-    public UserDTO entityToDto(User user)
-    {
-        return modelMapper.map(user, UserDTO.class);
-    }
-
-    public List<UserDTO> convertListToDTOList(List<User> userList)
-    {
-        List<UserDTO> listUserDto = new ArrayList<>();
-        for(User u : userList){
-        	listUserDto.add(entityToDto(u));
-        }
-        return listUserDto;
-    }
 }
