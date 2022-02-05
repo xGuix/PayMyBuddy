@@ -1,8 +1,7 @@
 package com.paymybuddy.model;
 
-import java.io.Serializable;
-import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,93 +12,58 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name ="user_friends")
-public class UserFriends implements Serializable
+public class UserFriends
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -3012902785436011068L;
-
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name="id_user")
+	private User idUser;
 	
-	@ManyToOne
-	@JoinColumn(name= "id_user")
-	private UserFriends idUser;
-	
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_friend")
-	private UserFriends idFriend;
-	
+	private User idFriend;
+		
 	public UserFriends()
 	{}
 	
-	public UserFriends(UserFriends idUser, UserFriends idFriend)
+	public UserFriends(int id, User idUser,User idFriend)
 	{
-		this.idUser = idUser;
+		super();
+		this.id = id;
+		this.idUser= idUser;
 		this.idFriend = idFriend;
-	} 
+	}
 
-	public int getIdUserFriends()
+	public int getId()
 	{
 		return id;
 	}
-
-	public void setIdUserFriends(int idUserFriends)
+	
+	public void setId(int id)
 	{
-		this.id = idUserFriends;
+		this.id = id;
 	}
 
-	public UserFriends getIdUser()
+	public User getIdUser()
 	{
 		return idUser;
 	}
 
-	public void setIdUser(UserFriends idUser)
+	public void setIdUser(User idUser)
 	{
 		this.idUser = idUser;
 	}
 
-	public UserFriends getIdFriend()
+	public User getIdFriend()
 	{
 		return idFriend;
 	}
 
-	public void setIdFriend(UserFriends idFriend)
+	public void setIdFriend(User idFriend)
 	{
 		this.idFriend = idFriend;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "UserFriends ["
-				+ "id=" + id
-				+ ", idUser=" + idUser 
-				+ ", idFriend=" + idFriend
-				+ "]";
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(idFriend, idUser, id);
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
-		UserFriends other = (UserFriends) obj;
-		return idFriend == other.idFriend 
-				&& idUser == other.idUser 
-				&& id == other.id;
 	}
 }

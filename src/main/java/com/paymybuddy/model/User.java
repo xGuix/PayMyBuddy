@@ -1,17 +1,13 @@
 package com.paymybuddy.model;
 
-import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
+import java.util.HashSet;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -20,16 +16,11 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 @Table(name ="user")
-public class User implements Serializable
+public class User
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = -7280829496449743887L;
-
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@JoinColumn(name="id_user")
+	@Column(name="id_user")
 	private int idUser;
 	
 	@Column(name="firstname")
@@ -50,27 +41,40 @@ public class User implements Serializable
 	@Column(name="balance")
 	private float balance;
 	
-	@OneToMany(mappedBy="userFriends",cascade = CascadeType.ALL)
-	private List<User> userFriends = new ArrayList<>();
-
-	public List<User> getUserFriends()
+	@OneToMany (mappedBy= "idUser")
+	private Set<UserFriends> usersList = new HashSet<>();
+	
+	@OneToMany (mappedBy= "idFriend")
+	private Set<UserFriends> friendsList = new HashSet<>();
+	
+	public Set<UserFriends> getUsersList()
 	{
-		return userFriends;
+		return usersList;
 	}
 
-	public void setUserFriends(List<User> userFriends)
+	public void setUsersList(Set<UserFriends> usersList)
 	{
-		this.userFriends = userFriends;
+		this.usersList = usersList;
+	}
+
+	public Set<UserFriends> getFriendsList()
+	{
+		return friendsList;
+	}
+
+	public void setFriendsList(Set<UserFriends> friendsList)
+	{
+		this.friendsList = friendsList;
 	}
 	
-	public void addUserFriend(User user)
+	public void addUserFriend(UserFriends idUser)
 	{
-		userFriends.add(user);
+		usersList.add(idUser);
 	}
-	 
-	public void removeUserFriend(User user)
+ 
+	public void removeUserFriend(UserFriends idUser)
 	{
-		userFriends.remove(user);
+		usersList.remove(idUser);
 	}
 	
 	public int getIdUser()
@@ -141,47 +145,5 @@ public class User implements Serializable
 	public void setBalance(float balance)
 	{
 		this.balance = balance;
-	}
-
-	@Override
-	public String toString()
-	{
-		return "User ["
-				+ "idUser=" + idUser 
-				+ ", firstname=" + firstname 
-				+ ", lastname=" + lastname 
-				+ ", city=" + city
-				+ ", email=" + email 
-				+ ", password=" + password 
-				+ ", balance=" + balance 
-				+ ", userFriends="	+ userFriends
-				+ "]";
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(balance, city, email, firstname, idUser, lastname, password, userFriends);
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
-		User other = (User) obj;		
-		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance) 
-				&& Objects.equals(city, other.city)
-				&& Objects.equals(email, other.email) 
-				&& Objects.equals(firstname, other.firstname)
-				&& idUser == other.idUser
-				&& Objects.equals(lastname, other.lastname)
-				&& Objects.equals(password, other.password) 
-				&& Objects.equals(userFriends, other.userFriends);
 	}
 }

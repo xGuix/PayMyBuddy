@@ -1,6 +1,7 @@
 package com.paymybuddy.model;
 
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -36,19 +37,36 @@ public class Transaction
 	@Column(name="transcation_fee")
 	private float transcationFee;
 
-	public int getIdTransaction() {
+	public Transaction(int idTransaction, int idUser, String userEmail, LocalDateTime dateTime,
+			float amount, String description, float transcationFee)
+	{
+		super();
+		this.idTransaction = idTransaction;
+		this.idUser = idUser;
+		this.userEmail = userEmail;
+		this.dateTime = dateTime;
+		this.amount = amount;
+		this.description = description;
+		this.transcationFee = transcationFee;
+	}
+
+	public int getIdTransaction()
+	{
 		return idTransaction;
 	}
 
-	public void setIdTransaction(int idTransaction) {
+	public void setIdTransaction(int idTransaction)
+	{
 		this.idTransaction = idTransaction;
 	}
 
-	public int getIdUser() {
+	public int getIdUser()
+	{
 		return idUser;
 	}
 
-	public void setIdUser(int idUser) {
+	public void setIdUser(int idUser) 
+	{
 		this.idUser = idUser;
 	}
 
@@ -56,15 +74,18 @@ public class Transaction
 		return userEmail;
 	}
 
-	public void setUserEmail(String userEmail) {
+	public void setUserEmail(String userEmail)
+	{
 		this.userEmail = userEmail;
 	}
 
-	public LocalDateTime getDateTime() {
+	public LocalDateTime getDateTime() 
+	{
 		return dateTime;
 	}
 
-	public void setDateTime(LocalDateTime dateTime) {
+	public void setDateTime(LocalDateTime dateTime)
+	{
 		this.dateTime = dateTime;
 	}
 
@@ -72,23 +93,68 @@ public class Transaction
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(float amount)
+	{
 		this.amount = amount;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public float getTranscationFee() {
+	public float getTranscationFee()
+	{
 		return transcationFee;
 	}
 
-	public void setTranscationFee(float transcationFee) {
+	public void setTranscationFee(float transcationFee)
+	{
 		this.transcationFee = transcationFee;
 	}
+
+	@Override
+	public String toString()
+	{
+		return "Transaction ["
+				+ "idTransaction=" + idTransaction 
+				+ ", idUser=" + idUser 
+				+ ", userEmail=" + userEmail
+				+ ", dateTime=" + dateTime 
+				+ ", amount=" + amount 
+				+ ", description=" + description 
+				+ ", transcationFee=" + transcationFee
+				+ "]";
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(amount, dateTime, description, idTransaction, idUser, transcationFee, userEmail);
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		Transaction other = (Transaction) obj;
+		return Float.floatToIntBits(amount) == Float.floatToIntBits(other.amount)
+				&& Objects.equals(dateTime, other.dateTime) 
+				&& Objects.equals(description, other.description)
+				&& idTransaction == other.idTransaction
+				&& idUser == other.idUser
+				&& Float.floatToIntBits(transcationFee) == Float.floatToIntBits(other.transcationFee)
+				&& Objects.equals(userEmail, other.userEmail);
+	}	
 }

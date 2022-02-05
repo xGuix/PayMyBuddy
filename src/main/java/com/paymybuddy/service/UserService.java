@@ -60,21 +60,23 @@ public class UserService
 	    return userRepository.findByEmail(email);
 	}
 	 
-	public User addUser(UserDTO userDto)
+	public User addUser(User user)
 	{	
 		logger.info("User add and saved");		
-		return userRepository.save(userDto);
+		return userRepository.save(user);
 	}
 	
-	public User updateUser(String email, UserDTO userDto)
+	public User updateUser(String email, User user)
 	{	
 		User userToUpdate = userRepository.findByEmail(email);
 		if(userToUpdate.getEmail().equals(email))
 		{
-			userToUpdate.setFirstname(userDto.getFirstname());
-			userToUpdate.setLastname(userDto.getLastname());
-			userToUpdate.setCity(userDto.getCity());
-			userToUpdate.setBalance(userDto.getBalance());		
+			userToUpdate.setFirstname(user.getFirstname());
+			userToUpdate.setLastname(user.getLastname());
+			userToUpdate.setCity(user.getCity());
+			userToUpdate.setBalance(user.getBalance());
+			userToUpdate.setPassword(user.getPassword());
+			userToUpdate.setUsersList(user.getUsersList());
 			userRepository.save(userToUpdate);
 		}
 		else {

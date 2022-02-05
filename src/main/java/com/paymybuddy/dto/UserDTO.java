@@ -1,15 +1,9 @@
 package com.paymybuddy.dto;
 
-import java.io.Serializable;
 import java.util.Objects;
 
-public class UserDTO implements Serializable
+public class UserDTO
 {
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1102136054514744356L;
-	
 	private int idUser;
 	private String firstname;
 	private String lastname;

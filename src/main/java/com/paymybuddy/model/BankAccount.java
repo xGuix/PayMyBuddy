@@ -19,41 +19,58 @@ public class BankAccount
 	@Column(name="id_user")
 	private int idUser;
 	
-	@Column(name="cardnumber")
-	private int cardNumber;
+	@Column(name="iban_account")
+	private String ibanAccount;
 	
-	@Column(name="bank")
-	private String bank;
+	@Column(name="bank_name")
+	private String bankName;
 
-	public int getIdBankaccount() {
+	
+	public BankAccount(int idBankaccount, int idUser, String ibanAccount, String bankName)
+	{
+		this.idBankaccount = idBankaccount;
+		this.idUser = idUser;
+		this.ibanAccount = ibanAccount;
+		this.bankName = bankName;
+	}
+
+	public int getIdBankaccount()
+	{
 		return idBankaccount;
 	}
 
-	public void setIdBankaccount(int idBankaccount) {
+	public void setIdBankaccount(int idBankaccount)
+	{
 		this.idBankaccount = idBankaccount;
 	}
 
-	public int getIdUser() {
+	public int getIdUser()
+	{
 		return idUser;
 	}
 
-	public void setIdUser(int idUser) {
+	public void setIdUser(int idUser)
+{
 		this.idUser = idUser;
 	}
 
-	public int getCardNumber() {
-		return cardNumber;
+	public String getIbanAccount() 
+	{
+		return ibanAccount;
 	}
 
-	public void setCardNumber(int cardNumber) {
-		this.cardNumber = cardNumber;
+	public void setIbanAccount(String ibanAccount)
+	{
+		this.ibanAccount = ibanAccount;
 	}
 
-	public String getBank() {
-		return bank;
+	public String getBankName()
+	{
+		return bankName;
 	}
 
-	public void setBank(String bank) {
-		this.bank = bank;
+	public void setBankName(String bankName)
+	{
+		this.bankName = bankName;
 	}
 }
