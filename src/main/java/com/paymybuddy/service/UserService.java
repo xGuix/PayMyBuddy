@@ -76,7 +76,7 @@ public class UserService
 			userToUpdate.setCity(user.getCity());
 			userToUpdate.setBalance(user.getBalance());
 			userToUpdate.setPassword(user.getPassword());
-			userToUpdate.setUsersList(user.getUsersList());
+			userToUpdate.setFriendsList(user.getFriendsList());
 			userRepository.save(userToUpdate);
 		}
 		else {

@@ -1,7 +1,6 @@
 package com.paymybuddy.model;
 
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -19,11 +18,11 @@ public class Transaction
 	@Column(name="id_transaction")
 	private int idTransaction;
 	
-	@Column(name="id_user")
-	private int idUser;
+	@Column(name="id_sender")
+	private int idSender;
 	
-	@Column(name="user_email")
-	private String userEmail;
+	@Column(name="id_receiver")
+	private int idReceiver;
 
 	@Column(name="date_time")
 	private LocalDateTime dateTime;
@@ -34,16 +33,16 @@ public class Transaction
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="transcation_fee")
+	@Column(name="transaction_fee")
 	private float transcationFee;
 
-	public Transaction(int idTransaction, int idUser, String userEmail, LocalDateTime dateTime,
+	public Transaction(int idTransaction, int idSender, int idReceiver, LocalDateTime dateTime,
 			float amount, String description, float transcationFee)
 	{
 		super();
 		this.idTransaction = idTransaction;
-		this.idUser = idUser;
-		this.userEmail = userEmail;
+		this.idSender = idSender;
+		this.idReceiver = idReceiver;
 		this.dateTime = dateTime;
 		this.amount = amount;
 		this.description = description;
@@ -60,23 +59,24 @@ public class Transaction
 		this.idTransaction = idTransaction;
 	}
 
-	public int getIdUser()
+	public int getIdSender()
 	{
-		return idUser;
+		return idSender;
 	}
 
-	public void setIdUser(int idUser) 
+	public void setIdSender(int idSender) 
 	{
-		this.idUser = idUser;
+		this.idSender = idSender;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public int getIdReceiver()
+	{
+		return idReceiver;
 	}
 
-	public void setUserEmail(String userEmail)
+	public void setIdReceiver(int idReceiver)
 	{
-		this.userEmail = userEmail;
+		this.idReceiver = idReceiver;
 	}
 
 	public LocalDateTime getDateTime() 
@@ -118,43 +118,4 @@ public class Transaction
 		this.transcationFee = transcationFee;
 	}
 
-	@Override
-	public String toString()
-	{
-		return "Transaction ["
-				+ "idTransaction=" + idTransaction 
-				+ ", idUser=" + idUser 
-				+ ", userEmail=" + userEmail
-				+ ", dateTime=" + dateTime 
-				+ ", amount=" + amount 
-				+ ", description=" + description 
-				+ ", transcationFee=" + transcationFee
-				+ "]";
-	}
-
-	@Override
-	public int hashCode()
-	{
-		return Objects.hash(amount, dateTime, description, idTransaction, idUser, transcationFee, userEmail);
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
-		Transaction other = (Transaction) obj;
-		return Float.floatToIntBits(amount) == Float.floatToIntBits(other.amount)
-				&& Objects.equals(dateTime, other.dateTime) 
-				&& Objects.equals(description, other.description)
-				&& idTransaction == other.idTransaction
-				&& idUser == other.idUser
-				&& Float.floatToIntBits(transcationFee) == Float.floatToIntBits(other.transcationFee)
-				&& Objects.equals(userEmail, other.userEmail);
-	}	
 }

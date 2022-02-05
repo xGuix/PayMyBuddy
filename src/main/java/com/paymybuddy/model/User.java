@@ -1,10 +1,13 @@
 package com.paymybuddy.model;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,7 +24,7 @@ public class User
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="id_user")
-	private int idUser;
+	private Integer idUser;
 	
 	@Column(name="firstname")
 	private String firstname;
@@ -41,48 +44,53 @@ public class User
 	@Column(name="balance")
 	private float balance;
 	
-	@OneToMany (mappedBy= "idUser")
-	private Set<UserFriends> usersList = new HashSet<>();
+	@OneToMany (mappedBy="idUser",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
+	private List<UserFriends> friendsList = new ArrayList<>();
 	
-	@OneToMany (mappedBy= "idFriend")
-	private Set<UserFriends> friendsList = new HashSet<>();
+	public User() 
+	{}
 	
-	public Set<UserFriends> getUsersList()
+	public User(Integer idUser, String firstname, String lastname, String city, String email, String password,
+			float balance, List<UserFriends> friendsList)
 	{
-		return usersList;
+		super();
+		this.idUser = idUser;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.city = city;
+		this.email = email;
+		this.password = password;
+		this.balance = balance;
+		this.friendsList = friendsList;
 	}
 
-	public void setUsersList(Set<UserFriends> usersList)
-	{
-		this.usersList = usersList;
-	}
-
-	public Set<UserFriends> getFriendsList()
+	
+	public List<UserFriends> getFriendsList()
 	{
 		return friendsList;
 	}
 
-	public void setFriendsList(Set<UserFriends> friendsList)
+	public void setFriendsList(List<UserFriends> friendsList)
 	{
 		this.friendsList = friendsList;
 	}
-	
+
 	public void addUserFriend(UserFriends idUser)
 	{
-		usersList.add(idUser);
+		friendsList.add(idUser);
 	}
  
 	public void removeUserFriend(UserFriends idUser)
 	{
-		usersList.remove(idUser);
+		friendsList.remove(idUser);
 	}
 	
-	public int getIdUser()
+	public Integer getIdUser()
 	{
 		return idUser;
 	}
 
-	public void setIdUser(int idUser)
+	public void setIdUser(Integer idUser)
 	{
 		this.idUser = idUser;
 	}
@@ -145,5 +153,47 @@ public class User
 	public void setBalance(float balance)
 	{
 		this.balance = balance;
+	}
+
+	@Override
+	public String toString()
+	{
+		return "User ["
+				+ "idUser=" + idUser 
+				+ ", firstname=" + firstname 
+				+ ", lastname=" + lastname 
+				+ ", city=" + city
+				+ ", email=" + email 
+				+ ", password=" + password 
+				+ ", balance=" + balance 
+				+ ", friendsList=" + friendsList 
+				+ "]";
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return Objects.hash(idUser,firstname,lastname,balance, city, email, password, friendsList );
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		
+		User other = (User) obj;
+		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance)
+				&& Objects.equals(city, other.city)
+				&& Objects.equals(email, other.email)
+				&& Objects.equals(firstname, other.firstname)
+				&& Objects.equals(friendsList, other.friendsList)
+				&& Objects.equals(idUser, other.idUser)
+				&& Objects.equals(lastname, other.lastname) 
+				&& Objects.equals(password, other.password);
 	}
 }

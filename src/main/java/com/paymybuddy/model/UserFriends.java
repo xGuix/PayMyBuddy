@@ -1,10 +1,6 @@
 package com.paymybuddy.model;
 
-
-import javax.persistence.CascadeType;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
@@ -15,55 +11,40 @@ import javax.persistence.Table;
 public class UserFriends
 {
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
-
-	@ManyToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name="id_user")
-	private User idUser;
+	private Integer idUser;
 	
-	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name="id_friend")
-	private User idFriend;
+	@ManyToOne
+	@JoinColumn(name="id_friend", insertable = false, updatable = false)
+	private User friend;
 		
 	public UserFriends()
 	{}
 	
-	public UserFriends(int id, User idUser,User idFriend)
+	public UserFriends(Integer idUser, User friend)
 	{
 		super();
-		this.id = id;
 		this.idUser= idUser;
-		this.idFriend = idFriend;
+		this.friend = friend;
 	}
 
-	public int getId()
-	{
-		return id;
-	}
-	
-	public void setId(int id)
-	{
-		this.id = id;
-	}
-
-	public User getIdUser()
+	public Integer getIdUser()
 	{
 		return idUser;
 	}
 
-	public void setIdUser(User idUser)
+	public void setIdUser(Integer idUser)
 	{
 		this.idUser = idUser;
 	}
 
-	public User getIdFriend()
+	public User getFriend()
 	{
-		return idFriend;
+		return friend;
 	}
 
-	public void setIdFriend(User idFriend)
+	public void setFriend(User friend)
 	{
-		this.idFriend = idFriend;
+		this.friend = friend;
 	}
 }
