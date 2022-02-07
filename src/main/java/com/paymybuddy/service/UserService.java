@@ -9,14 +9,12 @@ import org.apache.logging.log4j.Logger;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
 @Service
-@Transactional
 public class UserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");

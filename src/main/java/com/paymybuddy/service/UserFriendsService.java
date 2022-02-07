@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.model.User;
+import com.paymybuddy.model.UserFriends;
 import com.paymybuddy.repository.UserFriendsRepository;
 
 @Service
@@ -30,11 +31,14 @@ public class UserFriendsService
 		return userFriendsRepository.findById(id);
 	}
 	
-	public User addFriend(Integer id)
+	public UserFriends addFriend(Integer id)
 	{
-		Optional<User> newFriend = getFriendById(id);
-		logger.info("User add and saved");		
-		return userFriendsRepository.save(newFriend);
+		//Optional<User> newFriend = getFriendById(id);
+		UserFriends addConnection = new UserFriends();
+		addConnection.setUser(id);
+		addConnection.setFriend(null);
+		logger.info("Connection add and saved");		
+		return userFriendsRepository.save(addConnection);
 	}
 		
 	public void deleteFriendById(Integer id)

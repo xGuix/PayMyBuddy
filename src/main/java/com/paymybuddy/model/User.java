@@ -2,6 +2,7 @@ package com.paymybuddy.model;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -44,12 +45,13 @@ public class User
 	private float balance;
 
 	@OneToMany (mappedBy="user",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	private List<UserFriends> friendsList = new ArrayList<>();
+	List<UserFriends> friendsList = new ArrayList<>();
 	
 	public User() 
 	{}
 	
-	public User(Integer idUser, String firstname, String lastname, String city, String email, String password, float balance, 
+	public User(Integer idUser, String firstname, String lastname,
+			String city, String email, String password, float balance, 
 			List<UserFriends> friendsList)
 	{
 		super();
@@ -63,11 +65,13 @@ public class User
 		this.friendsList = friendsList;
 	}
 
-	public List<UserFriends> getFriendsList() {
+	public List<UserFriends> getFriendsList()
+	{
 		return friendsList;
 	}
 
-	public void setFriendsList(List<UserFriends> friendsList) {
+	public void setFriendsList(List<UserFriends> friendsList)
+	{
 		this.friendsList = friendsList;
 	}
 	
@@ -80,79 +84,101 @@ public class User
 	{
 		friendsList.remove(friend);
 	}
-//	
-//	public UserFriends getUser()
-//	{
-//		return usertomap;
-//	}
-//	public void setUser(UserFriends usertomap)
-//	{
-//		this.usertomap = usertomap;
-//	}
-//	public Map<User, UserFriends>  getFriendsList() 
-//	{
-//		return friendsList;
-//	}
-//	public void setFriendsList(Map<User, UserFriends> friendsList)
-//	{
-//		this.friendsList = friendsList;
-//	}
-
-	/***************************************************************/
 	
-	public Integer getIdUser() {
+	public Integer getIdUser()
+	{
 		return idUser;
 	}
 
-	public void setIdUser(Integer idUser) {
+	public void setIdUser(Integer idUser)
+	{
 		this.idUser = idUser;
 	}
 
-	public String getFirstname() {
+	public String getFirstname()
+	{
 		return firstname;
 	}
 
-	public void setFirstname(String firstname) {
+	public void setFirstname(String firstname)
+	{
 		this.firstname = firstname;
 	}
 
-	public String getLastname() {
+	public String getLastname()
+	{
 		return lastname;
 	}
 
-	public void setLastname(String lastname) {
+	public void setLastname(String lastname)
+	{
 		this.lastname = lastname;
 	}
 
-	public String getCity() {
+	public String getCity() 
+	{
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(String city)
+	{
 		this.city = city;
 	}
 
-	public String getEmail() {
+	public String getEmail()
+	{
 		return email;
 	}
 
-	public void setEmail(String email) {
+	public void setEmail(String email)
+	{
 		this.email = email;
 	}
 
-	public String getPassword() {
+	public String getPassword()
+	{
 		return password;
 	}
 
-	public void setPassword(String password) {
+	public void setPassword(String password)
+	{
 		this.password = password;
 	}
 
-	public float getBalance() {
+	public float getBalance()
+	{
 		return balance;
 	}
 
-	public void setBalance(float balance){
+	public void setBalance(float balance)
+	{
 		this.balance = balance;
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(balance, city, email, firstname, friendsList, idUser, lastname, password);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance) && Objects.equals(city, other.city)
+				&& Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname)
+				&& Objects.equals(friendsList, other.friendsList) && Objects.equals(idUser, other.idUser)
+				&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password);
+	}
+
+	@Override
+	public String toString() {
+		return "User [idUser=" + idUser + ", firstname=" + firstname + ", lastname=" + lastname + ", city=" + city
+				+ ", email=" + email + ", password=" + password + ", balance=" + balance + ", friendsList="
+				+ friendsList + "]";
 	}
 }

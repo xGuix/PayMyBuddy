@@ -125,12 +125,12 @@ public class UserController
 			info = toDel.getFirstname()+" "+toDel.getLastname();
 			
 			userService.deleteUserById(id);
-			logger.info("User Deleted:{}",info);
+			logger.info("User: '{}' have been deleted",info);
 		}
 		else {
 			logger.info("User does not exists! Result is: {}", info);
 		}
-		return new ResponseEntity<>("User deleted is "+ info, HttpStatus.OK);
+		return new ResponseEntity<>("User: '{}' have been deleted"+ info, HttpStatus.OK);
 	}
 	
 	/***********************************

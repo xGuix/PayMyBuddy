@@ -117,5 +117,4 @@ public class Transaction
 	{
 		this.transcationFee = transcationFee;
 	}
-
 }
