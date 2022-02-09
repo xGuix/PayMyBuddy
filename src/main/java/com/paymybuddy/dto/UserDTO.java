@@ -1,5 +1,6 @@
 package com.paymybuddy.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class UserDTO
@@ -10,7 +11,8 @@ public class UserDTO
 	private String city;
 	private String email;
 	private float balance;
-	private List<UserDTO> connections;
+
+	private List<UserDTO> connections = new ArrayList<>();
 	
     public UserDTO()
     {}
@@ -24,7 +26,7 @@ public class UserDTO
 		this.city = city;
 		this.email = email;
 		this.balance = balance;
-		this.connections=connections;
+		this.connections = connections;
 	}
 
 	public Integer getUserId()
@@ -87,12 +89,12 @@ public class UserDTO
 		this.balance = balance;
 	}
 
-	public List<UserDTO> getConnections()
+	public List<UserDTO> getFriendsList()
 	{
 		return connections;
 	}
 
-	public void setConnections(List<UserDTO> connections)
+	public void setFriendsList(List<UserDTO> connections)
 	{
 		this.connections = connections;	
 	}

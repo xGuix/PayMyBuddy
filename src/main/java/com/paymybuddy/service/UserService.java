@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -20,43 +19,41 @@ public class UserService
 	
 	@Autowired
 	private UserRepository userRepository;
-	
-    @Autowired
-    private ModelMapper modelMapper;
-	   
+  
     public UserDTO entityToDto(User user)
     {
-        return modelMapper.map(user, UserDTO.class);
+    	UserDTO newUserDto = new UserDTO();
+    	newUserDto.setUserId(user.getUserId());
+    	newUserDto.setFirstname(user.getFirstname());
+    	newUserDto.setLastname(user.getLastname());
+    	newUserDto.setCity(user.getCity());
+    	newUserDto.setEmail(user.getEmail());
+    	newUserDto.setBalance(user.getBalance());
+    	newUserDto.setFriendsList(null);
+    	
+       	List<UserDTO> friendListDto = new ArrayList<>();
+        	for(User uf : user.getFriendsList())
+        	{ 
+	    		UserDTO friendDto = new UserDTO();
+	    		friendDto.setUserId(uf.getUserId());
+	    		friendDto.setFirstname(uf.getFirstname());
+	    		friendDto.setLastname(uf.getLastname());
+	    		friendDto.setCity(uf.getCity());
+	    		friendDto.setEmail(uf.getEmail());
+	    		friendDto.setBalance(uf.getBalance());
+	    		friendDto.setFriendsList(null);
+	    		friendListDto.add(friendDto);
+        	}
+        newUserDto.setFriendsList(friendListDto);       
+        return newUserDto;
     }
 
     public List<UserDTO> convertListToDTOList(List<User> friendsList)
     {
         List<UserDTO> userListDto = new ArrayList<>();
         for(User u : friendsList)
-        {
-        	UserDTO newUserDto = new UserDTO();
-        	newUserDto.setUserId(u.getUserId());
-        	newUserDto.setFirstname(u.getFirstname());
-        	newUserDto.setLastname(u.getLastname());
-        	newUserDto.setCity(u.getCity());
-        	newUserDto.setEmail(u.getEmail());
-        	newUserDto.setBalance(u.getBalance());
-        	newUserDto.setConnections(null);
-        	
-	       	List<UserDTO> friendListDto = new ArrayList<>();
-	        	for(User uf : u.getFriendsList())
-	        	{ 
-//        		UserDTO friendDto = new UserDTO();
-//        		friendDto.setUserId(uf.getUserId());
-//        		friendDto.setFirstname(uf.getFirstname());
-//        		friendDto.setLastname(uf.getLastname());
-//        		friendDto.setCity(uf.getCity());
-//        		friendDto.setEmail(uf.getEmail());
-//        		friendDto.setBalance(uf.getBalance());
-        		friendListDto.add(entityToDto(uf));
-        	}
-        	newUserDto.setConnections(friendListDto);
-        	userListDto.add(newUserDto);
+        {  
+        	userListDto.add(entityToDto(u));
         }
         return userListDto;
     }

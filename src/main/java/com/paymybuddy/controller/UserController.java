@@ -37,7 +37,7 @@ public class UserController
 	public ResponseEntity<List<UserDTO>> getUsers()
 	{
 		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
-		
+
 		logger.info("Get all users list");			
 		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
 	}
