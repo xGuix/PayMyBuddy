@@ -2,15 +2,15 @@ package com.paymybuddy.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
@@ -23,8 +23,8 @@ public class User
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_user")
-	private Integer idUser;
+	@Column(name="user_id")
+	private Integer userId;
 	
 	@Column(name="firstname")
 	private String firstname;
@@ -44,55 +44,57 @@ public class User
 	@Column(name="balance")
 	private float balance;
 
-	@OneToMany (mappedBy="user",cascade=CascadeType.ALL, fetch = FetchType.LAZY)
-	List<UserFriends> friendsList = new ArrayList<>();
+	@OneToMany (fetch = FetchType.LAZY)
+	@JoinTable(name ="connection", joinColumns = @JoinColumn(name ="user_id"),
+			inverseJoinColumns = @JoinColumn(name ="connection_id"))
+	List<User> friendsList = new ArrayList<>();
 	
 	public User() 
 	{}
 	
-	public User(Integer idUser, String firstname, String lastname,
+	public User(Integer userId, String firstname, String lastname,
 			String city, String email, String password, float balance, 
-			List<UserFriends> friendsList)
+			List<User> friendsList)
 	{
 		super();
-		this.idUser = idUser;
+		this.userId = userId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.city = city;
 		this.email = email;
 		this.password = password;
 		this.balance = balance;
-		this.friendsList = friendsList;
+		this.friendsList=friendsList;
 	}
 
-	public List<UserFriends> getFriendsList()
+	public List<User> getFriendsList()
 	{
 		return friendsList;
 	}
 
-	public void setFriendsList(List<UserFriends> friendsList)
+	public void setFriendsList(List<User> friendsList)
 	{
 		this.friendsList = friendsList;
 	}
 	
-	public void addUserFriend(UserFriends friend)
+	public void addUserFriend(User friend)
 	{
 		friendsList.add(friend);
 	}
  
-	public void removeUserFriend(UserFriends friend)
+	public void removeUserFriend(User friend)
 	{
 		friendsList.remove(friend);
 	}
 	
-	public Integer getIdUser()
+	public Integer getUserId()
 	{
-		return idUser;
+		return userId;
 	}
 
-	public void setIdUser(Integer idUser)
+	public void setUserId(Integer userId)
 	{
-		this.idUser = idUser;
+		this.userId = userId;
 	}
 
 	public String getFirstname()
@@ -153,32 +155,5 @@ public class User
 	public void setBalance(float balance)
 	{
 		this.balance = balance;
-	}
-
-	@Override
-	public int hashCode() {
-		return Objects.hash(balance, city, email, firstname, friendsList, idUser, lastname, password);
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		User other = (User) obj;
-		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance) && Objects.equals(city, other.city)
-				&& Objects.equals(email, other.email) && Objects.equals(firstname, other.firstname)
-				&& Objects.equals(friendsList, other.friendsList) && Objects.equals(idUser, other.idUser)
-				&& Objects.equals(lastname, other.lastname) && Objects.equals(password, other.password);
-	}
-
-	@Override
-	public String toString() {
-		return "User [idUser=" + idUser + ", firstname=" + firstname + ", lastname=" + lastname + ", city=" + city
-				+ ", email=" + email + ", password=" + password + ", balance=" + balance + ", friendsList="
-				+ friendsList + "]";
 	}
 }

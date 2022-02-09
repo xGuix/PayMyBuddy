@@ -15,16 +15,16 @@ public class Transaction
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_transaction")
-	private int idTransaction;
+	@Column(name="transaction_id")
+	private int transactionId;
 	
-	@Column(name="id_sender")
-	private int idSender;
+	@Column(name="sender")
+	private int sender;
 	
-	@Column(name="id_receiver")
-	private int idReceiver;
+	@Column(name="receiver")
+	private int receiver;
 
-	@Column(name="date_time")
+	@Column(name="datetime")
 	private LocalDateTime dateTime;
 	
 	@Column(name="amount")
@@ -33,50 +33,50 @@ public class Transaction
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="transaction_fee")
+	@Column(name="transactionfee")
 	private float transcationFee;
 
-	public Transaction(int idTransaction, int idSender, int idReceiver, LocalDateTime dateTime,
+	public Transaction(int transactionId, int sender, int receiver, LocalDateTime dateTime,
 			float amount, String description, float transcationFee)
 	{
 		super();
-		this.idTransaction = idTransaction;
-		this.idSender = idSender;
-		this.idReceiver = idReceiver;
+		this.transactionId = transactionId;
+		this.sender = sender;
+		this.receiver = receiver;
 		this.dateTime = dateTime;
 		this.amount = amount;
 		this.description = description;
 		this.transcationFee = transcationFee;
 	}
 
-	public int getIdTransaction()
+	public int getTransactionId()
 	{
-		return idTransaction;
+		return transactionId;
 	}
 
-	public void setIdTransaction(int idTransaction)
+	public void setIdTransaction(int transactionId)
 	{
-		this.idTransaction = idTransaction;
+		this.transactionId = transactionId;
 	}
 
-	public int getIdSender()
+	public int getSender()
 	{
-		return idSender;
+		return sender;
 	}
 
-	public void setIdSender(int idSender) 
+	public void setSender(int sender) 
 	{
-		this.idSender = idSender;
+		this.sender = sender;
 	}
 
-	public int getIdReceiver()
+	public int getReceiver()
 	{
-		return idReceiver;
+		return receiver;
 	}
 
-	public void setIdReceiver(int idReceiver)
+	public void setReceiver(int receiver)
 	{
-		this.idReceiver = idReceiver;
+		this.receiver = receiver;
 	}
 
 	public LocalDateTime getDateTime() 

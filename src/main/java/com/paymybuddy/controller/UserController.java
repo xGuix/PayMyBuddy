@@ -1,8 +1,6 @@
 package com.paymybuddy.controller;
 
-import java.util.Optional;
-
-import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -36,12 +34,12 @@ public class UserController
 	 * @return UsersList Full users list
 	 */
 	@GetMapping(value = "/users")
-	@RolesAllowed("USER")
-	public ResponseEntity<Iterable<User>> getUsers()
+	public ResponseEntity<List<UserDTO>> getUsers()
 	{
-		logger.info("Get users list");	
+		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
 		
-		return new ResponseEntity<>(userService.getUsers(), HttpStatus.FOUND);
+		logger.info("Get all users list");			
+		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
 	}
 	
 	/**
@@ -50,12 +48,12 @@ public class UserController
 	 * @return User A user with id
 	 */
 	@GetMapping(value = "/user")
-	@RolesAllowed("USER")
-	public ResponseEntity<Optional<User>> getUserById(int id)
+	public ResponseEntity<UserDTO> getUserById(Integer id)
 	{
-		logger.info("Get user with id= {}",id);	
+		UserDTO userById = userService.entityToDto(userService.getUserById(id));
 		
-		return new ResponseEntity<>(userService.getUserById(id), HttpStatus.FOUND);
+		logger.info("Get user with id= {}",id);	
+		return new ResponseEntity<>(userById, HttpStatus.FOUND);
 	}	
 	
 	/**
@@ -64,12 +62,12 @@ public class UserController
 	 * @return User A user with email
 	 */
 	@GetMapping(value = "/userEmail")
-	@RolesAllowed("USER")
-	public ResponseEntity<User> getUserByEmail(String email)
+	public ResponseEntity<UserDTO> getUserByEmail(String email)
 	{
-		logger.info("Get user with email= {}",email);	
+		UserDTO userToFind = userService.entityToDto(userService.getUserByEmail(email));
 		
-		return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.FOUND);
+		logger.info("Get user with email= {}",email);			
+		return new ResponseEntity<>(userToFind, HttpStatus.FOUND);
 	}
 	
 	/**
@@ -78,12 +76,17 @@ public class UserController
 	 * @return User user saved
 	 */
 	@PostMapping(value = "/user")
-	@RolesAllowed("USER")
 	public ResponseEntity<UserDTO> addUser(@RequestBody User user)
 	{	
-		UserDTO userToAdd = userService.entityToDto(userService.addUser(user));
-		
-		logger.info("User added is: {}",userToAdd);	
+		UserDTO userToAdd = null;
+		if(userService.getUserByEmail(user.getEmail())==null)
+		{
+			userToAdd = userService.entityToDto(userService.addUser(user));
+			logger.info("User added is: {}",userToAdd);	
+		}
+		else {
+			logger.info("User already exists: {}",userToAdd);	
+		}
 		return new ResponseEntity<>(userToAdd, HttpStatus.CREATED);
 	}
 	
@@ -93,18 +96,17 @@ public class UserController
 	 * @return User user saved
 	 */
 	@PutMapping(value = "/user")
-	@RolesAllowed("USER")
 	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody User user)
 	{	
 		UserDTO userToUpdate = null;
 		if(getUserByEmail(email)!=null)
 		{
 			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
+			logger.info("User updated: {}",userToUpdate);	
 		}
 		else {
 			logger.info("User does not exists: {}", userToUpdate);	
 		}
-		logger.info("User updated: {}",userToUpdate);	
 		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
 	}
 	
@@ -114,31 +116,19 @@ public class UserController
 	 * @return User User deleted 
 	 */
 	@DeleteMapping(value = "/user")
-	@RolesAllowed("USER")
-	public ResponseEntity<String> deleteUser(int id)
+	public ResponseEntity<String> deleteUser(Integer id)
 	{
 		String info = null;
-		Optional<User> userDel = userService.getUserById(id);
-		if (userDel.isPresent())
+		User userToDel = userService.getUserById(id);
+		if (userToDel != null)
 		{
-			User toDel = userDel.get();
-			info = toDel.getFirstname()+" "+toDel.getLastname();
-			
-			userService.deleteUserById(id);
-			logger.info("User: '{}' have been deleted",info);
+			info = userToDel.getFirstname()+" "+userToDel.getLastname();		
+			userService.deleteUserById(id);		
+			logger.info("User: {} have been deleted ", info);
 		}
 		else {
 			logger.info("User does not exists! Result is: {}", info);
 		}
-		return new ResponseEntity<>("User: '{}' have been deleted"+ info, HttpStatus.OK);
+		return new ResponseEntity<>(info + ": User have been deleted", HttpStatus.OK);
 	}
-	
-	/***********************************
-	@RequestMapping("/admin")
-	@RolesAllowed("ADMIN")
-	public String getAdmin()
-	{
-		return "Welcome to you: Admin";
-	}
-	***********************************/	
 }

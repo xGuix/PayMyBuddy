@@ -13,11 +13,11 @@ public class BankAccount
 {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_bankaccount")
-	private int idBankaccount;
+	@Column(name="bankaccount_id")
+	private int bankaccountId;
 	
-	@Column(name="id_user")
-	private int idUser;
+	@Column(name="user_id")
+	private int userId;
 	
 	@Column(name="iban_account")
 	private String ibanAccount;
@@ -26,32 +26,32 @@ public class BankAccount
 	private String bankName;
 
 	
-	public BankAccount(int idBankaccount, int idUser, String ibanAccount, String bankName)
+	public BankAccount(int bankaccountId, int userId, String ibanAccount, String bankName)
 	{
-		this.idBankaccount = idBankaccount;
-		this.idUser = idUser;
+		this.bankaccountId = bankaccountId;
+		this.userId = userId;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
 	}
 
-	public int getIdBankaccount()
+	public int getBankaccountId()
 	{
-		return idBankaccount;
+		return bankaccountId;
 	}
 
-	public void setIdBankaccount(int idBankaccount)
+	public void setBankaccountId(int bankaccountId)
 	{
-		this.idBankaccount = idBankaccount;
+		this.bankaccountId = bankaccountId;
 	}
 
-	public int getIdUser()
+	public int getUserId()
 	{
-		return idUser;
+		return userId;
 	}
 
-	public void setIdUser(int idUser)
+	public void setUserId(int userId)
 {
-		this.idUser = idUser;
+		this.userId = userId;
 	}
 
 	public String getIbanAccount() 

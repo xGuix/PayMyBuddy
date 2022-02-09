@@ -1,35 +1,40 @@
 package com.paymybuddy.dto;
 
-import java.util.Objects;
+import java.util.List;
 
 public class UserDTO
 {
-	private int idUser;
+	private Integer userId;
 	private String firstname;
 	private String lastname;
 	private String city;
 	private String email;
 	private float balance;
+	private List<UserDTO> connections;
 	
     public UserDTO()
     {}
     
-	public UserDTO(int idUser, String firstname, String lastname,String city, String email, float balance)
+	public UserDTO(Integer userId, String firstname, String lastname,String city,
+			String email, float balance, List<UserDTO> connections)
 	{
-		this.idUser = idUser;
+		this.userId = userId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.city = city;
 		this.email = email;
 		this.balance = balance;
+		this.connections=connections;
 	}
 
-	public int getIdUser() {
-		return idUser;
+	public Integer getUserId()
+	{
+		return userId;
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public void setUserId(Integer userId) 
+	{
+		this.userId = userId;
 	}
 	
 	public String getFirstname()
@@ -52,11 +57,13 @@ public class UserDTO
 		this.lastname = lastName;
 	}
 
-	public String getCity() {
+	public String getCity()
+	{
 		return city;
 	}
 
-	public void setCity(String city) {
+	public void setCity(String city)
+	{
 		this.city = city;
 	}
 
@@ -79,40 +86,14 @@ public class UserDTO
 	{
 		this.balance = balance;
 	}
-	
-	@Override
-	public String toString()
+
+	public List<UserDTO> getConnections()
 	{
-		return "UserDTO [id=" + idUser 
-				+ ", firstName=" + firstname 
-				+ ", lastName=" + lastname 
-				+ ", email=" + email
-				+ ", balance=" + balance 
-				+ "]";
+		return connections;
 	}
 
-	@Override
-	public int hashCode()
+	public void setConnections(List<UserDTO> connections)
 	{
-		return Objects.hash(balance, email, firstname, idUser, lastname);
-	}
-
-	@Override
-	public boolean equals(Object obj)
-	{
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		
-		UserDTO other = (UserDTO) obj;
-		
-		return Float.floatToIntBits(balance) == Float.floatToIntBits(other.balance)
-				&& Objects.equals(email, other.email) 
-				&& Objects.equals(firstname, other.firstname)
-				&& idUser == other.idUser
-				&& Objects.equals(lastname, other.lastname);
+		this.connections = connections;	
 	}
 }
