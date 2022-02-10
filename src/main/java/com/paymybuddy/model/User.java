@@ -47,10 +47,9 @@ public class User
 	private float balance;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinTable(name ="bankaccount", joinColumns = @JoinColumn(name ="bankaccount_id"),
-			inverseJoinColumns = @JoinColumn(name ="user_id"))
+	@JoinColumn(name = "user_email", referencedColumnName = "bankaccount_id")
 	private BankAccount bankAccount;
-	
+
 	@OneToMany (fetch = FetchType.LAZY)
 	@JoinTable(name ="connection", joinColumns = @JoinColumn(name ="user_id"),
 			inverseJoinColumns = @JoinColumn(name ="connection_id"))
@@ -162,5 +161,15 @@ public class User
 	public void setBalance(float balance)
 	{
 		this.balance = balance;
+	}
+	
+	public BankAccount getBankAccount()
+	{
+		return bankAccount;
+	}
+
+	public void setBankAccount(BankAccount bankAccount)
+	{
+		this.bankAccount = bankAccount;
 	}
 }

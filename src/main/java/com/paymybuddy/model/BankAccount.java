@@ -17,7 +17,7 @@ public class BankAccount
 	@Column(name="bankaccount_id")
 	private Integer bankaccountId;
 	
-	@Column(name="user_id")
+	@Column(name="user_email")
 	private String userEmail;
 	
 	@Column(name="iban_account")
@@ -27,7 +27,10 @@ public class BankAccount
 	private String bankName;
 
 	@OneToOne
-	private User user;
+	private User email;
+	
+	public BankAccount()
+	{}
 	
 	public BankAccount(Integer bankaccountId, String userEmail,
 			String ibanAccount, String bankName)
@@ -76,5 +79,15 @@ public class BankAccount
 	public void setBankName(String bankName)
 	{
 		this.bankName = bankName;
+	}
+
+	public User getEmail()
+	{
+		return email;
+	}
+
+	public void setEmail(User email)
+	{
+		this.email = email;
 	}
 }

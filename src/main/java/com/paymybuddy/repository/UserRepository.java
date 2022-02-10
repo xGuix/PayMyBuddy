@@ -8,5 +8,8 @@ import com.paymybuddy.model.User;
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>
 {
+	/**
+	 * {@inheritDoc}
+	 */
 	User findByEmail(String email);
 }

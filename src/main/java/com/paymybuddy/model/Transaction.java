@@ -1,12 +1,18 @@
 package com.paymybuddy.model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -36,11 +42,17 @@ public class Transaction
 	@Column(name="transactionfee")
 	private float transcationFee;
 
+	@OneToMany (fetch = FetchType.LAZY)
+	@JoinTable(name ="transaction", joinColumns = @JoinColumn(name ="sender"),
+			inverseJoinColumns = @JoinColumn(name ="receiver"))
+	List<Transaction> TransactionList = new ArrayList<>();
+	
 	public Transaction()
 	{}
 	
 	public Transaction(Integer transactionId, String sender, String receiver,
-			LocalDateTime dateTime,	float amount, String description, float transcationFee)
+			LocalDateTime dateTime,	float amount, String description, float transcationFee,
+			List<Transaction> TransactionList)
 	{
 		super();
 		this.transactionId = transactionId;
@@ -50,14 +62,15 @@ public class Transaction
 		this.amount = amount;
 		this.description = description;
 		this.transcationFee = transcationFee;
+		this.TransactionList = TransactionList;
 	}
-
+	
 	public Integer getTransactionId()
 	{
 		return transactionId;
 	}
 
-	public void setIdTransaction(Integer transactionId)
+	public void setTransactionId(Integer transactionId)
 	{
 		this.transactionId = transactionId;
 	}
@@ -120,4 +133,14 @@ public class Transaction
 	{
 		this.transcationFee = transcationFee;
 	}
+
+//	public List<Transaction> getTransactionList()
+//	{
+//		return TransactionList;
+//	}
+//
+//	public void setTransactionList(List<Transaction> transactionList)
+//	{
+//		TransactionList = transactionList;
+//	}
 }

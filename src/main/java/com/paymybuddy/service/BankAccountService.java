@@ -18,24 +18,49 @@ public class BankAccountService
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
    
+	/**
+	 * Get list of all bank account :
+	 * Find all Bank account saved
+	 * 
+	 * @return List<BankAccount> The list of all bank account
+	 */
 	public List<BankAccount> getBankAccounts()
 	{
 		logger.info("Bank accounts list found");	
 		return bankAccountRepository.findAll();
 	}
 	
+	/**
+	 * Get the bank account with email:
+	 * Find the bank account of a user with email
+	 * 
+	 * @return BankAccount The bank account of user
+	 */
 	public BankAccount getBankAccountByEmail(String userEmail)
 	{
 		logger.info("Bank account found with Email: {}",userEmail);
-		return bankAccountRepository.getUserByEmail(userEmail);
+		return bankAccountRepository.findBankAccountByEmail(userEmail);
 	}
 	
+	/**
+	 * Add bank account of user:
+	 * Create & save the bank account of user with email
+	 * 
+	 * @return BankAccount The bank account added
+	 */
 	public BankAccount addBankAccount(BankAccount bankAccount)
 	{	
 		logger.info("Bank account add and saved");		
-		return bankAccountRepository.save(bankAccount);
+		return bankAccountRepository.saveAndFlush(bankAccount);
 	}
 	
+	
+	/**
+	 * Update bank account of user:
+	 * Modify & save the bank account of user by email
+	 * 
+	 * @return BankAccount The bank account updated
+	 */
 	public BankAccount updateBankAccount(String userEmail, BankAccount bankAccount)
 	{	
 		BankAccount baToUpdate = getBankAccountByEmail(userEmail);
@@ -45,7 +70,7 @@ public class BankAccountService
 			baToUpdate.setBankName(bankAccount.getBankName());
 			baToUpdate.setIbanAccount(bankAccount.getIbanAccount());
 
-			bankAccountRepository.save(baToUpdate);
+			bankAccountRepository.saveAndFlush(baToUpdate);
 		}
 		else {
 			logger.info("Bank account does not exists!");
@@ -54,9 +79,13 @@ public class BankAccountService
 		return baToUpdate;
 	}
 	
-	public void deleteBankAccountById(String userEmail)
+	/**
+	 * Delete bank account with userEmail :
+	 * Delete bank account from user
+	 */
+	public void deleteBankAccountByEmail(String userEmail)
 	{
-		bankAccountRepository.deleteByEmail(userEmail);
+		bankAccountRepository.delete(getBankAccountByEmail(userEmail));
 		logger.info("Bank account have been deleted");
 	}
 }
