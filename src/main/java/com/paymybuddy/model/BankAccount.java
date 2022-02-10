@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -14,10 +15,10 @@ public class BankAccount
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="bankaccount_id")
-	private int bankaccountId;
+	private Integer bankaccountId;
 	
 	@Column(name="user_id")
-	private int userId;
+	private String userEmail;
 	
 	@Column(name="iban_account")
 	private String ibanAccount;
@@ -25,33 +26,36 @@ public class BankAccount
 	@Column(name="bank_name")
 	private String bankName;
 
+	@OneToOne
+	private User user;
 	
-	public BankAccount(int bankaccountId, int userId, String ibanAccount, String bankName)
+	public BankAccount(Integer bankaccountId, String userEmail,
+			String ibanAccount, String bankName)
 	{
 		this.bankaccountId = bankaccountId;
-		this.userId = userId;
+		this.userEmail = userEmail;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
 	}
 
-	public int getBankaccountId()
+	public Integer getBankaccountId()
 	{
 		return bankaccountId;
 	}
 
-	public void setBankaccountId(int bankaccountId)
+	public void setBankaccountId(Integer bankaccountId)
 	{
 		this.bankaccountId = bankaccountId;
 	}
 
-	public int getUserId()
+	public String getUserEmail()
 	{
-		return userId;
+		return userEmail;
 	}
 
-	public void setUserId(int userId)
+	public void setUserEmail(String userEmail)
 {
-		this.userId = userId;
+		this.userEmail = userEmail;
 	}
 
 	public String getIbanAccount() 

@@ -31,7 +31,7 @@ public class UserController
 	 * Read All list :
 	 * Get all users
 	 * 
-	 * @return UsersList Full users list
+	 * @return UsersList The full users list
 	 */
 	@GetMapping(value = "/users")
 	public ResponseEntity<List<UserDTO>> getUsers()
@@ -45,7 +45,7 @@ public class UserController
 	/**
 	 * Get one user by id
 	 * 
-	 * @return User A user with id
+	 * @return User The user with id
 	 */
 	@GetMapping(value = "/user")
 	public ResponseEntity<UserDTO> getUserById(Integer id)
@@ -59,7 +59,7 @@ public class UserController
 	/**
 	 * Get one user by email
 	 * 
-	 * @return User A user with email
+	 * @return User The user with email
 	 */
 	@GetMapping(value = "/userEmail")
 	public ResponseEntity<UserDTO> getUserByEmail(String email)
@@ -73,7 +73,7 @@ public class UserController
 	/**
 	 * Add one user to list
 	 * 
-	 * @return User user saved
+	 * @return User User saved
 	 */
 	@PostMapping(value = "/user")
 	public ResponseEntity<UserDTO> addUser(@RequestBody User user)
@@ -93,7 +93,7 @@ public class UserController
 	/**
 	 * Update one user of list
 	 * 
-	 * @return User user saved
+	 * @return User User updated
 	 */
 	@PutMapping(value = "/user")
 	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody User user)

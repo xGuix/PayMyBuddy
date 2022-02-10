@@ -8,5 +8,6 @@ import com.paymybuddy.model.BankAccount;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Integer>
 {
-	
+	BankAccount getUserByEmail(String userEmail);
+	void deleteByEmail(String userEmail);
 }

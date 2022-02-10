@@ -16,13 +16,13 @@ public class Transaction
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="transaction_id")
-	private int transactionId;
+	private Integer transactionId;
 	
 	@Column(name="sender")
-	private int sender;
+	private String sender;
 	
 	@Column(name="receiver")
-	private int receiver;
+	private String receiver;
 
 	@Column(name="datetime")
 	private LocalDateTime dateTime;
@@ -36,8 +36,11 @@ public class Transaction
 	@Column(name="transactionfee")
 	private float transcationFee;
 
-	public Transaction(int transactionId, int sender, int receiver, LocalDateTime dateTime,
-			float amount, String description, float transcationFee)
+	public Transaction()
+	{}
+	
+	public Transaction(Integer transactionId, String sender, String receiver,
+			LocalDateTime dateTime,	float amount, String description, float transcationFee)
 	{
 		super();
 		this.transactionId = transactionId;
@@ -49,32 +52,32 @@ public class Transaction
 		this.transcationFee = transcationFee;
 	}
 
-	public int getTransactionId()
+	public Integer getTransactionId()
 	{
 		return transactionId;
 	}
 
-	public void setIdTransaction(int transactionId)
+	public void setIdTransaction(Integer transactionId)
 	{
 		this.transactionId = transactionId;
 	}
 
-	public int getSender()
+	public String getSender()
 	{
 		return sender;
 	}
 
-	public void setSender(int sender) 
+	public void setSender(String sender) 
 	{
 		this.sender = sender;
 	}
 
-	public int getReceiver()
+	public String getReceiver()
 	{
 		return receiver;
 	}
 
-	public void setReceiver(int receiver)
+	public void setReceiver(String receiver)
 	{
 		this.receiver = receiver;
 	}
