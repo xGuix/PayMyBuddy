@@ -3,7 +3,6 @@ package com.paymybuddy.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -13,7 +12,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -46,15 +44,11 @@ public class User
 	@Column(name="balance")
 	private float balance;
 
-	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_email", referencedColumnName = "bankaccount_id")
-	private BankAccount bankAccount;
-
 	@OneToMany (fetch = FetchType.LAZY)
 	@JoinTable(name ="connection", joinColumns = @JoinColumn(name ="user_id"),
 			inverseJoinColumns = @JoinColumn(name ="connection_id"))
 	List<User> friendsList = new ArrayList<>();
-	
+		
 	public User() 
 	{}
 	
@@ -161,15 +155,5 @@ public class User
 	public void setBalance(float balance)
 	{
 		this.balance = balance;
-	}
-	
-	public BankAccount getBankAccount()
-	{
-		return bankAccount;
-	}
-
-	public void setBankAccount(BankAccount bankAccount)
-	{
-		this.bankAccount = bankAccount;
 	}
 }

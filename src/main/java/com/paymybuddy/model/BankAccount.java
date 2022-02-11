@@ -5,6 +5,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
@@ -17,26 +18,22 @@ public class BankAccount
 	@Column(name="bankaccount_id")
 	private Integer bankaccountId;
 	
-	@Column(name="user_email")
-	private String userEmail;
-	
 	@Column(name="iban_account")
 	private String ibanAccount;
 	
 	@Column(name="bank_name")
 	private String bankName;
-
-	@OneToOne
-	private User email;
 	
+	@OneToOne
+	@JoinColumn(name="user_email")
+	private User email;
+
 	public BankAccount()
 	{}
 	
-	public BankAccount(Integer bankaccountId, String userEmail,
-			String ibanAccount, String bankName)
+	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName )
 	{
 		this.bankaccountId = bankaccountId;
-		this.userEmail = userEmail;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
 	}
@@ -49,16 +46,6 @@ public class BankAccount
 	public void setBankaccountId(Integer bankaccountId)
 	{
 		this.bankaccountId = bankaccountId;
-	}
-
-	public String getUserEmail()
-	{
-		return userEmail;
-	}
-
-	public void setUserEmail(String userEmail)
-{
-		this.userEmail = userEmail;
 	}
 
 	public String getIbanAccount() 
@@ -81,12 +68,12 @@ public class BankAccount
 		this.bankName = bankName;
 	}
 
-	public User getEmail()
+	public User getUserEmail()
 	{
 		return email;
 	}
 
-	public void setEmail(User email)
+	public void setUserEmail(User email)
 	{
 		this.email = email;
 	}

@@ -90,10 +90,10 @@ public class UserService
 	 * 
 	 * @return User The user with id
 	 */
-	public User getUserById(Integer id)
+	public User getUserById(Integer userId)
 	{
-		logger.info("User found with id: {}",id);
-		return userRepository.getById(id);
+		logger.info("User found with id: {}",userId);
+		return userRepository.getById(userId);
 	}
 	
 	/**
@@ -150,9 +150,9 @@ public class UserService
 	 * Delete user from list :
 	 * Delete a user with id
 	 */
-	public void deleteUserById(Integer id)
+	public void deleteUserById(Integer userId)
 	{
-		userRepository.deleteById(id);
+		userRepository.deleteById(userId);
 		logger.info("User deleted");
 	}
 }

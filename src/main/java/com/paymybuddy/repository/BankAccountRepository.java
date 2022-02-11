@@ -11,5 +11,5 @@ public interface BankAccountRepository extends JpaRepository<BankAccount, Intege
 	/**
 	 * {@inheritDoc}
 	 */
-	BankAccount findBankAccountByEmail(String userEmail);
+	BankAccount findBankAccountByEmail(String email);
 }

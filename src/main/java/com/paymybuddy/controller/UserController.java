@@ -48,11 +48,11 @@ public class UserController
 	 * @return User The user with id
 	 */
 	@GetMapping(value = "/user")
-	public ResponseEntity<UserDTO> getUserById(Integer id)
+	public ResponseEntity<UserDTO> getUserById(Integer userId)
 	{
-		UserDTO userById = userService.entityToDto(userService.getUserById(id));
+		UserDTO userById = userService.entityToDto(userService.getUserById(userId));
 		
-		logger.info("Get user with id= {}",id);	
+		logger.info("Get user with id= {}",userId);	
 		return new ResponseEntity<>(userById, HttpStatus.FOUND);
 	}	
 	

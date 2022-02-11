@@ -40,7 +40,7 @@ public class BankAccountController
 		logger.info("Get all bank account list");			
 		return new ResponseEntity<>(bankAccountList, HttpStatus.FOUND);
 	}
-	
+		
 	/**
 	 * Get one bank account by email
 	 * 
@@ -49,10 +49,10 @@ public class BankAccountController
 	@GetMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> getBankAccountByEmail(String userEmail)
 	{
-		BankAccount bankById = bankAccountService.getBankAccountByEmail(userEmail);
+		BankAccount bankByEmail = bankAccountService.getBankAccountByEmail(userEmail);
 		
 		logger.info("Get user with id= {}", userEmail);	
-		return new ResponseEntity<>(bankById, HttpStatus.FOUND);
+		return new ResponseEntity<>(bankByEmail, HttpStatus.FOUND);
 	}	
 	
 	/**
@@ -61,10 +61,10 @@ public class BankAccountController
 	 * @return BankAccount The bank account saved
 	 */
 	@PostMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
+	public ResponseEntity<BankAccount> addBankAccount(String userEmail, @RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToAdd = null;
-		if(bankAccountService.getBankAccountByEmail(bankAccount.getUserEmail())==null)
+		if(bankAccountService.getBankAccountByEmail(userEmail)==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccount);
 			logger.info("User added is: {}",bankToAdd);
