@@ -1,5 +1,6 @@
 package com.paymybuddy.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -12,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
@@ -19,8 +21,13 @@ import org.hibernate.annotations.DynamicUpdate;
 @Entity
 @DynamicUpdate
 @Table(name ="user")
-public class User
+public class User implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 8623408266096690763L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="user_id")
@@ -44,11 +51,15 @@ public class User
 	@Column(name="balance")
 	private float balance;
 
+	@OneToOne
+	@JoinColumn(name="bankaccountId",referencedColumnName = "bankaccount_id")
+	private BankAccount bankAccount;
+	
 	@OneToMany (fetch = FetchType.LAZY)
 	@JoinTable(name ="connection", joinColumns = @JoinColumn(name ="user_id"),
 			inverseJoinColumns = @JoinColumn(name ="connection_id"))
-	List<User> friendsList = new ArrayList<>();
-		
+	private List<User> friendsList = new ArrayList<>();
+			
 	public User() 
 	{}
 	
@@ -66,7 +77,22 @@ public class User
 		this.balance = balance;
 		this.friendsList=friendsList;
 	}
+	
+	public static long getSerialversionuid()
+	{
+		return serialVersionUID;
+	}
+	
+	public BankAccount getBankAccount()
+	{
+		return bankAccount;
+	}
 
+	public void setBankAccount(BankAccount bankAccount)
+	{
+		this.bankAccount = bankAccount;
+	}
+	
 	public List<User> getFriendsList()
 	{
 		return friendsList;
@@ -86,7 +112,7 @@ public class User
 	{
 		friendsList.remove(friend);
 	}
-	
+
 	public Integer getUserId()
 	{
 		return userId;

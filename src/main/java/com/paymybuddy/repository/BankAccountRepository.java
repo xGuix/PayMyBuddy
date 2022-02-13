@@ -8,8 +8,8 @@ import com.paymybuddy.model.BankAccount;
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Integer>
 {
-	/**
-	 * {@inheritDoc}
-	 */
-	BankAccount findBankAccountByEmail(String email);
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	BankAccount findBankAccountByEmail(String userEmail);
 }

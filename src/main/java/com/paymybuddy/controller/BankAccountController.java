@@ -47,11 +47,11 @@ public class BankAccountController
 	 * @return BankAccount The bank account with email
 	 */
 	@GetMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> getBankAccountByEmail(String userEmail)
+	public ResponseEntity<BankAccount> getBankAccountById(Integer bankaccountId)
 	{
-		BankAccount bankByEmail = bankAccountService.getBankAccountByEmail(userEmail);
+		BankAccount bankByEmail = bankAccountService.getBankAccountById(bankaccountId);
 		
-		logger.info("Get user with id= {}", userEmail);	
+		logger.info("Get user with id= {}", bankaccountId);	
 		return new ResponseEntity<>(bankByEmail, HttpStatus.FOUND);
 	}	
 	
@@ -61,10 +61,10 @@ public class BankAccountController
 	 * @return BankAccount The bank account saved
 	 */
 	@PostMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> addBankAccount(String userEmail, @RequestBody BankAccount bankAccount)
+	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToAdd = null;
-		if(bankAccountService.getBankAccountByEmail(userEmail)==null)
+		if(bankAccountService.getBankAccountById(bankAccount.getBankaccountId())==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccount);
 			logger.info("User added is: {}",bankToAdd);
@@ -82,12 +82,12 @@ public class BankAccountController
 	 */
 	@PutMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> updateBankAccount(
-			@RequestParam String userEmail, @RequestBody BankAccount bankAccount)
+			@RequestParam Integer bankaccountId, @RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToUpdate = null;
-		if(getBankAccountByEmail(userEmail)!=null)
+		if(getBankAccountById(bankaccountId)!=null)
 		{
-			bankToUpdate = bankAccountService.updateBankAccount(userEmail, bankAccount);
+			bankToUpdate = bankAccountService.updateBankAccount(bankaccountId, bankAccount);
 			logger.info("User updated: {}", bankToUpdate);	
 		}
 		else {
@@ -102,14 +102,14 @@ public class BankAccountController
 	 * @return BankAccount Bank account deleted 
 	 */
 	@DeleteMapping(value = "/bankaccount")
-	public ResponseEntity<String> deleteBankAccount(String userEmail)
+	public ResponseEntity<String> deleteBankAccount(Integer bankaccountId)
 	{
 		String info = null;
-		BankAccount bankToDel = bankAccountService.getBankAccountByEmail(userEmail);
+		BankAccount bankToDel = bankAccountService.getBankAccountById(bankaccountId);
 		if (bankToDel != null)
 		{
-			info = bankToDel.getUserEmail()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount();		
-			bankAccountService.getBankAccountByEmail(userEmail);	
+			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount();		
+			bankAccountService.deleteBankAccountById(bankaccountId);
 			logger.info("Bank account: {} have been deleted", info);
 		}
 		else {

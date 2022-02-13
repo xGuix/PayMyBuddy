@@ -1,5 +1,8 @@
 package com.paymybuddy.model;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,8 +14,13 @@ import javax.persistence.Table;
 
 @Entity
 @Table(name ="bankaccount")
-public class BankAccount
+public class BankAccount implements Serializable
 {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 3546751409063987902L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name="bankaccount_id")
@@ -23,19 +31,20 @@ public class BankAccount
 	
 	@Column(name="bank_name")
 	private String bankName;
-	
-	@OneToOne
-	@JoinColumn(name="user_email")
-	private User email;
 
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	private User user;
+	
 	public BankAccount()
 	{}
 	
-	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName )
+	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName, User user )
 	{
 		this.bankaccountId = bankaccountId;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
+		this.user = user;
 	}
 
 	public Integer getBankaccountId()
@@ -68,13 +77,13 @@ public class BankAccount
 		this.bankName = bankName;
 	}
 
-	public User getUserEmail()
+	public User getUser()
 	{
-		return email;
+		return user;
 	}
 
-	public void setUserEmail(User email)
+	public void setUser(User user)
 	{
-		this.email = email;
+		this.user = user;
 	}
 }
