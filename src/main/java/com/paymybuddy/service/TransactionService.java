@@ -38,23 +38,23 @@ public class TransactionService
 //	 * 
 //	 * @return List<Transaction> The list of user transactions
 //	 */
-//	public List<Transaction> getTransactionsForSender(String sender)
+//	public List<Transaction> getTransactionsBySender(User sender)
 //	{
 //		logger.info("Transactions list found for user");	
-//		return transactionRepository.findSenderTransactionByEmail(sender);
+//		return transactionRepository.getByEmailSender(sender);
 //	}
 	
-	/**
-	 * Get one transaction with user email :
-	 * Find the transactions for sender
-	 * 
-	 * @return Transaction The transaction with email & id
-	 */
-	public Transaction getTransactiondBySender(String sender, Integer transactionId)
-	{
-		logger.info("The transaction for {} with id={} is found",sender, transactionId);
-		return transactionRepository.getById(transactionId);
-	}
+//	/**
+//	 * Get one transaction with user email :
+//	 * Find the transactions for sender
+//	 * 
+//	 * @return Transaction The transaction with email & id
+//	 */
+//	public Transaction getTransactiondBySender(String sender)
+//	{
+//		logger.info("The transactions for {} is found",sender);
+//		return transactionRepository.getByEmailSender(sender);
+//	}
 	
 	/**
 	 * Get one transaction with transactionId :
@@ -77,7 +77,7 @@ public class TransactionService
 	public Transaction addTransaction(Transaction transaction)
 	{	
 		logger.info("Transaction add and saved");		
-		return transactionRepository.saveAndFlush(transaction);
+		return transactionRepository.save(transaction);
 	}
 	
 	/**
@@ -88,15 +88,15 @@ public class TransactionService
 	 */
 	public Transaction updateTransaction(Integer transactionId, Transaction transaction)
 	{
-		Transaction addConnection = new Transaction();
-		addConnection.setSender(transaction.getReceiver());
-		addConnection.setReceiver(transaction.getReceiver());
-		addConnection.setAmount(transaction.getAmount());
-		addConnection.setDescription(transaction.getDescription());
-		addConnection.setTranscationFee(transaction.getTranscationFee());
+		Transaction newTransaction = new Transaction();
+		newTransaction.setSender(transaction.getReceiver());
+		newTransaction.setReceiver(transaction.getReceiver());
+		newTransaction.setAmount(transaction.getAmount());
+		newTransaction.setDescription(transaction.getDescription());
+		newTransaction.setTranscationFee(transaction.getTranscationFee());
 		
 		logger.info("Transaction update and saved");		
-		return transactionRepository.saveAndFlush(addConnection);
+		return transactionRepository.saveAndFlush(newTransaction);
 	}
 	
 	/**

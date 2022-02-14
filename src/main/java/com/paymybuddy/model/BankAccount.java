@@ -35,16 +35,21 @@ public class BankAccount implements Serializable
 	@OneToOne(cascade = CascadeType.ALL)
 	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
 	private User user;
-	
+
 	public BankAccount()
 	{}
 	
-	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName, User user )
+	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName, User user)
 	{
 		this.bankaccountId = bankaccountId;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
 		this.user = user;
+	}
+	
+	public static long getSerialversionuid()
+	{
+		return serialVersionUID;
 	}
 
 	public Integer getBankaccountId()

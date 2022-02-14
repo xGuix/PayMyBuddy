@@ -1,5 +1,6 @@
 package com.paymybuddy.configuration;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -9,42 +10,30 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.paymybuddy.service.AccessUserDetailService;
+
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
-{
+{	
+	@Autowired
+	AccessUserDetailService userDetailSerice;
 	
-	//@Autowired
-	//UserDetailService userDetailSerice
-	
-	@Override
-	protected void configure(AuthenticationManagerBuilder auth) throws Exception
-	{
-		auth.inMemoryAuthentication()
-			.withUser("BobLazar").password(passwordEncoder().encode("Zone51"))
-			.roles("USER")
-			.and()
-			.withUser("xGuix").password(passwordEncoder().encode("Admin"))
-			.roles("ADMIN","USER");
-		
-		//auth.userDetailsService(userDetailSerice).passwordEncoder(passwordEncore().Encode("?"))
-	}
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception
+    {
+        auth.userDetailsService(userDetailSerice).passwordEncoder(new BCryptPasswordEncoder());
+    }
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests()
-			.antMatchers("/")
+			.antMatchers("/*")
 			.permitAll()
 			.and()
-			.csrf().disable();
-		
-		//http.authorizeRequests()
-		//	.antMatchers("/").hasRole("ADMIN")
-		//	.antMatchers("/*").hasRole("USER")
-		//	.anyRequest().authenticated()
-		//	.and()
-		//	.formLogin()
+			.csrf().disable()
+			.formLogin();
 	}
 
 	@Bean

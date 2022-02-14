@@ -41,6 +41,20 @@ public class TransactionController
 		return new ResponseEntity<>(transactionsList, HttpStatus.FOUND);
 	}
 		
+//	/**
+//	 * Get all transactions by user
+//	 * 
+//	 * @return Transaction The transaction with email
+//	 */
+//	@GetMapping(value = "/transactionsUser")
+//	public ResponseEntity<List<Transaction>> getTransactionBySender(User sender)
+//	{
+//		List<Transaction> transactionByEmail = transactionService.getTransactionsBySender(sender);
+//		
+//		logger.info("Get transaction for email = {} is found: {}", sender, transactionByEmail);	
+//		return new ResponseEntity<>(transactionByEmail, HttpStatus.FOUND);
+//	}
+	
 	/**
 	 * Get one transactions by id
 	 * 
@@ -54,20 +68,6 @@ public class TransactionController
 		logger.info("Get user with id= {}", transactionById);	
 		return new ResponseEntity<>(transactionById, HttpStatus.FOUND);
 	}
-	
-//	/**
-//	 * Get one transactions by email
-//	 * 
-//	 * @return Transaction The transaction with email
-//	 */
-//	@GetMapping(value = "/transaction")
-//	public ResponseEntity<Transaction> getTransactionBySender(String sender, Integer transactionId)
-//	{
-//		Transaction transactionByEmail = transactionService.getTransactiondBySender(sender,transactionId);
-//		
-//		logger.info("Get transaction for email = {} & id= {} is found: {}", sender, transactionId, transactionByEmail);	
-//		return new ResponseEntity<>(transactionByEmail, HttpStatus.FOUND);
-//	}
 	
 	/**
 	 * Add one transaction between two users

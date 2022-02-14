@@ -8,6 +8,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -24,11 +26,13 @@ public class Transaction implements Serializable
 	@Column(name="transaction_id")
 	private Integer transactionId;
 	
-	@Column(name="sender")
-	private String sender;
+	@ManyToOne
+	@JoinColumn(referencedColumnName="email", nullable=false)
+	private User sender;
 	
-	@Column(name="receiver")
-	private String receiver;
+	@ManyToOne
+	@JoinColumn(referencedColumnName="email", nullable=false)
+	private User receiver;
 
 	@Column(name="datetime")
 	private LocalDateTime dateTime;
@@ -45,7 +49,7 @@ public class Transaction implements Serializable
 	public Transaction()
 	{}
 	
-	public Transaction(Integer transactionId, String sender, String receiver,
+	public Transaction(Integer transactionId, User sender, User receiver,
 			LocalDateTime dateTime,	float amount, String description, float transcationFee)
 	{
 		super();
@@ -73,22 +77,22 @@ public class Transaction implements Serializable
 		this.transactionId = transactionId;
 	}
 
-	public String getSender()
+	public User getSender()
 	{
 		return sender;
 	}
 
-	public void setSender(String sender) 
+	public void setSender(User sender) 
 	{
 		this.sender = sender;
 	}
 
-	public String getReceiver()
+	public User getReceiver()
 	{
 		return receiver;
 	}
 
-	public void setReceiver(String receiver)
+	public void setReceiver(User receiver)
 	{
 		this.receiver = receiver;
 	}

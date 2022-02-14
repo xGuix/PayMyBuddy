@@ -42,17 +42,17 @@ public class BankAccountController
 	}
 		
 	/**
-	 * Get one bank account by email
+	 * Get one bank account by user id
 	 * 
-	 * @return BankAccount The bank account with email
+	 * @return BankAccount The bank account with user id
 	 */
 	@GetMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> getBankAccountById(Integer bankaccountId)
+	public ResponseEntity<BankAccount> getBankAccountByUser(Integer userId)
 	{
-		BankAccount bankByEmail = bankAccountService.getBankAccountById(bankaccountId);
+		BankAccount bankByid = bankAccountService.getBankAccountByUser(userId);
 		
-		logger.info("Get user with id= {}", bankaccountId);	
-		return new ResponseEntity<>(bankByEmail, HttpStatus.FOUND);
+		logger.info("Get Bank account with id= {}", userId);	
+		return new ResponseEntity<>(bankByid, HttpStatus.FOUND);
 	}	
 	
 	/**
@@ -64,10 +64,10 @@ public class BankAccountController
 	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToAdd = null;
-		if(bankAccountService.getBankAccountById(bankAccount.getBankaccountId())==null)
+		if(bankAccountService.getBankAccountByUser(bankAccount.getUser().getUserId())==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccount);
-			logger.info("User added is: {}",bankToAdd);
+			logger.info("Bank account added is: {}",bankToAdd);
 		}
 		else {
 			logger.info("Bank Account already exists: {}", bankAccount);	
@@ -82,16 +82,16 @@ public class BankAccountController
 	 */
 	@PutMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> updateBankAccount(
-			@RequestParam Integer bankaccountId, @RequestBody BankAccount bankAccount)
+			@RequestParam Integer userId, @RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToUpdate = null;
-		if(getBankAccountById(bankaccountId)!=null)
+		if(getBankAccountByUser(userId)!=null)
 		{
-			bankToUpdate = bankAccountService.updateBankAccount(bankaccountId, bankAccount);
-			logger.info("User updated: {}", bankToUpdate);	
+			bankToUpdate = bankAccountService.updateBankAccount(userId, bankAccount);
+			logger.info("Bank account updated: {}", bankToUpdate);	
 		}
 		else {
-			logger.info("User does not exists: {}", bankToUpdate);	
+			logger.info("Bank account does not exists: {}", bankToUpdate);	
 		}
 		return new ResponseEntity<>(bankToUpdate, HttpStatus.OK);
 	}
@@ -102,19 +102,19 @@ public class BankAccountController
 	 * @return BankAccount Bank account deleted 
 	 */
 	@DeleteMapping(value = "/bankaccount")
-	public ResponseEntity<String> deleteBankAccount(Integer bankaccountId)
+	public ResponseEntity<String> deleteBankAccount(Integer userId)
 	{
 		String info = null;
-		BankAccount bankToDel = bankAccountService.getBankAccountById(bankaccountId);
+		BankAccount bankToDel = bankAccountService.getBankAccountByUser(userId);
 		if (bankToDel != null)
 		{
-			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount();		
-			bankAccountService.deleteBankAccountById(bankaccountId);
+			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount()+" "+bankToDel.getUser();		
+			bankAccountService.deleteBankAccountById(userId);
 			logger.info("Bank account: {} have been deleted", info);
 		}
 		else {
-			logger.info("BankAccount does not exists! Result is: {}", info);
+			logger.info("Bank account does not exists! Result is: {}", info);
 		}
-		return new ResponseEntity<>(info + ": BankAccount have been deleted", HttpStatus.OK);
+		return new ResponseEntity<>(info + ": Bank account have been deleted", HttpStatus.OK);
 	}
 }

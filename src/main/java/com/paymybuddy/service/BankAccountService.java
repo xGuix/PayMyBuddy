@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.model.BankAccount;
+import com.paymybuddy.model.User;
 import com.paymybuddy.repository.BankAccountRepository;
 
 @Service
@@ -19,6 +20,25 @@ public class BankAccountService
 	private BankAccountRepository bankAccountRepository;
    
 	/**
+	 * Convert User Entity in bank account :
+	 * Get Bank account user without password and friend list
+	 * 
+	 * @return BankAccount The user simplify
+	 */
+    public BankAccount entityToSimpleUser(BankAccount bankAccount)
+    {
+    	User user = bankAccount.getUser();
+		User simpleUser = new User(
+				user.getUserId(),
+				user.getFirstname(),
+				user.getLastname(),
+				user.getEmail(),
+				user.getBalance()); 
+    	bankAccount.setUser(simpleUser);
+    	  	
+    	return bankAccount;
+    }
+	/**
 	 * Get list of all bank account :
 	 * Find all Bank account saved
 	 * 
@@ -26,20 +46,29 @@ public class BankAccountService
 	 */
 	public List<BankAccount> getBankAccounts()
 	{
+		List<BankAccount> allAccount = bankAccountRepository.findAll();
+		for (BankAccount ba : allAccount) 
+		{	
+			this.entityToSimpleUser(ba);		
+			allAccount.set(allAccount.indexOf(ba),ba);
+		}	
 		logger.info("Bank accounts list found");	
-		return bankAccountRepository.findAll();
+		return allAccount;
 	}
 	
 	/**
-	 * Get the bank account with email:
-	 * Find the bank account of a user with email
+	 * Get the bank account for user:
+	 * Find the bank account of a user with user id
 	 * 
-	 * @return BankAccount The bank account of user
+	 * @return BankAccount The bank account of the user
 	 */
-	public BankAccount getBankAccountById(Integer bankaccountId)
+	public BankAccount getBankAccountByUser(Integer userId)
 	{
-		logger.info("Bank account found with Id: {}",bankaccountId);
-		return bankAccountRepository.getById(bankaccountId);
+		BankAccount newBankAccount = bankAccountRepository.getById(userId);
+		//this.entityToSimpleUser(bankAccountRepository.getById(userId));
+		
+		logger.info("Bank account found with Id: {}",userId);
+		return this.entityToSimpleUser(newBankAccount);
 	}
 	
 	/**
@@ -61,9 +90,9 @@ public class BankAccountService
 	 * 
 	 * @return BankAccount The bank account updated
 	 */
-	public BankAccount updateBankAccount(Integer bankaccountId, BankAccount bankAccount)
+	public BankAccount updateBankAccount(Integer userId, BankAccount bankAccount)
 	{	
-		BankAccount baToUpdate = getBankAccountById(bankaccountId);
+		BankAccount baToUpdate = getBankAccountByUser(userId);
 		if(baToUpdate!=null)
 		{
 			baToUpdate.setBankaccountId(bankAccount.getBankaccountId());

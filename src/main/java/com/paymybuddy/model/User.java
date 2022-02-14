@@ -33,22 +33,22 @@ public class User implements Serializable
 	@Column(name="user_id")
 	private Integer userId;
 	
-	@Column(name="firstname")
+	//@Column(name="firstname")
 	private String firstname;
 	
-	@Column(name="lastname")
+	//@Column(name="lastname")
 	private String lastname;
 	
-	@Column(name="city")
+	//@Column(name="city")
 	private String city;
 	
-	@Column(name="email")
+//	@Column(name="email")
 	private String email;
 	
-	@Column(name="password")
+//	@Column(name="password")
 	private String password;
 	
-	@Column(name="balance")
+//	@Column(name="balance")
 	private float balance;
 
 	@OneToOne
@@ -64,6 +64,16 @@ public class User implements Serializable
 	{}
 	
 	public User(Integer userId, String firstname, String lastname,
+			String email, float balance) 
+	{
+		this.userId = userId;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.balance = balance;
+	}
+	
+	public User(Integer userId, String firstname, String lastname,
 			String city, String email, String password, float balance, 
 			List<User> friendsList)
 	{
@@ -77,6 +87,7 @@ public class User implements Serializable
 		this.balance = balance;
 		this.friendsList=friendsList;
 	}
+	
 	
 	public static long getSerialversionuid()
 	{
@@ -182,4 +193,6 @@ public class User implements Serializable
 	{
 		this.balance = balance;
 	}
+	
+	
 }
