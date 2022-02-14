@@ -6,6 +6,7 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +19,8 @@ import com.paymybuddy.repository.UserRepository;
 public class UserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
+	
+	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
 	@Autowired
 	private UserRepository userRepository;
@@ -117,7 +120,14 @@ public class UserService
 	public User addUser(User user)
 	{	
 		logger.info("User add and saved");		
-		return userRepository.saveAndFlush(user);
+		User u = new User();
+		u.setFirstname(user.getFirstname());
+		u.setLastname(user.getLastname());
+		u.setCity(user.getCity());
+		u.setEmail(user.getEmail());
+		u.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
+		userRepository.saveAndFlush(u);
+		return u;
 	}
 	
 	/**

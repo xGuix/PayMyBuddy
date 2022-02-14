@@ -17,23 +17,32 @@ import com.paymybuddy.service.AccessUserDetailService;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 {	
 	@Autowired
-	AccessUserDetailService userDetailSerice;
+	AccessUserDetailService userDetailService;
 	
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
-        auth.userDetailsService(userDetailSerice).passwordEncoder(new BCryptPasswordEncoder());
+        auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 	
 	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{
 		http.authorizeRequests()
-			.antMatchers("/*")
+			.antMatchers("/")
 			.permitAll()
 			.and()
 			.csrf().disable()
-			.formLogin();
+			.formLogin()
+			//.loginPage("/login")
+			.defaultSuccessUrl("/users")
+			.failureUrl("/login?error=true")
+			.usernameParameter("email")
+			.passwordParameter("password")
+			.and()
+			.logout()
+			.logoutUrl("/logout")
+			.logoutSuccessUrl("/login?logout=true");		
 	}
 
 	@Bean

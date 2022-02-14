@@ -193,6 +193,4 @@ public class User implements Serializable
 	{
 		this.balance = balance;
 	}
-	
-	
 }
