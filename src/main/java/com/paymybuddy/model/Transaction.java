@@ -1,30 +1,41 @@
 package com.paymybuddy.model;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name ="transaction")
-public class Transaction
+public class Transaction implements Serializable
 {
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 1855462102432419372L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_transaction")
-	private int idTransaction;
+	@Column(name="transaction_id")
+	private Integer transactionId;
 	
-	@Column(name="id_user")
-	private int idUser;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="sender_id", nullable=false)
+	private User sender;
 	
-	@Column(name="user_email")
-	private String userEmail;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="receiver_id", nullable=false)
+	private User receiver;
 
-	@Column(name="date_time")
+	@Column(name="datetime")
 	private LocalDateTime dateTime;
 	
 	@Column(name="amount")
@@ -33,38 +44,66 @@ public class Transaction
 	@Column(name="description")
 	private String description;
 	
-	@Column(name="transcation_fee")
+	@Column(name="transactionfee")
 	private float transcationFee;
 
-	public int getIdTransaction() {
-		return idTransaction;
+	public Transaction()
+	{}
+	
+	public Transaction(Integer transactionId, User sender, User receiver,
+			LocalDateTime dateTime,	float amount, String description, float transcationFee)
+	{
+		this.transactionId = transactionId;
+		this.sender = sender;
+		this.receiver = receiver;
+		this.dateTime = dateTime;
+		this.amount = amount;
+		this.description = description;
+		this.transcationFee = transcationFee;
+	}
+	
+	public static long getSerialversionuid()
+	{
+		return serialVersionUID;
 	}
 
-	public void setIdTransaction(int idTransaction) {
-		this.idTransaction = idTransaction;
+	public Integer getTransactionId()
+	{
+		return transactionId;
 	}
 
-	public int getIdUser() {
-		return idUser;
+	public void setTransactionId(Integer transactionId)
+	{
+		this.transactionId = transactionId;
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public User getSender()
+	{
+		return sender;
 	}
 
-	public String getUserEmail() {
-		return userEmail;
+	public void setSender(User sender) 
+	{
+		this.sender = sender;
 	}
 
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
+	public User getReceiver()
+	{
+		return receiver;
 	}
 
-	public LocalDateTime getDateTime() {
+	public void setReceiver(User receiver)
+	{
+		this.receiver = receiver;
+	}
+
+	public LocalDateTime getDateTime() 
+	{
 		return dateTime;
 	}
 
-	public void setDateTime(LocalDateTime dateTime) {
+	public void setDateTime(LocalDateTime dateTime)
+	{
 		this.dateTime = dateTime;
 	}
 
@@ -72,23 +111,28 @@ public class Transaction
 		return amount;
 	}
 
-	public void setAmount(float amount) {
+	public void setAmount(float amount)
+	{
 		this.amount = amount;
 	}
 
-	public String getDescription() {
+	public String getDescription()
+{
 		return description;
 	}
 
-	public void setDescription(String description) {
+	public void setDescription(String description)
+	{
 		this.description = description;
 	}
 
-	public float getTranscationFee() {
+	public float getTranscationFee()
+	{
 		return transcationFee;
 	}
 
-	public void setTranscationFee(float transcationFee) {
+	public void setTranscationFee(float transcationFee)
+	{
 		this.transcationFee = transcationFee;
 	}
 }

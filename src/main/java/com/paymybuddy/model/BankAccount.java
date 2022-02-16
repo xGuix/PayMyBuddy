@@ -1,59 +1,94 @@
 package com.paymybuddy.model;
 
+import java.io.Serializable;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 @Entity
 @Table(name ="bankaccount")
-public class BankAccount
+public class BankAccount implements Serializable
 {
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 3546751409063987902L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_bankaccount")
-	private int idBankaccount;
+	@Column(name="bankaccount_id")
+	private Integer bankaccountId;
 	
-	@Column(name="id_user")
-	private int idUser;
+	@Column(name="iban_account")
+	private String ibanAccount;
 	
-	@Column(name="cardnumber")
-	private int cardNumber;
+	@Column(name="bank_name")
+	private String bankName;
+
+	@OneToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "user_id")
+	private User user;
+
+	public BankAccount()
+	{}
 	
-	@Column(name="bank")
-	private String bank;
-
-	public int getIdBankaccount() {
-		return idBankaccount;
+	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName, User user)
+	{
+		this.bankaccountId = bankaccountId;
+		this.ibanAccount = ibanAccount;
+		this.bankName = bankName;
+		this.user = user;
+	}
+	
+	public static long getSerialversionuid()
+	{
+		return serialVersionUID;
 	}
 
-	public void setIdBankaccount(int idBankaccount) {
-		this.idBankaccount = idBankaccount;
+	public Integer getBankaccountId()
+	{
+		return bankaccountId;
 	}
 
-	public int getIdUser() {
-		return idUser;
+	public void setBankaccountId(Integer bankaccountId)
+	{
+		this.bankaccountId = bankaccountId;
 	}
 
-	public void setIdUser(int idUser) {
-		this.idUser = idUser;
+	public String getIbanAccount() 
+	{
+		return ibanAccount;
 	}
 
-	public int getCardNumber() {
-		return cardNumber;
+	public void setIbanAccount(String ibanAccount)
+	{
+		this.ibanAccount = ibanAccount;
 	}
 
-	public void setCardNumber(int cardNumber) {
-		this.cardNumber = cardNumber;
+	public String getBankName()
+	{
+		return bankName;
 	}
 
-	public String getBank() {
-		return bank;
+	public void setBankName(String bankName)
+	{
+		this.bankName = bankName;
 	}
 
-	public void setBank(String bank) {
-		this.bank = bank;
+	public User getUser()
+	{
+		return user;
+	}
+
+	public void setUser(User user)
+	{
+		this.user = user;
 	}
 }

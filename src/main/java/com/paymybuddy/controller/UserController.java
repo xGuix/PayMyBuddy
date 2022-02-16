@@ -1,8 +1,6 @@
 package com.paymybuddy.controller;
 
-import java.util.Optional;
-
-import javax.annotation.security.RolesAllowed;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -10,11 +8,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymybuddy.dto.SignupDTO;
+import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 
@@ -25,66 +27,88 @@ public class UserController
 	
 	@Autowired
 	private UserService userService;
-
+	
 	/**
 	 * Read All list :
 	 * Get all users
 	 * 
-	 * @return UsersList Full users list
+	 * @return UsersList The full users list
 	 */
-	@RequestMapping(value = "/users")
-	@RolesAllowed("USER")
-	public ResponseEntity<Iterable<User>> getUsers()
+	@GetMapping(value = "/users")
+	public ResponseEntity<List<UserDTO>> getUsers()
 	{
-		logger.info("Get users list");		
-		return new ResponseEntity<>(userService.getUsers(), HttpStatus.FOUND);
+		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
+
+		logger.info("Get all users list");			
+		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
 	}
 	
 	/**
 	 * Get one user by id
 	 * 
-	 * @return User A user with id
+	 * @return User The user with id
 	 */
-	@RequestMapping(value = "/user")
-	@RolesAllowed("USER")
-	public ResponseEntity<Optional<User>> getUserById(int id)
+	@GetMapping(value = "/user")
+	public ResponseEntity<UserDTO> getUserById(Integer userId)
 	{
-		logger.info("Get user with id={}",id);		
-		Optional<User> optUser = userService.getUserById(id);
+		UserDTO userById = userService.entityToDto(userService.getUserById(userId));
 		
-		if(optUser.isPresent())
-		{	
-			User userId = optUser.get();
-			userId.getUserFriends().forEach(User::getEmail);
-		}
-		return new ResponseEntity<>(optUser, HttpStatus.FOUND);
+		logger.info("Get user with id= {}",userId);	
+		return new ResponseEntity<>(userById, HttpStatus.FOUND);
 	}	
 	
 	/**
 	 * Get one user by email
 	 * 
-	 * @return User A user with email
+	 * @return User The user with email
 	 */
-	@RequestMapping(value = "/userEmail")
-	@RolesAllowed("USER")
-	public ResponseEntity<Optional<User>> getUserByEmail(String email)
+	@GetMapping(value = "/userEmail")
+	public ResponseEntity<UserDTO> getUserByEmail(String email)
 	{
-		logger.info("Get user with email={}",email);		
-		return new ResponseEntity<>(userService.getUserByEmail(email), HttpStatus.FOUND);
+		UserDTO userToFind = userService.entityToDto(userService.getUserByEmail(email));
+		
+		logger.info("Get user with email= {}",email);			
+		return new ResponseEntity<>(userToFind, HttpStatus.FOUND);
 	}
 	
 	/**
 	 * Add one user to list
 	 * 
-	 * @return User user added
+	 * @return User User saved
 	 */
-	@PostMapping(value = "/addUser")
-	@RolesAllowed("USER")
-	public ResponseEntity<User> addUser(@RequestBody User user)
+	@PostMapping(value = "/user")
+	public ResponseEntity<UserDTO> addUser(@RequestBody SignupDTO signupDto)
 	{	
-		userService.addUser(user);
-		logger.info("User added");	
-		return new ResponseEntity<>(user, HttpStatus.CREATED);
+		UserDTO userToAdd = null;
+		if(userService.getUserByEmail(signupDto.getEmail())==null)
+		{
+			userToAdd = userService.entityToDto(userService.addUser(signupDto));
+			logger.info("User added is: {}",userToAdd);	
+		}
+		else {
+			logger.info("User already exists: {}",userToAdd);	
+		}
+		return new ResponseEntity<>(userToAdd, HttpStatus.CREATED);
+	}
+	
+	/**
+	 * Update one user of list
+	 * 
+	 * @return User User updated
+	 */
+	@PutMapping(value = "/user")
+	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody User user)
+	{	
+		UserDTO userToUpdate = null;
+		if(getUserByEmail(email)!=null)
+		{
+			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
+			logger.info("User updated: {}",userToUpdate);	
+		}
+		else {
+			logger.info("User does not exists: {}", userToUpdate);	
+		}
+		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
 	}
 	
 	/**
@@ -92,22 +116,20 @@ public class UserController
 	 * 
 	 * @return User User deleted 
 	 */
-	@DeleteMapping(value = "/deleteUser")
-	@RolesAllowed("USER")
-	public ResponseEntity<Optional<User>> deleteUser(int id)
+	@DeleteMapping(value = "/user")
+	public ResponseEntity<String> deleteUser(Integer id)
 	{
-		Optional<User> userDel = userService.getUserById(id);
-		userService.deleteUserById(id);
-		logger.info("DeleteUser");
-		return new ResponseEntity<>(userDel,HttpStatus.OK);
+		String info = null;
+		User userToDel = userService.getUserById(id);
+		if (userToDel != null)
+		{
+			info = userToDel.getFirstname()+" "+userToDel.getLastname();		
+			userService.deleteUserById(id);		
+			logger.info("User: {} have been deleted ", info);
+		}
+		else {
+			logger.info("User does not exists! Result is: {}", info);
+		}
+		return new ResponseEntity<>(info + ": User have been deleted", HttpStatus.OK);
 	}
-	
-	/***********************************
-	@RequestMapping("/admin")
-	@RolesAllowed("ADMIN")
-	public String getAdmin()
-	{
-		return "Welcome to you: Admin";
-	}
-	***********************************/	
 }

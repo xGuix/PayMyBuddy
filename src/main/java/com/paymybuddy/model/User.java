@@ -1,9 +1,9 @@
 package com.paymybuddy.model;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -11,17 +11,27 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.DynamicUpdate;
+
 @Entity
+@DynamicUpdate
 @Table(name ="user")
-public class User
+public class User implements Serializable
 {
+	/**
+	 * Serial Version UID
+	 */
+	private static final long serialVersionUID = 8623408266096690763L;
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name="id_user")
-	private int idUser;
+	@Column(name="user_id")
+	private Integer userId;
 	
 	@Column(name="firstname")
 	private String firstname;
@@ -41,51 +51,85 @@ public class User
 	@Column(name="balance")
 	private float balance;
 
-	@JoinColumn(name = "user_friends")
-	@OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-	List<User> userFriends = new ArrayList<>();
+	@OneToOne
+	@JoinColumn(name="bankaccountId",referencedColumnName = "bankaccount_id")
+	private BankAccount bankAccount;
 	
-    public User()
-    {}
-    
-    public User(String firstname, String lastname, String city, String email, String password, float balance)
-    {
-        this.firstname = firstname;
-        this.lastname = lastname;
-        this.city = city;
-        this.email = email;
-        this.password = password;
-        this.balance = balance;
-    }
+	@OneToMany (fetch = FetchType.LAZY)
+	@JoinTable(name ="connection", joinColumns = @JoinColumn(name ="user_id"),
+			inverseJoinColumns = @JoinColumn(name ="connection_id"))
+	private List<User> friendsList = new ArrayList<>();
+			
+	public User() 
+	{}
 	
-	public List<User> getUserFriends()
+	public User(Integer userId, String firstname, String lastname,
+			String email, float balance) 
 	{
-		return userFriends;
+		this.userId = userId;
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.email = email;
+		this.balance = balance;
+	}
+	
+	public User(String firstname, String lastname, String city,
+			String email, String password, float balance, 
+			List<User> friendsList)
+	{
+		this.firstname = firstname;
+		this.lastname = lastname;
+		this.city = city;
+		this.email = email;
+		this.password = password;
+		this.balance = balance;
+		this.friendsList=friendsList;
+	}
+	
+	
+	public static long getSerialversionuid()
+	{
+		return serialVersionUID;
+	}
+	
+	public BankAccount getBankAccount()
+	{
+		return bankAccount;
 	}
 
-	public void setUserFriends(List<User> userFriends)
+	public void setBankAccount(BankAccount bankAccount)
 	{
-		this.userFriends = userFriends;
+		this.bankAccount = bankAccount;
 	}
 	
-	public void addUserFriend(User user)
+	public List<User> getFriendsList()
 	{
-		userFriends.add(user);
-	}
-	 
-	public void removeUserFirend(User user)
-	{
-		userFriends.remove(user);
-	}
-	
-	public int getIdUser()
-	{
-		return idUser;
+		return friendsList;
 	}
 
-	public void setIdUser(int idUser)
+	public void setFriendsList(List<User> friendsList)
 	{
-		this.idUser = idUser;
+		this.friendsList = friendsList;
+	}
+	
+	public void addUserFriend(User friend)
+	{
+		friendsList.add(friend);
+	}
+ 
+	public void removeUserFriend(User friend)
+	{
+		friendsList.remove(friend);
+	}
+
+	public Integer getUserId()
+	{
+		return userId;
+	}
+
+	public void setUserId(Integer userId)
+	{
+		this.userId = userId;
 	}
 
 	public String getFirstname()
@@ -108,7 +152,7 @@ public class User
 		this.lastname = lastname;
 	}
 
-	public String getCity()
+	public String getCity() 
 	{
 		return city;
 	}
