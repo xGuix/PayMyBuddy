@@ -7,6 +7,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 
+import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 
@@ -34,7 +35,7 @@ public class HomeController
 	}
 
 	@PostMapping(value = "/signup")
-	public String signUp(@Validated User user, BindingResult result, Model model)
+	public String signUp(@Validated SignupDTO user, BindingResult result, Model model)
 	{
 		if (result.hasErrors())
 		{

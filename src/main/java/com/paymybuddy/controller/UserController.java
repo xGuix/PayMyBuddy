@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
@@ -76,12 +77,12 @@ public class UserController
 	 * @return User User saved
 	 */
 	@PostMapping(value = "/user")
-	public ResponseEntity<UserDTO> addUser(@RequestBody User user)
+	public ResponseEntity<UserDTO> addUser(@RequestBody SignupDTO signupDto)
 	{	
 		UserDTO userToAdd = null;
-		if(userService.getUserByEmail(user.getEmail())==null)
+		if(userService.getUserByEmail(signupDto.getEmail())==null)
 		{
-			userToAdd = userService.entityToDto(userService.addUser(user));
+			userToAdd = userService.entityToDto(userService.addUser(signupDto));
 			logger.info("User added is: {}",userToAdd);	
 		}
 		else {

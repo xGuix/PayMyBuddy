@@ -6,17 +6,20 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
 @Service
 @Transactional
-public class UserService
+public class UserService implements IUserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
 	
@@ -24,7 +27,23 @@ public class UserService
 	
 	@Autowired
 	private UserRepository userRepository;
-  
+	  
+	public UserService(UserRepository userRepository)
+	{
+		this.userRepository = userRepository;
+	}
+
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+	{
+		User user = userRepository.findByEmail(username);
+		if(user == null)
+		{
+			throw new UsernameNotFoundException("Invalid username or password.");
+		}
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
+	}
+
 	/**
 	 * Convert Entity :
 	 * Get userDTO with user
@@ -117,17 +136,17 @@ public class UserService
 	 * 
 	 * @return User The user added
 	 */
-	public User addUser(User user)
+	public User addUser(SignupDTO signupDto)
 	{	
 		logger.info("User add and saved");		
-		User u = new User();
-		u.setFirstname(user.getFirstname());
-		u.setLastname(user.getLastname());
-		u.setCity(user.getCity());
-		u.setEmail(user.getEmail());
-		u.setPassword(bCryptPasswordEncoder.encode(user.getPassword()));
-		userRepository.saveAndFlush(u);
-		return u;
+		User newUser = new User();
+		newUser.setFirstname(signupDto.getFirstname());
+		newUser.setLastname(signupDto.getLastname());
+		newUser.setCity(signupDto.getCity());
+		newUser.setEmail(signupDto.getEmail());
+		newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
+		userRepository.saveAndFlush(newUser);
+		return newUser;
 	}
 	
 	/**
