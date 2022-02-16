@@ -65,8 +65,7 @@ public class BankAccountService
 	public BankAccount getBankAccountByUser(Integer userId)
 	{
 		BankAccount newBankAccount = bankAccountRepository.getById(userId);
-		//this.entityToSimpleUser(bankAccountRepository.getById(userId));
-		
+
 		logger.info("Bank account found with Id: {}",userId);
 		return this.entityToSimpleUser(newBankAccount);
 	}

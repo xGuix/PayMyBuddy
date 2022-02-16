@@ -24,7 +24,7 @@ import org.hibernate.annotations.DynamicUpdate;
 public class User implements Serializable
 {
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 8623408266096690763L;
 
@@ -33,22 +33,22 @@ public class User implements Serializable
 	@Column(name="user_id")
 	private Integer userId;
 	
-	//@Column(name="firstname")
+	@Column(name="firstname")
 	private String firstname;
 	
-	//@Column(name="lastname")
+	@Column(name="lastname")
 	private String lastname;
 	
-	//@Column(name="city")
+	@Column(name="city")
 	private String city;
 	
-//	@Column(name="email")
+	@Column(name="email")
 	private String email;
 	
-//	@Column(name="password")
+	@Column(name="password")
 	private String password;
 	
-//	@Column(name="balance")
+	@Column(name="balance")
 	private float balance;
 
 	@OneToOne
@@ -73,12 +73,10 @@ public class User implements Serializable
 		this.balance = balance;
 	}
 	
-	public User(Integer userId, String firstname, String lastname,
-			String city, String email, String password, float balance, 
+	public User(String firstname, String lastname, String city,
+			String email, String password, float balance, 
 			List<User> friendsList)
 	{
-		super();
-		this.userId = userId;
 		this.firstname = firstname;
 		this.lastname = lastname;
 		this.city = city;

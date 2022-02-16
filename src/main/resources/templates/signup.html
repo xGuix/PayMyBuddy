@@ -1,36 +1,85 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html>
 <head>
-    <meta charset="ISO-8859-1">
-    <title>Sign up</title>
-    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
-    <link th:href="@{/css/style.css}" rel="stylesheet">
+<meta charset="ISO-8859-1">
+<title>Signup as a new user</title>
+<link rel="stylesheet"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
+	integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u"
+	crossorigin="anonymous">
 </head>
 <body>
-<div class="container">
-    <div class="row">
-        <div class="col-12 text-center">
-            <h2>Sign up</h2>
-            <p class="errorMsg" th:if="${errorMsg}" th:text="${errorMsg}"</p>
-        </div>
 
-        <div class="col-sm-4"></div>
-        <div class="col-sm-4" style="background-color: #F5F5F5">
-            <form th:action="@{/signup}" method="POST" th:object="${user}" class="form-group">
+	<!-- create navigation bar ( header) -->
+	<nav class="navbar navbar-inverse navbar-fixed-top">
+		<div class="container">
+			<div class="navbar-header">
+				<button type="button" class="navbar-toggle collapsed"
+					data-toggle="collapse" data-target="#navbar" aria-expanded="false"
+					aria-controls="navbar">
+					<span class="sr-only">Toggle navigation</span> <span
+						class="icon-bar"></span> <span class="icon-bar"></span> <span
+						class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#" th:href="@{/}">Signup as new user</a>
+			</div>
+		</div>
+	</nav>
 
-                <label for="email">Email</label>
-                <input type="text" id="email" name="email" placeholder="Input email" required class="form-control" th:field="*{email}">
-                <p th:if="${#fields.hasErrors('email')}" th:errorclass="error" th:errors="*{email}"></p>
+<br>
+<br>
+	<!-- Create HTML signup form -->
+	<div class="container">
+		<div class="row">
+			<div class="col-md-6 col-md-offset-3">
 
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Input password" required class="form-control" th:field="*{password}">
-                <p th:if="${#fields.hasErrors('password')}" th:errorclass="error" th:errors="*{password}"></p>
+				<!-- success message -->
+				<div th:if="${param.success}">
+					<div class="alert alert-info">You've successfully registered
+						to our awesome app!</div>
+				</div>
 
-                <input type="submit" class="btn btn-primary form-control" style="margin-top: 10px;" value="signup">
-            </form>
-        </div>
-        <div class="col-sm-4"></div>
-    </div>
-</div>
+				<h1>Signup</h1>
+
+				<form th:action="@{/signup}" method="post" th:object="${user}">
+					<div class="form-group">
+						<label class="control-label" for="firstname"> First name </label>
+						<input id="firstname" class="form-control" th:field="*{firstname}"
+							required autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="lastname"> Last name </label> <input
+							id="lastname" class="form-control" th:field="*{lastname}"
+							required autofocus="autofocus" />
+					</div>
+					
+					<div class="form-group">
+						<label class="control-label" for="city"> City </label> <input
+							id="city" class="form-control" th:field="*{city}"
+							required autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="email"> Email </label> <input
+							id="email" class="form-control" th:field="*{email}" required
+							autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<label class="control-label" for="password"> Password </label> <input
+							id="password" class="form-control" type="password"
+							th:field="*{password}" required autofocus="autofocus" />
+					</div>
+
+					<div class="form-group">
+						<button type="submit" class="btn btn-success">Create account</button>
+						<span>Already user? <a href="/" th:href="@{/login}">Login to your
+								account here</a></span>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 </body>
 </html>

@@ -11,7 +11,7 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
 
 @Controller
-public class HtmlController
+public class HomeController
 {
 	private final UserService userService;
 	
@@ -21,7 +21,7 @@ public class HtmlController
 		return "login";
 	}
 
-	public HtmlController(UserService userService)
+	public HomeController(UserService userService)
 	{
 		this.userService = userService;
 	}

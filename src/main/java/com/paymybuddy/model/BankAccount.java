@@ -17,7 +17,7 @@ import javax.persistence.Table;
 public class BankAccount implements Serializable
 {
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 3546751409063987902L;
 
@@ -33,7 +33,7 @@ public class BankAccount implements Serializable
 	private String bankName;
 
 	@OneToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "user_id", referencedColumnName = "user_id")
+	@JoinColumn(name = "user_id")
 	private User user;
 
 	public BankAccount()

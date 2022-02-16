@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,7 +18,7 @@ import javax.persistence.Table;
 public class Transaction implements Serializable
 {
 	/**
-	 * 
+	 * Serial Version UID
 	 */
 	private static final long serialVersionUID = 1855462102432419372L;
 
@@ -26,12 +27,12 @@ public class Transaction implements Serializable
 	@Column(name="transaction_id")
 	private Integer transactionId;
 	
-	@ManyToOne
-	@JoinColumn(referencedColumnName="email", nullable=false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="sender_id", nullable=false)
 	private User sender;
 	
-	@ManyToOne
-	@JoinColumn(referencedColumnName="email", nullable=false)
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="receiver_id", nullable=false)
 	private User receiver;
 
 	@Column(name="datetime")
@@ -52,7 +53,6 @@ public class Transaction implements Serializable
 	public Transaction(Integer transactionId, User sender, User receiver,
 			LocalDateTime dateTime,	float amount, String description, float transcationFee)
 	{
-		super();
 		this.transactionId = transactionId;
 		this.sender = sender;
 		this.receiver = receiver;
