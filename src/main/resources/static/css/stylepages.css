@@ -4,9 +4,14 @@ h3 {
     font-size: 0.9 em !important;
     text-transform: uppercase;
 }
+
 a {
     align-content: center;
     font-size: 0.8em;
+}
+
+span{
+    font-color: #107d34;
 }
 
 .navbar {
@@ -22,10 +27,16 @@ a {
 	font-color: white !important;
 }
 
-.col-md-4{
-	justify-content: center;
-}
-
 .row {
     margin: 30px;
+}
+
+.col-lg-auto{
+	padding:45px;
+    border-radius: 30px;
+    background-color: #F5F5F5;
+}
+
+#emailHelp{
+    font-size: 0.7em;
 }

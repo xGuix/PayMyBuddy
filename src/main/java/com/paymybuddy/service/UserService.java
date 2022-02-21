@@ -137,8 +137,7 @@ public class UserService implements IUserService
 	 * @return User The user added
 	 */
 	public User addUser(SignupDTO signupDto)
-	{	
-		logger.info("User add and saved");		
+	{		
 		User newUser = new User();
 		newUser.setFirstname(signupDto.getFirstname());
 		newUser.setLastname(signupDto.getLastname());
@@ -146,6 +145,7 @@ public class UserService implements IUserService
 		newUser.setEmail(signupDto.getEmail());
 		newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
 		userRepository.saveAndFlush(newUser);
+		logger.info("User added and saved");
 		return newUser;
 	}
 	

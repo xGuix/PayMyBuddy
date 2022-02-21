@@ -29,11 +29,11 @@ public class HomeController
 	}
 
 	@ModelAttribute("user")
-    public SignupDTO userRegistrationDto() 
+    public SignupDTO userRegistrationDto(Model model) 
 	{
         return new SignupDTO();
     }
-	
+		
 	@GetMapping(value = "/signup")
 	public String signUpView(Model model)
 	{
@@ -41,7 +41,7 @@ public class HomeController
 		return "signup";
 	}
 
-	@PostMapping(value = "/signup")
+	@PostMapping(value = "/signup" )
 	public String signUp(@Validated SignupDTO user, BindingResult result, Model model)
 	{
 		if (result.hasErrors())
@@ -49,11 +49,12 @@ public class HomeController
 			return "signup";
 		}
 		try {
+			model.addAttribute("success", "Sign up succeed !");
 			userService.addUser(user);
-			return "redirect:/login";
+			return "redirect:/login?success";
 		}
 		catch (Exception e) {
-			model.addAttribute("errorMsg", "User existed in the database");
+			model.addAttribute("errorMsg", "Email address already exists !");
 		}
 		return "signup";
 	}
@@ -62,5 +63,17 @@ public class HomeController
 	public String homepage()
 	{
 		return "homepage";
+	}
+	
+	@GetMapping(value ="/friend")
+	public String friend()
+	{
+		return "friend";
+	}
+	
+	@GetMapping(value ="/paid")
+	public String paid()
+	{
+		return "paid";
 	}
 }

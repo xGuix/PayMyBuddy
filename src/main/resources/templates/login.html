@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">	
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">	
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -21,10 +22,9 @@
 		    </button>
 		    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
 		      <div class="navbar-nav">
-		        <a class="nav-link active" aria-current="page" href="#"> HOME</a>
-		        <a class="nav-link" href="#">FRIEND</a>
-		        <a class="nav-link" href="#">TRANSACTION</a>
-		        <a class="nav-link disabled">logout</a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/friend}">FRIEND</a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/paid}">PAID</a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
 		      </div>		     
 		    </div>
 		  </div>
@@ -32,16 +32,23 @@
 		<br><br>
 		<br><br>
 		<br><br>
+		<br><br>
 		<div class="container-fluid ">
 			<div class="row justify-content-md-center" >
-				<div class="col-md-auto">
+				<div class="col-lg-auto text-center">
+					<!-- Success message -->	
+					<!--<div class="alert alert-success" role="alert" th:if="${param.success}" th:text="${success}"> Sign up succeed</div> -->
+					<br>
+					<span> New user? <a th:href="@{/signup}"> Create your account here </a></span>
+					<br>
 					<h3>Login to your account</h3>
 					<!-- Signup button for new user -->
-					<span> New user? <a href="/" th:href="@{/signup}"> Create your account here </a></span>
 					<br>
-					<br>
-					<br>
-					<form th:action="@{/login}" method="post">
+					<form th:action="@{/login}" method="post" >
+						<!-- Success message -->
+						<div th:if="${success}" th:class="${alert}">
+							<div class="alert alert-success"> <strong></strong> Login successful! Welcome to PayMyBuddy!</div>
+						</div>
 						<!-- error message -->
 						<div th:if="${param.error}">
 							<div class="alert alert-danger" role="alert"> Invalid email or password ! Please retry. </div>
@@ -51,18 +58,18 @@
 							<div class="alert alert-info"> You have been logged out. </div>
 						</div>
 						 <!-- User field -->
-					  	<div class="col">
+					  	<div class="mb-3">
 					   		<label for="username" class="form-label"> User email </label>
 					    	<input type="email" class="form-control" id="username" name = "username"
 								placeholder="Enter your email ID" autofocus="autofocus"aria-describedby="emailHelp">
 					   		 <div id="emailHelp" class="form-text"> We'll never share your email with anyone else! </div>
 					  	</div>
 					 	 <!-- Password field -->
-					 	<div class="col">
+					 	<div class="mb-3">
 					   		<label for="password" class="form-label"> Password </label>
 					    	<input type="password" class="form-control" id="password" name="password" placeholder="Enter your password">
 					 	</div>
-					  	<br><br>
+					  	<br>
 					 	 <!-- Login button -->
 					 	<div class="d-grid gap-2 col-6 mx-auto">
 					  		<button type="submit" name="login-submit" id="login-submit" class="btn btn-success"> Login </button>

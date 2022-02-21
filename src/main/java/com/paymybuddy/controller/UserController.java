@@ -23,7 +23,7 @@ import com.paymybuddy.service.UserService;
 @RestController
 public class UserController
 {
-	private static Logger logger = LogManager.getLogger("ControllerLogger");
+	private static Logger logger = LogManager.getLogger("UserControllerLogger");
 	
 	@Autowired
 	private UserService userService;
