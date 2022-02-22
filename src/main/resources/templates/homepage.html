@@ -32,8 +32,8 @@
 		<br>
 		<div class="container-fluid">
 			<!-- Success message -->
-			<div th:if="${param.success}" th:class="${alert}">
-				<div class="alert alert-success"> <strong></strong> Login successful! Welcome to PayMyBuddy!</div>
+			<div th:if="${success}" th:class="${alert}">
+				<div class="alert alert-success"> <strong> Login successful! </strong> Welcome to PayMyBuddy!</div>
 			</div>
 			<h3>Successfully logged in</h3>
 			Welcome to you : <span sec:authentication="principal.username"> User</span>

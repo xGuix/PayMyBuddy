@@ -36,8 +36,10 @@
 		<div class="container-fluid ">
 			<div class="row justify-content-md-center" >
 				<div class="col-lg-auto text-center">
-					<!-- Success message -->	
-					<!--<div class="alert alert-success" role="alert" th:if="${param.success}" th:text="${success}"> Sign up succeed</div> -->
+					<!-- Success message -->
+					<div th:if="${success}" th:class="${alert}" >
+						<div class="alert alert-success"> <strong> Successful sign up! </strong> Please login to your account!</div>
+					</div>
 					<br>
 					<span> New user? <a th:href="@{/signup}"> Create your account here </a></span>
 					<br>
@@ -45,10 +47,6 @@
 					<!-- Signup button for new user -->
 					<br>
 					<form th:action="@{/login}" method="post" >
-						<!-- Success message -->
-						<div th:if="${success}" th:class="${alert}">
-							<div class="alert alert-success"> <strong></strong> Login successful! Welcome to PayMyBuddy!</div>
-						</div>
 						<!-- error message -->
 						<div th:if="${param.error}">
 							<div class="alert alert-danger" role="alert"> Invalid email or password ! Please retry. </div>
