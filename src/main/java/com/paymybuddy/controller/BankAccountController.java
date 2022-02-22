@@ -56,7 +56,7 @@ public class BankAccountController
 	}	
 	
 	/**
-	 * Add one bank account to list
+	 * Add one bank account to user
 	 * 
 	 * @return BankAccount The bank account saved
 	 */
@@ -67,7 +67,7 @@ public class BankAccountController
 		if(bankAccountService.getBankAccountByUser(bankAccount.getUser().getUserId())==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccount);
-			logger.info("Bank account added is: {}",bankToAdd);
+			logger.info("Bank account added: {}",bankToAdd);
 		}
 		else {
 			logger.info("Bank Account already exists: {}", bankAccount);	

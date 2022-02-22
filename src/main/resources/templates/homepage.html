@@ -15,28 +15,30 @@
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<div class="container-fluid">
 		   		<a class="navbar-brand" href="#" th:href="@{/}"> ─=≡Σ((( つ•̀ω•́)つ PAY MY BUDDY </a>
-		   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
-		    		aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+		   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
+		    		aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 		     	<span class="navbar-toggler-icon"></span>
-		    </button>
-		    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-		      <div class="navbar-nav">
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/friend}">FRIEND</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/paid}">PAID</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
-		      </div>		     
-		    </div>
-		  </div>
+		    	</button>
+		   		 <div class="collapse navbar-collapse" id="navbar">
+		    		<div class="navbar-nav ">
+			        	<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/friend}">FRIEND</a>
+			        	<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/paid}">PAID</a>
+			        	<a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
+		     		</div>		     
+				</div>
+			</div>
 		</nav>
-		<br>
-		<br>
-		<div class="container-fluid">
+		<br><br>
+		<br><br>
+		<div class="container-fluid text-center">
 			<!-- Success message -->
 			<div th:if="${success}" th:class="${alert}">
 				<div class="alert alert-success"> <strong> Login successful! </strong> Welcome to PayMyBuddy!</div>
 			</div>
 			<h3>Successfully logged in</h3>
 			Welcome to you : <span sec:authentication="principal.username"> User</span>
+			<br>
+			<a> Balance = 00.00$</a>
 		</div>
 	</body>
 </html>

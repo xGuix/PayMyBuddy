@@ -184,4 +184,9 @@ public class UserService implements IUserService
 		userRepository.deleteById(userId);
 		logger.info("User deleted");
 	}
+
+	public void addToContact(User fromUser, User toUser) {
+		// TODO Auto-generated method stub
+		
+	}
 }

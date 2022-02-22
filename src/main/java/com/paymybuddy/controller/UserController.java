@@ -70,7 +70,7 @@ public class UserController
 		logger.info("Get user with email= {}",email);			
 		return new ResponseEntity<>(userToFind, HttpStatus.FOUND);
 	}
-	
+
 	/**
 	 * Add one user to list
 	 * 
