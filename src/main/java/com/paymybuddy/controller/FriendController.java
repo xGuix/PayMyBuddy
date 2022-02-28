@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.paymybuddy.model.User;
@@ -15,7 +16,6 @@ import com.paymybuddy.service.UserService;
 public class FriendController
 {
 	private final UserService userService;
-	private String user = "User";
 	private String friend = "friend";
 
 	public FriendController(UserService userService)
@@ -49,12 +49,12 @@ public class FriendController
 		return friend;
 	}
 	
-	@GetMapping("/addFriend")
+	@PostMapping("/addFriend")
 	public String addToContact(Model model, @RequestParam(value = "email") String email, Principal principal)
 	{
-		User fromUser = userService.getUserByEmail(principal.getName());
-		User toUser = userService.getUserByEmail(email);
-		userService.addToContact(fromUser, toUser);
+		User user = userService.getUserByEmail(principal.getName());
+		User friendToAdd = userService.getUserByEmail(email);
+		userService.addToContact(user, friendToAdd);
 		model.addAttribute("addToContactMsgSuc", user + email + " have been added to your contact");
 		model.addAttribute("friends", userService.getUserByEmail(principal.getName()).getFriendsList());
 		return friend;

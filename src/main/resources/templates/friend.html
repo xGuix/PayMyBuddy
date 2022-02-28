@@ -34,21 +34,21 @@
 	    <br><br>
 	    <div class="container-fluid">
 			<div class="row justify-content-center" >
-	       		<div class="alert alert-primary" role="alert" th:text="${addFriendMsgSuc}" th:if="${addFriendMsgSuc}"></div>
+	       		<div class="alert alert-success" role="alert" th:text="${addFriendMsgSuc}" th:if="${addFriendMsgSuc}"></div>
 	        	<div class="alert alert-danger" role="alert" th:text="${addFriendMsgErr}" th:if="${addFriendMsgErr}"></div>
 		        <div th:if="${searchError}" class="searchAccountResult">
 	            	<p th:text="${searchError}"></p>
 	        	</div>
 			
-		        <form th:action="@{/searchFriends}">
+		        <form th:action="@{/findFriends}" method="get" th:objet="${user}">
 		           <div class="input-group flex-nowrap">
 	  					<span class="input-group-text" id="addon-wrapping"> Find friends by email: </span>
-	 					<input type="text" class="form-control" placeholder="User email" aria-label="Username" aria-describedby="addon-wrapping">
-	 					<button type="button" class="btn col-2 btn-success" > Search </button>
+	 					<input for="email" type="text" class="form-control" placeholder="User email" aria-label="Username" aria-describedby="addon-wrapping">
+	 					<button type="submit" class="btn col-2 btn-success" > Search </button>
 					</div>
 		        </form>
 		        <br><br>
-		        <div th:if="${searchFriends}" class="searchAccountResult">
+		        <div th:if="${searchResul}" class="searchAccountResult">
 		            <p th:text="|Email : ${searchResult.email}|"></p>
 		            <form th:action="@{/addFriend}">
 		                <input th:value="${searchResult.email}" type="email" class="form-control" placeholder="Enter email" name="email">
@@ -57,7 +57,7 @@
 		        </div>
 		        <br> <br> <br>
 		        <hr>
-		        <table class="table " >
+		        <table class="table" >
 		        	<thead>
 		            <tr>
 		            	<th scope="col">#</th>

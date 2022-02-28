@@ -15,11 +15,11 @@ public class LoginController
 		return "login";
 	}
 	
-	@GetMapping(value = "/403")
+	@GetMapping(value = "/error")
 	public String accessDenied(Model model, Principal principal) {
 		String message = "Hi " + principal.getName() //
 				+ "<br> You do not have permission to access this page!";
 		model.addAttribute("message", message);
-		return "403Page";
+		return "error";
 	}
 }

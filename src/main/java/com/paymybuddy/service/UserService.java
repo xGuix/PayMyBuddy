@@ -131,22 +131,45 @@ public class UserService implements IUserService
 	}
 	
 	/**
+	 * Verify existing User :
+	 * Check if user email already exists in database
+	 * 
+	 * @return Message Information string
+	 */
+	public String validateUser(SignupDTO userDto)
+	{
+        String message = "Not Found";
+        User userToFind = getUserByEmail(userDto.getEmail());
+        if(userToFind !=null)
+        {
+        	message = "Email address already used!";
+        }
+		return message;
+    }
+	
+	/**
 	 * Add a new user :
 	 * Create & save user in list
 	 * 
 	 * @return User The user added
 	 */
 	public User addUser(SignupDTO signupDto)
-	{		
-		User newUser = new User();
-		newUser.setFirstname(signupDto.getFirstname());
-		newUser.setLastname(signupDto.getLastname());
-		newUser.setCity(signupDto.getCity());
-		newUser.setEmail(signupDto.getEmail());
-		newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
-		userRepository.saveAndFlush(newUser);
-		logger.info("User added and saved");
-		return newUser;
+	{	
+		User checkUser = getUserByEmail(signupDto.getEmail());
+		if(checkUser == null)
+		{
+			User newUser = new User();
+			newUser.setFirstname(signupDto.getFirstname());
+			newUser.setLastname(signupDto.getLastname());
+			newUser.setCity(signupDto.getCity());
+			newUser.setEmail(signupDto.getEmail());
+			newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
+			
+			userRepository.saveAndFlush(newUser);
+			logger.info("User added and saved");
+			return newUser;
+		}
+		return checkUser;
 	}
 	
 	/**
@@ -185,8 +208,15 @@ public class UserService implements IUserService
 		logger.info("User deleted");
 	}
 
-	public void addToContact(User fromUser, User toUser) {
-		// TODO Auto-generated method stub
-		
+	/**
+	 * Add a connection between users :
+	 * New friend add to friends list
+	 * 
+	 * @return Message Information string
+	 */
+	public String addToContact(User user, User friendToAdd)
+	{
+		user.addUserFriend(friendToAdd);
+		return "You have a new friend";
 	}
 }
