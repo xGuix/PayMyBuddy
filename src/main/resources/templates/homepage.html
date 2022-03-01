@@ -30,15 +30,41 @@
 		</nav>
 		<br><br>
 		<br><br>
-		<div class="container-fluid text-center">
-			<!-- Success message -->
-			<div th:if="${success}" th:class="${alert}">
-				<div class="alert alert-success"> Welcome to PayMyBuddy! </div>
+		<div class="container-fluid">
+			<div class="row justify-content-center" >
+				<div class="col-lg-auto text-center">
+					<p style="color:lightgrey"> Connected to: <span sec:authentication="principal.username"> </span></p>
+					<!-- Success message -->
+					<div th:if="${success}" th:class="${alert}">
+						<div class="alert alert-success"> ─=≡Σ((( つ•̀ω•́)つ Welcome to pay my buddy! </div>
+					</div>
+					<br><br>
+					<!-- User informations update -->
+					<form action="@{/homepage}" method="post" th:object="${user}">
+						<div class="input-group mb-3">
+	 						<span class="input-group-text" id="inputGroup-sizing-sm">First name</span>
+	  						<input type="text" class="form-control">
+						</div>
+						<div class="input-group mb-3">
+	 						<span class="input-group-text" id="inputGroup-sizing-sm">Last Name</span>
+	  						<input type="text" class="form-control" >
+						</div>
+						<div class="input-group mb-3">
+	 						<span class="input-group-text" id="inputGroup-sizing-sm">City</span>
+	  						<input type="text" class="form-control" >
+						</div>
+						<div class="input-group mb-3">
+	 						<span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
+	  						<input type="text" class="form-control">
+						</div>
+						<br>
+						<!-- update button -->
+						<div class="d-grid gap-2 col-6 mx-auto">
+						  	<input class="form-control btn btn-success" type="submit" name="update-submit" id="update-submit" value="update">
+						</div>
+					</form>
+				</div>
 			</div>
-			<h3>Successfully logged in</h3>
-			Welcome to you : <span sec:authentication="principal.username"> User</span>
-			<br>
-			<a> Balance = 00.00$</a>
 		</div>
 	</body>
 </html>
