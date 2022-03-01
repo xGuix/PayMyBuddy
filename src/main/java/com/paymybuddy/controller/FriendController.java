@@ -48,13 +48,13 @@ public class FriendController
 		return friend;
 	}
 	
-	@PostMapping("/addFriend")
+	@PostMapping("/friend")
 	public String addFriend(Model model, @RequestParam(value = "email") String email, Principal principal)
 	{
 		User user = userService.getUserByEmail(principal.getName());
 		User friendToAdd = userService.getUserByEmail(email);
 		userService.addToFriends(user, friendToAdd);
-		model.addAttribute("addFriendSuccess", user + email + " have been added to your contact");
+		model.addAttribute("addFriendSuccess", user.getFirstname()+" "+user.getFirstname()+" have been added to your friends list");
 		model.addAttribute("friends", userService.getUserByEmail(principal.getName()).getFriendsList());
 		return friend;
 	}

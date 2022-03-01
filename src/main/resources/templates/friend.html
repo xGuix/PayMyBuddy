@@ -29,18 +29,17 @@
 		  </div>
 		</nav>
 		<br><br>
-	    <br><br>
-	    <br><br>
 	    <div class="container-fluid">
 			<div class="row justify-content-center" >
 				<div class="col-sm-7 text-center">
 					<!-- Success message -->
 					<div class="alert alert-success" role="alert" th:text="${addFriendSuccess}" th:if="${addFriendSuccess}"></div>
+					<!-- Error message -->
+					<div class="alert alert-danger" role="alert" th:text="${searchError}" th:if="${searchError}"></div>
 					<br>
 					<!-- information -->
-					<p><strong> Search a friend with email address:</strong>
-					<br> If someone found, you will able to add it to your friends list. </p>
-					<br>
+					<p><strong> Search friends with email address:</strong>
+					<br> If someone found, you will be able to add it to your friends list. </p>
 					<!-- Search friends field form -->
 				    <form th:action="@{/findFriends}" method="get">
 				    	<div class="input-group flex-nowrap">
@@ -49,21 +48,25 @@
 			 				<button type="submit" class="btn btn-success"> search </button>
 						</div>
 				    </form>
-				    <br><br>
+				    <br>
 				    <!-- Search result fields -->
 				    <div th:if="${searchResult}" class="searchAccountResult">
-				   		<p th:text="|First name : ${searchResult.firstname}|"></p>
-				   		<p th:text="|Last name : ${searchResult.lastname}|"></p>
-				   		<p th:text="|City : ${searchResult.city}|"></p>
-				    	<p th:text="|Email : ${searchResult.email}|"></p>
+				    	<p><strong> USER FOUND : </strong></p>
+				   		<h6 th:text="|${searchResult.firstname} ${searchResult.lastname} - ${searchResult.city}|"></h6>
 				    	<!-- Add friend button -->
-				     	<form th:action="@{/addFriend}" method="post">
-				     		<input th:value="${searchResult.email}" type="email" class="form-control" placeholder="Enter email" name="email">
-				            <button type="submit" class="btn btn-default"> Add to contact</button>
+				    	<br>
+				    	<p><strong> Add this user to your friends.</strong></p>
+				     	<form th:action="@{/friend}" method="post">
+				     		<div class="input-group flex-nowrap">
+				     			<input th:value="${searchResult.email}" name="email" type="email" class="form-control" placeholder="Enter email">
+				            	<button type="submit" class="btn btn-success"> Add to friends </button>
+				            </div>
 				       </form>
-				   </div>
-				   <!-- Table of actual friends list -->
-				   <table class="table table-striped">
+				    </div>
+				    <!-- Table of actual friends list -->
+				    <br><br>
+				    <p><strong> Your friends list </strong></p>
+				    <table class="table table-striped">
 				   		<thead class="table-light">
 				        <tr>
 				            <th scope="col"> First name </th>
