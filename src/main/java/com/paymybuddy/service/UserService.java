@@ -39,7 +39,7 @@ public class UserService implements IUserService
 		User user = userRepository.findByEmail(username);
 		if(user == null)
 		{
-			throw new UsernameNotFoundException("Invalid username or password.");
+			throw new UsernameNotFoundException("Invalid email or password.");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
@@ -214,7 +214,7 @@ public class UserService implements IUserService
 	 * 
 	 * @return Message Information string
 	 */
-	public String addToContact(User user, User friendToAdd)
+	public String addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
 		return "You have a new friend";
