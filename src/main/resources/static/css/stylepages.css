@@ -37,6 +37,12 @@ span{
     background-color: #F5F5F5;
 }
 
+.col-lg-5{
+	padding:45px;
+    border-radius: 30px;
+    background-color: #F5F5F5;
+}
+
 #emailHelp{
     font-size: 0.7em;
 }

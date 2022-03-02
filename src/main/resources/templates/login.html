@@ -21,9 +21,9 @@
 		    </button>
 		    <div class="collapse navbar-collapse" id="navbar">
 		      <div class="navbar-nav">
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/friend}">FRIEND</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/paid}">PAID</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/friend"> FRIEND </a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/send"> SEND </a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}"> logout</a>
 		      </div>		     
 		    </div>
 		  </div>
