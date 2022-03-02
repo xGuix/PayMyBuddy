@@ -29,19 +29,28 @@
 		  </div>
 		</nav>
 		<br><br>
+		<br><br>
 	    <div class="container-fluid">
 			<div class="row justify-content-center" >
-				<div class="col-sm-7 text-center">
+				<div class="col-lg-auto text-center">
 					<!-- Success message -->
-					<div class="alert alert-success" role="alert" th:text="${addFriendSuccess}" th:if="${addFriendSuccess}"></div>
+					<div th:if="${addFriendSuccess}" th:class="${alert}" >
+						<div class="alert alert-success" th:text="${addFriendSuccess}"></div>
+					</div>	
 					<!-- Error message -->
-					<div class="alert alert-danger" role="alert" th:text="${searchError}" th:if="${searchError}"></div>
-					<br>
-					<!-- information -->
+					<div th:if="${searchError}" th:class="${alert}" >
+						<div class="alert alert-danger" th:text="${searchError}"></div>
+					</div>
+					<!-- Error adding message -->
+					<div th:if="${addError}" th:class="${alert}" >
+						<div class="alert alert-danger" role="alert" th:text="${addError}"></div>
+					</div>
+					<br><br>
+					<!-- Information feature -->
 					<p><strong> Search friends with email address:</strong>
 					<br> If someone found, you will be able to add it to your friends list. </p>
 					<!-- Search friends field form -->
-				    <form th:action="@{/findFriends}" method="get">
+				    <form th:action="@{/findFriend}" method="get">
 				    	<div class="input-group flex-nowrap">
 			  				<span class="input-group-text" id="addon-wrapping"> Enter email: </span>
 			 				<input name="email" type="email" class="form-control" id="email" placeholder="Email address">
@@ -53,8 +62,8 @@
 				    <div th:if="${searchResult}" class="searchAccountResult">
 				    	<p><strong> USER FOUND : </strong></p>
 				   		<h6 th:text="|${searchResult.firstname} ${searchResult.lastname} - ${searchResult.city}|"></h6>
+				   		<br>
 				    	<!-- Add friend button -->
-				    	<br>
 				    	<p><strong> Add this user to your friends.</strong></p>
 				     	<form th:action="@{/friend}" method="post">
 				     		<div class="input-group flex-nowrap">
@@ -69,18 +78,18 @@
 				    <table class="table table-striped">
 				   		<thead class="table-light">
 				        <tr>
-				            <th scope="col"> First name </th>
-				            <th scope="col"> Last name </th>
-				            <th scope="col"> City </th>
-				            <th scope="col"> Email </th>
+				            <th scope="col" style="font-size:0.9em"> First name </th>
+				            <th scope="col" style="font-size:0.9em"> Last name </th>
+				            <th scope="col" style="font-size:0.9em"> City </th>
+				            <th scope="col" style="font-size:0.9em"> Email </th>
 				        </tr>
 				        </thead>
 				        <tbody th:each="user : ${friend}" th:remove="tag">
 				        	<tr>
-				              	<td th:text="${user.firstname}"></td>
-				               	<td th:text="${user.lastname}"></td>
-				                <td th:text="${user.city}"></td>
-				                <td th:text="${user.email}"></td>
+				              	<td th:text="${user.firstname}" style="font-size:0.9em"></td>
+				               	<td th:text="${user.lastname}" style="font-size:0.9em"></td>
+				                <td th:text="${user.city}" style="font-size:0.9em"></td>
+				                <td th:text="${user.email}" style="font-size:0.9em"></td>
 			               	</tr>
 			            </tbody>
 			        </table>

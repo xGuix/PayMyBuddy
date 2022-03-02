@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.UserService;
@@ -16,7 +17,7 @@ import com.paymybuddy.service.UserService;
 public class FriendController
 {
 	private final UserService userService;
-	private String friend = "friend";
+	private String friend = "redirect:/friend";
 
 	public FriendController(UserService userService)
 	{
@@ -30,32 +31,34 @@ public class FriendController
 		User userToFind = userService.getUserByEmail(userEmail);
 		List<User> friendList = userToFind.getFriendsList();
 		model.addAttribute("friend", friendList);
-		return friend;
+		return "friend";
 	}
 	
-	@GetMapping("/findFriends")
-	public String findFriends(Model model, @RequestParam(value = "email") String email, Principal principal)
+	@GetMapping("/findFriend")
+	public String findFriends(Model model, RedirectAttributes redirAttrs, @RequestParam(value = "email") String email, Principal principal)
 	{
 		User userToFind = userService.getUserByEmail(email);
-		if (email.equalsIgnoreCase(principal.getName()))
+		if (userToFind == null || email.equalsIgnoreCase(principal.getName()))
 		{
-			model.addAttribute("searchError", "User doesn't exist");
+			redirAttrs.addFlashAttribute("searchError", "User doesn't exist");
+			return friend;
 		}
-		else {
-			model.addAttribute("searchResult", userToFind);
-		}
-		model.addAttribute("friends", userService.getUserByEmail(principal.getName()).getFriendsList());	
+		redirAttrs.addFlashAttribute("searchResult", userToFind);
 		return friend;
 	}
 	
 	@PostMapping("/friend")
-	public String addFriend(Model model, @RequestParam(value = "email") String email, Principal principal)
+	public String addFriend(Model model, RedirectAttributes redirAttrs, @RequestParam(value = "email") String email, Principal principal)
 	{
 		User user = userService.getUserByEmail(principal.getName());
 		User friendToAdd = userService.getUserByEmail(email);
+		if (friendToAdd == null || user.getFriendsList().contains(friendToAdd))
+		{
+			redirAttrs.addFlashAttribute("addError", "Wrong email, user does not exist or friend already added!");
+			return friend;
+		}
 		userService.addToFriends(user, friendToAdd);
-		model.addAttribute("addFriendSuccess", user.getFirstname()+" "+user.getFirstname()+" have been added to your friends list");
-		model.addAttribute("friends", userService.getUserByEmail(principal.getName()).getFriendsList());
+		redirAttrs.addFlashAttribute("addFriendSuccess", friendToAdd.getFirstname()+" "+friendToAdd.getLastname()+" have been added to your friends list");
 		return friend;
 	}
 }

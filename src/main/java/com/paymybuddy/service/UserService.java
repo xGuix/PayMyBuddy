@@ -102,7 +102,7 @@ public class UserService implements IUserService
 	 */
 	public List<User> getUsers()
 	{
-		logger.info("Users list found");	
+		logger.info("Users list to find");	
 		return userRepository.findAll();
 	}
 	
@@ -114,7 +114,7 @@ public class UserService implements IUserService
 	 */
 	public User getUserById(Integer userId)
 	{
-		logger.info("User found with id: {}",userId);
+		logger.info("User id to find: {}",userId);
 		return userRepository.getById(userId);
 	}
 	
@@ -126,7 +126,7 @@ public class UserService implements IUserService
 	 */
 	public User getUserByEmail(String email)
 	{
-		logger.info("User found with email: {}",email);
+		logger.info("User email to find: {}",email);
 	    return userRepository.findByEmail(email);
 	}
 	
@@ -217,6 +217,6 @@ public class UserService implements IUserService
 	public String addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
-		return "You have a new friend";
+		return "Friend add to your list";
 	}
 }
