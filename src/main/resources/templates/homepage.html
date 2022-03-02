@@ -39,30 +39,35 @@
 						<div class="alert alert-success"> ─=≡Σ((( つ•̀ω•́)つ Welcome to pay my buddy! </div>
 					</div>
 					<br><br>
+					<h3> UPDATE YOUR PROFIL </h3>
 					<!-- User informations update -->
-					<form action="@{/homepage}" method="post" th:object="${user}">
+					<form action="@{/homepage}">
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">First name</span>
-	  						<input type="text" class="form-control">
+	  						<input type="text" class="form-control" id="firstname" name="firstname">
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">Last Name</span>
-	  						<input type="text" class="form-control" >
+	  						<input type="text" class="form-control" name="lastname" id="lastname" >
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">City</span>
-	  						<input type="text" class="form-control" >
+	  						<input type="text" class="form-control" name="city" id="city" th:text>
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
-	  						<input type="text" class="form-control">
+	  						<input type="text" class="form-control" name="email" id="email">
+						</div>
+						<div class="input-group mb-3">
+	 						<span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
+	  						<input type="text" class="form-control" name="password" id="password">
 						</div>
 						<br>
 						<!-- update button -->
 						<div class="d-grid gap-2 col-6 mx-auto">
 						  	<input class="form-control btn btn-success" type="submit" name="update-submit" id="update-submit" value="update">
 						</div>
-					</form>
+					</form>			        
 				</div>
 			</div>
 		</div>

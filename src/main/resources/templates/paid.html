@@ -30,26 +30,32 @@
 		  </div>
 		</nav>
 		<br><br>
-	    <h3>PAID</h3>
+		<br><br>
 	    <div class="container-fluid">
-			<form class="row g-3">
-			<br><br>
-			 	<div class="col-12">
-			    	<label for="inputEmail4" class="form-label">Receiver</label>
-			    	<input type="email" class="form-control" id="receiver">
-			  	</div>
-			  	<div class="col-12">
-			  		<label for="inputAmount" class="form-label">Amount</label>
-			    	<input type="text" class="form-control" id="inputAmount" placeholder="15.00€">
-			 	 </div>
-				  <div class="col-12">
-				    <label for="comment" class="form-label">Comment</label>
-				    <input type="text" class="form-control" id="comment" placeholder="Comment">
-				  </div>
-				  <div class="col-12">
-				  	<button type="submit" class="btn btn-success"> Send money </button>
-				  </div>
-			  </form>
+	    	<div class="row justify-content-center" >
+	    		<div class="col-lg-auto text-center">
+	    			<h3>SEND MONEY</h3>
+					<form action="@{/paid}">
+						<br>
+					 	<div class="mb-3">
+					    	<label for="receiver" class="form-label">Receiver</label>
+					    	<input type="email" class="form-control" id="receiver">
+					  	</div>
+					  	<div class="mb-3">
+					  		<label for="amount" class="form-label">Amount</label>
+					    	<input type="text" class="form-control" id="amount" placeholder="15.00€">
+					 	</div>
+						<div class="mb-3">
+						    <label for="comment" class="form-label">Comment</label>
+						    <input type="text" class="form-control" id="comment" placeholder="Comment">
+						</div>
+						<br>
+						<div class="col">
+						 	<button type="submit" class="btn btn-success" name="paid" id="paid"> Send money </button>
+						</div>
+					</form>
+				</div>
+			</div>
 	    </div>
 	</body>
 </html>
