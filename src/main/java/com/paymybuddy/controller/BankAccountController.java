@@ -1,7 +1,5 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.service.BankAccountService;
 
@@ -26,20 +25,20 @@ public class BankAccountController
 	@Autowired
 	private BankAccountService bankAccountService;
 
-	/**
-	 * Read all Bank accounts :
-	 * Get all Bank accounts
-	 * 
-	 * @return BankAccount The full bank accounts list
-	 */
-	@GetMapping(value = "/bankaccounts")
-	public ResponseEntity<List<BankAccount>> getBankAccounts()
-	{
-		List<BankAccount> bankAccountList = bankAccountService.getBankAccounts();
-
-		logger.info("Get all bank account list");			
-		return new ResponseEntity<>(bankAccountList, HttpStatus.FOUND);
-	}
+//	/**
+//	 * Read all Bank accounts :
+//	 * Get all Bank accounts
+//	 * 
+//	 * @return BankAccount The full bank accounts list
+//	 */
+//	@GetMapping(value = "/bankaccounts")
+//	public ResponseEntity<List<BankAccount>> getBankAccounts()
+//	{
+//		List<BankAccount> bankAccountList = bankAccountService.getBankAccounts();
+//
+//		logger.info("Get all bank account list");			
+//		return new ResponseEntity<>(bankAccountList, HttpStatus.FOUND);
+//	}
 		
 	/**
 	 * Get one bank account by user id
@@ -64,6 +63,7 @@ public class BankAccountController
 	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
 	{	
 		BankAccount bankToAdd = null;
+		
 		if(bankAccountService.getBankAccountByUser(bankAccount.getUser().getUserId())==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccount);
@@ -82,12 +82,13 @@ public class BankAccountController
 	 */
 	@PutMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> updateBankAccount(
-			@RequestParam Integer userId, @RequestBody BankAccount bankAccount)
+			@RequestParam Integer userId, @RequestBody BankAccountDTO bankaccountDto)
 	{	
 		BankAccount bankToUpdate = null;
+		
 		if(getBankAccountByUser(userId)!=null)
 		{
-			bankToUpdate = bankAccountService.updateBankAccount(userId, bankAccount);
+			bankToUpdate = bankAccountService.updateBankAccount(userId, bankaccountDto);
 			logger.info("Bank account updated: {}", bankToUpdate);	
 		}
 		else {
@@ -106,6 +107,7 @@ public class BankAccountController
 	{
 		String info = null;
 		BankAccount bankToDel = bankAccountService.getBankAccountByUser(userId);
+		
 		if (bankToDel != null)
 		{
 			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount()+" "+bankToDel.getUser();		

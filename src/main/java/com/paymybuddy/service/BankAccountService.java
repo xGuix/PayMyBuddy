@@ -7,6 +7,7 @@ import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.BankAccountRepository;
@@ -89,14 +90,13 @@ public class BankAccountService
 	 * 
 	 * @return BankAccount The bank account updated
 	 */
-	public BankAccount updateBankAccount(Integer userId, BankAccount bankAccount)
+	public BankAccount updateBankAccount(Integer userId, BankAccountDTO bankaccountDto)
 	{	
 		BankAccount baToUpdate = getBankAccountByUser(userId);
 		if(baToUpdate!=null)
 		{
-			baToUpdate.setBankaccountId(bankAccount.getBankaccountId());
-			baToUpdate.setBankName(bankAccount.getBankName());
-			baToUpdate.setIbanAccount(bankAccount.getIbanAccount());
+			baToUpdate.setBankName(bankaccountDto.getBankName());
+			baToUpdate.setIbanAccount(bankaccountDto.getIbanAccount());
 
 			bankAccountRepository.saveAndFlush(baToUpdate);
 		}

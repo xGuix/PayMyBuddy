@@ -39,28 +39,44 @@
 						<div class="alert alert-success"> ─=≡Σ((( つ•̀ω•́)つ Welcome to pay my buddy! </div>
 					</div>
 					<br>
+<!-- 					User informations update -->
+<!-- 					<h3> ADD BANK ACCOUNT </h3> -->
+<!-- 					<form th:action="@{/homepage}" method="get">	 -->
+<!-- 						<br> -->
+<!-- 						Add bank account fields -->
+<!-- 						<div class="input-group mb-3"> -->
+<!-- 						  	<label for="ibanAccount" class="form-label"> Iban number </label> -->
+<!--   							<input type="text" class="form-control" id="ibanAccount" th:text="${ibanAccount}" autofocus="autofocus" required > -->
+<!-- 						</div> -->
+<!-- 						<div class="input-group mb-3"> -->
+<!-- 							<label for="bankName" class="form-label"> Bank name </label> -->
+<!--   							<input type="text" class="form-control" id="bankName" th:text="${bankName}" autofocus="autofocus" required > -->
+<!-- 						</div> -->
+<!-- 					 	<br> -->
+<!-- 					 	Add account button -->
+<!-- 					 	<div class="d-grid gap-2 col-6 mx-auto"> -->
+<!-- 					  		<input class="form-control btn btn-success" type="submit" name="bank-submit" id="bank-submit" value="Add bank account"> -->
+<!-- 					  	</div> -->
+<!-- 					</form> -->
+					<br>
+					<!-- User informations saved : update available -->
 					<h3> UPDATE YOUR PROFIL </h3>
-					<!-- User informations update -->
-					<form action="@{/user}" method="get" th:object="${user}">
+					<form action="@{/homepage}" method="get" th:object="${user}">
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">First name</span>
-	  						<input type="text" class="form-control" id="firstname" name="firstname">
+	  						<input type="text" class="form-control" id="firstname" name="firstname" th:text="${firstname}">
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">Last Name</span>
-	  						<input type="text" class="form-control" name="lastname" id="lastname" >
+	  						<input type="text" class="form-control" name="lastname" id="lastname" th:text="${lastname}">
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">City</span>
-	  						<input type="text" class="form-control" name="city" id="city" th:text>
+	  						<input type="text" class="form-control" name="city" id="city" th:utext="${city}">
 						</div>
 						<div class="input-group mb-3">
 	 						<span class="input-group-text" id="inputGroup-sizing-sm">Email</span>
-	  						<input type="text" class="form-control" name="email" id="email">
-						</div>
-						<div class="input-group mb-3">
-	 						<span class="input-group-text" id="inputGroup-sizing-sm">Password</span>
-	  						<input type="text" class="form-control" name="password" id="password">
+	  						<input type="text" class="form-control" name="email" id="email" th:utext="${email}">
 						</div>
 						<br>
 						<!-- update button -->
