@@ -37,7 +37,7 @@ public class HomeController
 	{
 		String userEmail = principal.getName();
 		User user = userService.getUserByEmail(userEmail);
-		
+		 
 		if(user!=null)
 		{
 			model.addAttribute("user", user);
@@ -56,7 +56,7 @@ public class HomeController
 		{
 			userBank.setBankAccount(findAccount);
 			model.addAttribute("bank", findAccount);
-			return "redirect:/homepage";
+			return homepage;
 		}
 		return homepage;
 	}
