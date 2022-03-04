@@ -1,5 +1,6 @@
 package com.paymybuddy.dto;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class UserDTO
 	private String lastname;
 	private String city;
 	private String email;
-	private float balance;
+	private BigDecimal balance;
 
 	private List<UserDTO> connections = new ArrayList<>();
 	
@@ -18,7 +19,7 @@ public class UserDTO
     {}
     
 	public UserDTO(Integer userId, String firstname, String lastname,String city,
-			String email, float balance, List<UserDTO> connections)
+			String email, BigDecimal balance, List<UserDTO> connections)
 	{
 		this.userId = userId;
 		this.firstname = firstname;
@@ -79,12 +80,12 @@ public class UserDTO
 		this.email = email;
 	}
 
-	public float getBalance()
+	public BigDecimal getBalance()
 	{
 		return balance;
 	}
 
-	public void setBalance(float balance)
+	public void setBalance(BigDecimal balance)
 	{
 		this.balance = balance;
 	}

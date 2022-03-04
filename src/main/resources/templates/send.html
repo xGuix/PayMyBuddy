@@ -54,6 +54,29 @@
 						 	<button type="submit" class="btn btn-success" name="send" id="send"> Send money </button>
 						</div>
 					</form>
+					<br><br>
+					<br>
+			        <h3>MY TRANSACTIONS</h3>
+			        <table class="table table-striped">
+				   		<thead class="table-light">
+				        <tr>
+				            <th scope="col" style="font-size:0.9em"> Receiver </th>
+				            <th scope="col" style="font-size:0.9em"> DateTime </th>
+				            <th scope="col" style="font-size:0.9em"> Amount </th>
+				            <th scope="col" style="font-size:0.9em"> Description </th>
+				            <th scope="col" style="font-size:0.9em"> Fee </th>
+				        </tr>
+				        </thead>
+				        <tbody th:each="transaction: ${transactions}" th:remove="tag">
+				        	<tr>
+				              	<td th:text="${transaction.receiver.user.firstname}" style="font-size:0.9em"></td>
+				               	<td th:text="${transaction.datetime}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.amount}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.description}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.transactionfee}" style="font-size:0.9em"></td>
+			               	</tr>
+			            </tbody>
+			        </table>
 				</div>
 			</div>
 	    </div>

@@ -1,5 +1,7 @@
 package com.paymybuddy.service;
 
+import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
@@ -8,7 +10,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.paymybuddy.exception.YourBalanceIsNotEnough;
 import com.paymybuddy.model.Transaction;
+import com.paymybuddy.model.User;
+import com.paymybuddy.repository.BankAccountRepository;
 import com.paymybuddy.repository.TransactionRepository;
 
 @Service
@@ -19,30 +24,51 @@ public class TransactionService
 	
 	@Autowired
 	private TransactionRepository transactionRepository;
+	private BankAccountRepository bankAccountRepository;
 	 
+	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
+	private LocalDateTime dateTime;
+//	/**
+//	 * Get list of all transactions :
+//	 * Find all transactions saved
+//	 * 
+//	 * @return List<Transaction> The list of all transactions
+//	 */
+//	public List<Transaction> getTransactions()
+//	{
+//		logger.info("Transactions list found");	
+//		return transactionRepository.findAll();
+//	}
+	
 	/**
-	 * Get list of all transactions :
-	 * Find all transactions saved
+	 * Get list of all transactions with sender email :
+	 * Find all transactions saved with user email
 	 * 
-	 * @return List<Transaction> The list of all transactions
+	 * @return List<Transaction> The list of user transactions
 	 */
-	public List<Transaction> getTransactions()
+	public List<Transaction> getTransactionsForUser(Iterable<Integer> userId)
 	{
-		logger.info("Transactions list found");	
-		return transactionRepository.findAll();
+		logger.info("Transactions list found for user");	
+		return transactionRepository.findAllById(userId);
 	}
 	
-//	/**
-//	 * Get list of all transactions with sender email :
-//	 * Find all transactions saved with user email
-//	 * 
-//	 * @return List<Transaction> The list of user transactions
-//	 */
-//	public List<Transaction> getTransactionsBySender(User sender)
-//	{
-//		logger.info("Transactions list found for user");	
-//		return transactionRepository.getByEmailSender(sender);
-//	}
+	public synchronized void makePayment(User sender, User receiver, String description, BigDecimal amount) throws YourBalanceIsNotEnough
+	{
+		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));
+		BigDecimal fromCurrentBalance = sender.getBalance();
+		BigDecimal toCurrentBalance = receiver.getBalance();
+		
+		if (fromCurrentBalance.compareTo(quantityAfterPercent) < 0)
+		{
+			throw new YourBalanceIsNotEnough();
+		}
+		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
+		receiver.setBalance(toCurrentBalance.add(amount));
+		bankAccountRepository.save(sender);
+		bankAccountRepository.save(receiver);
+		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, description, PERCENT);
+		transactionRepository.save(transaction);
+	}
 	
 //	/**
 //	 * Get one transaction with user email :

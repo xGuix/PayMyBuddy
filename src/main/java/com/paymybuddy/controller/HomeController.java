@@ -16,13 +16,17 @@ import com.paymybuddy.service.UserService;
 @Controller
 public class HomeController
 {
-	private final UserService userService;
-	
 	private String homepage = "homepage";
+	
+	private final UserService userService;
+	//private final BankAccountService bankAccountService;
+	//private final TransactionService transactionService;
 
-	public HomeController(UserService userService)
+	public HomeController(UserService userService /*, BankAccountService bankAccountService, TransactionService transactionService*/)
 	{
 		this.userService = userService;
+		//this.bankAccountService = bankAccountService;
+		//this.transactionService = transactionService;
 	}
 	
 	@GetMapping("/")

@@ -1,6 +1,7 @@
 package com.paymybuddy.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,7 +50,7 @@ public class User implements Serializable
 	private String password;
 	
 	@Column(name="balance")
-	private float balance;
+	private BigDecimal balance;
 
 	@OneToOne
 	@JoinColumn(name="bankaccountId",referencedColumnName = "bankaccount_id")
@@ -64,7 +65,7 @@ public class User implements Serializable
 	{}
 	
 	public User(Integer userId, String firstname, String lastname,
-			String email, float balance) 
+			String email, BigDecimal balance) 
 	{
 		this.userId = userId;
 		this.firstname = firstname;
@@ -74,7 +75,7 @@ public class User implements Serializable
 	}
 	
 	public User(String firstname, String lastname, String city,
-			String email, String password, float balance, 
+			String email, String password, BigDecimal balance, 
 			List<User> friendsList)
 	{
 		this.firstname = firstname;
@@ -182,12 +183,12 @@ public class User implements Serializable
 		this.password = password;
 	}
 
-	public float getBalance()
+	public BigDecimal getBalance()
 	{
 		return balance;
 	}
 
-	public void setBalance(float balance)
+	public void setBalance(BigDecimal balance)
 	{
 		this.balance = balance;
 	}
