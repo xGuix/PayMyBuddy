@@ -7,7 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
@@ -43,18 +43,14 @@ public class HomeController
 	{
 		String userEmail = principal.getName();
 		User user = userService.getUserByEmail(userEmail);
-		
-		if(user!=null)
-		{
-			model.addAttribute("User", user);
-			bankAccountService.getBankAccountByUser(user.getUserId());
-			return redirectHomepage;
-		}
-		return homepage;
+
+		model.addAttribute("user", user);
+		return homepage; 
 	}
 	
 	@PostMapping("/addbank")
-	public String addbank(String ibanaccount, String bankname, Model model, Principal principal)
+	public String addbank(String ibanaccount, String bankname, Model model,
+			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
 		User userBank = userService.getUserByEmail(userEmail);
@@ -63,16 +59,15 @@ public class HomeController
 		{
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,bankname,ibanaccount);
 			bankAccountService.addBankAccount(newBankAccount);
-			model.addAttribute("bankaccountAdded", "Success!");
-			return homepage;
+			redirAttrs.addFlashAttribute("bankaccountAdded", "Success!");
+			return redirectHomepage;
 		}
-		model.addAttribute("bank", findAccount);
+		model.addAttribute("bankaccount", findAccount);
 		return homepage;
 	}
 	
 	@PostMapping("/addmoney")
-	public String addmoney (@RequestParam BigDecimal deposite,
-			Model model, Principal principal)
+	public String addmoney (BigDecimal deposite, Model model, Principal principal)
 	{
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);

@@ -41,7 +41,7 @@
 					<!-- User informations update -->
 					<h3> ADD MONEY </h3>
 					<br>
-					<form th:action="@{/homepage}" method="post" th:object="${user}">
+					<form th:action="@{/addmoney}" method="post" th:object="${user}">
 					<!-- Balance View and add money -->
 					<div class="input-group input-group-sm mb-3">
 						  <span class="input-group-text">€</span>
@@ -60,7 +60,7 @@
 					<div th:if="${bankaccountAdded}" th:class="${alert}">
 						<div class="alert alert-success"> Bank account successfully added :) </div>
 					</div>
-					<form th:action="@{/addbank}" method="post" th:object="${bank}">	
+					<form th:action="@{/addbank}" method="post" th:object="${bankaccount}">	
 						<!-- Add bank account fields -->
 						<div class="input-group input-group-sm mb-3">
 						  	<span class="input-group-text col-4 justify-content-center"> Iban number </span>
@@ -81,19 +81,19 @@
 					<br>
 					<form action="@{/homepage}" method="post" th:object="${user}">
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-4 justify-content-center" id="inputGroup-sizing-sm"> First name</span>
+							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.firstname}"> First name</span>
 	  						<input type="text" class="form-control" id="firstname" name="firstname" th:value="${firstname}" aria-label="firstname">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-4 justify-content-center" id="inputGroup-sizing-sm"> Last name</span>
+							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.lastname}"> Last name</span>
 	  						<input type="text" class="form-control" id="lastname" name="lastname" th:value="${lastname}" aria-label="lastname">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-4 justify-content-center" id="inputGroup-sizing-sm"> City </span>
+							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.city}"> City </span>
 	  						<input type="text" class="form-control" id="city"  name="city" th:value="${city}" aria-label="city">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-4 justify-content-center" id="inputGroup-sizing-sm"> Email</span>
+							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.email}"> Email</span>
 	  						<input type="text" class="form-control" id="email" name="email" th:value="${email}" aria-label="email">
 						</div>
 						<!-- update button -->
