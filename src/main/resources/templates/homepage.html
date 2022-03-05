@@ -41,12 +41,12 @@
 					<!-- User informations update -->
 					<h3> ADD MONEY </h3>
 					<br>
-					<form th:action="@{/bankaccount}" method="post">
+					<form th:action="@{/homepage}" method="post" th:object="${user}">
 					<!-- Balance View and add money -->
 					<div class="input-group input-group-sm mb-3">
 						  <span class="input-group-text">€</span>
-						  <span class="input-group-text col-3 justify-content-center">200.00</span>
-						  <input type="text" class="form-control" aria-label="Balance">
+						  <span class="input-group-text col-3 justify-content-center" th:field="${balance}" th:value="${balance}">666.66</span>
+						  <input type="text" class="form-control" aria-label="balance">
 					</div>
 					<!-- Add money button -->
 					<div class="d-grid gap-2 col-6 mx-auto">
@@ -57,15 +57,18 @@
 					<!-- User informations update -->
 					<h3> ADD BANK ACCOUNT </h3>
 					<br>
-					<form th:action="@{/userbank}" method="get" th:object="${bank}">	
+					<div th:if="${bankaccountAdded}" th:class="${alert}">
+						<div class="alert alert-success"> Bank account successfully added :) </div>
+					</div>
+					<form th:action="@{/addbank}" method="post" th:object="${bank}">	
 						<!-- Add bank account fields -->
 						<div class="input-group input-group-sm mb-3">
 						  	<span class="input-group-text col-4 justify-content-center"> Iban number </span>
-  							<input type="text" class="form-control" id="ibanAccount" th:value="${ibanaccount}" autofocus="autofocus" required >
+  							<input type="text" class="form-control" id="ibanAccount" name="ibanaccount" th:text="${ibanaccount}" autofocus="autofocus" required >
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center"> Bank name </span>
-  							<input type="text" class="form-control" id="bankName" th:value="${bankname}" autofocus="autofocus" required >
+  							<input type="text" class="form-control" id="bankName" name="bankname" th:text="${bankname}" autofocus="autofocus" required >
 						</div>
 					 	<!-- Add account button -->
 					 	<div class="d-grid gap-2 col-6 mx-auto">
@@ -76,7 +79,7 @@
 					<!-- User informations saved : update available -->
 					<h3> UPDATE YOUR PROFIL </h3>
 					<br>
-					<form action="@{/homepage}" method="get" th:object="${user}">
+					<form action="@{/homepage}" method="post" th:object="${user}">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center" id="inputGroup-sizing-sm"> First name</span>
 	  						<input type="text" class="form-control" id="firstname" name="firstname" th:value="${firstname}" aria-label="firstname">

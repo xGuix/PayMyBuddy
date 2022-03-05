@@ -2,7 +2,7 @@ package com.paymybuddy.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.paymybuddy.exception.YourBalanceIsNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
-import com.paymybuddy.repository.BankAccountRepository;
 import com.paymybuddy.repository.TransactionRepository;
 
 @Service
@@ -24,10 +23,10 @@ public class TransactionService
 	
 	@Autowired
 	private TransactionRepository transactionRepository;
-	private BankAccountRepository bankAccountRepository;
 	 
 	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
 	private LocalDateTime dateTime;
+	
 //	/**
 //	 * Get list of all transactions :
 //	 * Find all transactions saved
@@ -46,10 +45,10 @@ public class TransactionService
 	 * 
 	 * @return List<Transaction> The list of user transactions
 	 */
-	public List<Transaction> getTransactionsForUser(Iterable<Integer> userId)
+	public Optional<Transaction> getTransactionsForUser(Integer userId)
 	{
 		logger.info("Transactions list found for user");	
-		return transactionRepository.findAllById(userId);
+		return transactionRepository.findById(userId);
 	}
 	
 	public synchronized void makePayment(User sender, User receiver, String description, BigDecimal amount) throws YourBalanceIsNotEnough
@@ -64,8 +63,6 @@ public class TransactionService
 		}
 		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
 		receiver.setBalance(toCurrentBalance.add(amount));
-		bankAccountRepository.save(sender);
-		bankAccountRepository.save(receiver);
 		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, description, PERCENT);
 		transactionRepository.save(transaction);
 	}

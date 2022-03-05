@@ -1,6 +1,6 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -47,9 +47,9 @@ public class TransactionController
 	 * @return Transaction The transaction with email
 	 */
 	@GetMapping(value = "/transactions")
-	public ResponseEntity<List<Transaction>> getTransactionBySender(Iterable<Integer> sender)
+	public ResponseEntity<Optional<Transaction>> getTransactionBySender(Integer sender)
 	{
-		List<Transaction> transactionById = transactionService.getTransactionsForUser(sender);
+		Optional<Transaction> transactionById = transactionService.getTransactionsForUser(sender);
 		
 		logger.info("Get transaction for user = {} is found: {}", sender, transactionById);	
 		return new ResponseEntity<>(transactionById, HttpStatus.FOUND);

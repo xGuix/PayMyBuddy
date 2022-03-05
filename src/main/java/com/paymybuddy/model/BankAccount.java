@@ -39,9 +39,8 @@ public class BankAccount implements Serializable
 	public BankAccount()
 	{}
 	
-	public BankAccount(Integer bankaccountId, String ibanAccount, String bankName, User user)
+	public BankAccount (String ibanAccount, String bankName, User user)
 	{
-		this.bankaccountId = bankaccountId;
 		this.ibanAccount = ibanAccount;
 		this.bankName = bankName;
 		this.user = user;

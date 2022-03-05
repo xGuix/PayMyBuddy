@@ -60,19 +60,19 @@ public class BankAccountController
 	 * @return BankAccount The bank account saved
 	 */
 	@PostMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
+	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccountDTO bankAccountDto)
 	{	
 		BankAccount bankToAdd = null;
 		
-		if(bankAccountService.getBankAccountByUser(bankAccount.getUser().getUserId())==null)
+		if(bankAccountService.getBankAccountByUser(bankAccountDto.getUser().getUserId())==null)
 		{
-			bankToAdd = bankAccountService.addBankAccount(bankAccount);
+			bankToAdd = bankAccountService.addBankAccount(bankAccountDto);
 			logger.info("Bank account added: {}",bankToAdd);
 		}
 		else {
-			logger.info("Bank Account already exists: {}", bankAccount);	
+			logger.info("Bank Account already exists: {}", bankAccountDto);	
 		}
-		return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
+		return new ResponseEntity<>(bankToAdd, HttpStatus.CREATED);
 	}
 	
 	/**

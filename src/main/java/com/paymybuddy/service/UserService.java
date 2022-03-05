@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,17 +95,17 @@ public class UserService implements IUserService
         return userListDto;
     }
     
-	/**
-	 * Get list of users :
-	 * Find all full users list
-	 * 
-	 * @return List<User> The list of all full users
-	 */
-	public List<User> getUsers()
-	{
-		logger.info("Users list to find");	
-		return userRepository.findAll();
-	}
+//	/**
+//	 * Get list of users :
+//	 * Find all full users list
+//	 * 
+//	 * @return List<User> The list of all full users
+//	 */
+//	public List<User> getUsers()
+//	{
+//		logger.info("Users list to find");	
+//		return userRepository.findAll();
+//	}
 	
 	/**
 	 * Get user with id :
@@ -218,5 +219,18 @@ public class UserService implements IUserService
 	{
 		user.addUserFriend(friendToAdd);
 		return "Friend add to your list";
+	}
+	
+	/**
+	 * Add money to balance :
+	 * New cash deposite add to balance
+	 * 
+	 * @return newBalance Operation on balance
+	 */
+	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
+	{
+		BigDecimal balance = user.getBalance().add(deposit);	
+		user.addMoney(balance);
+		return balance;
 	}
 }

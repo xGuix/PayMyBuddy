@@ -1,7 +1,5 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,20 +26,20 @@ public class UserController
 	@Autowired
 	private UserService userService;
 	
-	/**
-	 * Read All list :
-	 * Get all users
-	 * 
-	 * @return UsersList The full users list
-	 */
-	@GetMapping(value = "/users")
-	public ResponseEntity<List<UserDTO>> getUsers()
-	{
-		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
-
-		logger.info("Get all users list");			
-		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
-	}
+//	/**
+//	 * Read All list :
+//	 * Get all users
+//	 * 
+//	 * @return UsersList The full users list
+//	 */
+//	@GetMapping(value = "/users")
+//	public ResponseEntity<List<UserDTO>> getUsers()
+//	{
+//		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
+//
+//		logger.info("Get all users list");			
+//		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
+//	}
 	
 	/**
 	 * Get one user by id
