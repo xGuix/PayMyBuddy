@@ -28,7 +28,7 @@
 				</div>
 			</div>
 		</nav>
-		<br><br>
+		<br>
 		<div class="container-fluid">
 			<div class="row justify-content-center" >
 				<div class="col-lg-auto text-center">
@@ -41,22 +41,28 @@
 					<!-- User informations update -->
 					<h3> ADD MONEY </h3>
 					<br>
+					<div th:if="${balance}" th:class="${alert}">
+						<div class="alert alert-success"> Deposite successful. Balance update :) </div>
+					</div>
 					<form th:action="@{/addmoney}" method="post" th:object="${user}">
 					<!-- Balance View and add money -->
 					<div class="input-group input-group-sm mb-3">
-						  <span class="input-group-text">€</span>
-						  <span class="input-group-text col-3 justify-content-center" th:field="${balance}" th:value="${balance}">666.66</span>
-						  <input type="text" class="form-control" aria-label="balance">
+						  <span class="input-group-text"> € </span>
+						  <span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
+						  <input type="text" class="form-control" name="balance" placeholder="10.00" required>
 					</div>
 					<!-- Add money button -->
 					<div class="d-grid gap-2 col-6 mx-auto">
-					  	<input class="form-control btn btn-success btn-sm" type="submit" name="addMoney" id="addMoney" value="add money">
+					  	<input class="form-control btn btn-success btn-sm" type="submit" name="addMoney" value="add money">
 					</div>
 					</form>
 					<br><br>
 					<!-- User informations update -->
 					<h3> ADD BANK ACCOUNT </h3>
 					<br>
+					<div th:if="${bankaccountUpdate}" th:class="${alert}">
+						<div class="alert alert-success"> Bank account update saved :) </div>
+					</div>
 					<div th:if="${bankaccountAdded}" th:class="${alert}">
 						<div class="alert alert-success"> Bank account successfully added :) </div>
 					</div>
@@ -64,41 +70,44 @@
 						<!-- Add bank account fields -->
 						<div class="input-group input-group-sm mb-3">
 						  	<span class="input-group-text col-4 justify-content-center"> Iban number </span>
-  							<input type="text" class="form-control" id="ibanAccount" name="ibanaccount" th:text="${ibanaccount}" autofocus="autofocus" required >
+  							<input type="text" class="form-control" name="ibanaccount" th:value="${bankaccount.ibanAccount}" autofocus="autofocus">
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center"> Bank name </span>
-  							<input type="text" class="form-control" id="bankName" name="bankname" th:text="${bankname}" autofocus="autofocus" required >
+  							<input type="text" class="form-control" name="bankname" th:value="${bankaccount.bankName}" autofocus="autofocus">
 						</div>
 					 	<!-- Add account button -->
 					 	<div class="d-grid gap-2 col-6 mx-auto">
-					  		<input class="form-control btn btn-success btn-sm" type="submit" name="bank-submit" id="bank-submit" value="Save account">
+					  		<input class="form-control btn btn-success btn-sm" type="submit" name="bank-submit" value="Save account">
 					  	</div>
 					</form>
 					<br><br>
 					<!-- User informations saved : update available -->
 					<h3> UPDATE YOUR PROFIL </h3>
 					<br>
+					<div th:if="${userUpdate}" th:class="${alert}">
+						<div class="alert alert-success"> Profile update and saved :) </div>
+					</div>
 					<form action="@{/homepage}" method="post" th:object="${user}">
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.firstname}"> First name</span>
-	  						<input type="text" class="form-control" id="firstname" name="firstname" th:value="${firstname}" aria-label="firstname">
+							<span class="input-group-text col-4 justify-content-center"> First name </span>
+	  						<input type="text" class="form-control" name="firstname" th:value="${user.firstname}">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.lastname}"> Last name</span>
-	  						<input type="text" class="form-control" id="lastname" name="lastname" th:value="${lastname}" aria-label="lastname">
+							<span class="input-group-text col-4 justify-content-center"> Last name </span>
+	  						<input type="text" class="form-control" name="lastname" th:value="${user.lastname}">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.city}"> City </span>
-	  						<input type="text" class="form-control" id="city"  name="city" th:value="${city}" aria-label="city">
+							<span class="input-group-text col-4 justify-content-center"> City </span>
+	  						<input type="text" class="form-control" name="city" th:value="${user.city}">
 						</div>
 						<div class="input-group input-group-sm mb-3">
-							<span class="input-group-text col-6 justify-content-center" id="inputGroup-sizing-sm" th:text="${user.email}"> Email</span>
-	  						<input type="text" class="form-control" id="email" name="email" th:value="${email}" aria-label="email">
+							<span class="input-group-text col-4 justify-content-center"> Email </span>
+	  						<input type="text" class="form-control" id="email" name="email" th:value="${user.email}">
 						</div>
 						<!-- update button -->
 						<div class="d-grid gap-2 col-6 mx-auto">
-						  	<input class="form-control btn btn-success btn-sm" type="submit" id="update-submit" name="update-submit" value="update">
+						  	<input class="form-control btn btn-success btn-sm" type="submit" name="update-submit" value="Save update">
 						</div>
 					</form>			        
 				</div>

@@ -230,7 +230,7 @@ public class UserService implements IUserService
 	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
 	{
 		BigDecimal balance = user.getBalance().add(deposit);	
-		user.addMoney(balance);
+		user.setBalance(balance);
 		return balance;
 	}
 }

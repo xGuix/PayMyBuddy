@@ -87,7 +87,6 @@ public class User implements Serializable
 		this.friendsList=friendsList;
 	}
 	
-	
 	public static long getSerialversionuid()
 	{
 		return serialVersionUID;
@@ -102,12 +101,7 @@ public class User implements Serializable
 	{
 		this.bankAccount = bankAccount;
 	}
-	
-	public BankAccount addbankAccount(BankAccount bankAccount)
-	{
-		return bankAccount;
-	}
-	
+		
 	public List<User> getFriendsList()
 	{
 		return friendsList;
@@ -197,10 +191,4 @@ public class User implements Serializable
 	{
 		this.balance = balance;
 	}
-	
-	public BigDecimal addMoney(BigDecimal deposite)
-	{
-		return balance.add(deposite);
-	}
-	
 }

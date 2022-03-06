@@ -16,7 +16,6 @@ import com.paymybuddy.service.UserService;
 public class SignupController
 {
 	private final UserService userService;
-	private String signup = "signup";
 
 	public SignupController(UserService userService)
 	{
@@ -27,7 +26,7 @@ public class SignupController
 	public String signUpView(Model model)
 	{
 		model.addAttribute("user", new SignupDTO());
-		return signup; 
+		return "signup"; 
 	}
 
 	@PostMapping(value = "/signup")

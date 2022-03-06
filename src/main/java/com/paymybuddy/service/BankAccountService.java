@@ -88,11 +88,11 @@ public class BankAccountService
 					bankAccountDto.getBankName(),
 					bankAccountDto.getUser()
 					);
-		
-			logger.info("Bank account add and saved");
+			
+			checkUser.setBankAccount(newBankAccount);
+			logger.info("Bank account add and saved for user");
 			return bankAccountRepository.saveAndFlush(newBankAccount);
 		}
-		
 		logger.info("Already one registered bank account");
 		return checkBankAccount;
 	}
@@ -104,13 +104,13 @@ public class BankAccountService
 	 * 
 	 * @return BankAccount The bank account updated
 	 */
-	public BankAccount updateBankAccount(Integer userId, BankAccountDTO bankaccountDto)
+	public BankAccount updateBankAccount(Integer userId, BankAccount findAccount)
 	{	
 		BankAccount baToUpdate = getBankAccountByUser(userId);
 		if(baToUpdate!=null)
 		{
-			baToUpdate.setBankName(bankaccountDto.getBankName());
-			baToUpdate.setIbanAccount(bankaccountDto.getIbanAccount());
+			baToUpdate.setBankName(findAccount.getBankName());
+			baToUpdate.setIbanAccount(findAccount.getIbanAccount());
 
 			bankAccountRepository.saveAndFlush(baToUpdate);
 		}

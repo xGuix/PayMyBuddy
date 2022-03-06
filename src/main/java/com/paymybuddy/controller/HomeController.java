@@ -24,30 +24,39 @@ public class HomeController
 	private UserService userService;
 	private BankAccountService bankAccountService;
 
-	public HomeController(UserService userService,
-			BankAccountService bankAccountService, BankAccountController bankAccountController)
+	public HomeController(UserService userService, BankAccountService bankAccountService)
 	{
 		this.userService = userService;
 		this.bankAccountService = bankAccountService;
 	}
 	
-	@GetMapping("/")
-	public String home(Model model)
-	{ 
-		model.addAttribute("success", "Success!");
-		return homepage;
-	}
-	
-	@GetMapping("/homepage")
+	/**
+	 *  Get homepage of user:
+	 *  All stuff on profile :
+	 *  - Add bank account
+	 * 	- Add money to balance
+	 *  - Update user info
+	 * 
+	 * @return homepage Homepage url
+	 */
+	@GetMapping({"/","/homepage"})
 	public String homepage(Model model, Principal principal)
 	{
 		String userEmail = principal.getName();
 		User user = userService.getUserByEmail(userEmail);
-
+		BankAccount findAccount = user.getBankAccount();
+		
+		model.addAttribute("success", "Success!");
 		model.addAttribute("user", user);
+		model.addAttribute("bankaccount", findAccount);
 		return homepage; 
 	}
 	
+	/**
+	 *  Add or update bank account:
+	 * 
+	 * @return homepage Homepage url
+	 */
 	@PostMapping("/addbank")
 	public String addbank(String ibanaccount, String bankname, Model model,
 			Principal principal, RedirectAttributes redirAttrs)
@@ -57,21 +66,44 @@ public class HomeController
 		BankAccount findAccount = userBank.getBankAccount();
 		if(findAccount==null)
 		{
-			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,bankname,ibanaccount);
+			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
 			bankAccountService.addBankAccount(newBankAccount);
 			redirAttrs.addFlashAttribute("bankaccountAdded", "Success!");
 			return redirectHomepage;
 		}
-		model.addAttribute("bankaccount", findAccount);
-		return homepage;
+		findAccount.setIbanAccount(ibanaccount);
+		findAccount.setBankName(bankname);
+		bankAccountService.updateBankAccount(userBank.getUserId(), findAccount);
+		redirAttrs.addFlashAttribute("bankaccountUpdate", "Update!");
+		return redirectHomepage;
 	}
 	
+	/**
+	 *  Add money to balance:
+	 * 
+	 * @return homepage Homepage url
+	 */
 	@PostMapping("/addmoney")
-	public String addmoney (BigDecimal deposite, Model model, Principal principal)
+	public String addmoney (BigDecimal balance, Model model, Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);
-		model.addAttribute("balance", userBalance);
+		userService.addMoneyToBalance(userBalance, balance);
+		redirAttrs.addFlashAttribute("balance", userBalance);
+		return redirectHomepage;	
+	}
+	
+	/**
+	 *  Update user profile:
+	 * 
+	 * @return homepage Homepage url
+	 */
+	@PostMapping("/updateuser")
+	public String updateProfile (User user, Model model, Principal principal, RedirectAttributes redirAttrs)
+	{
+		String userEmail = principal.getName();
+		userService.updateUser(userEmail, user);
+		redirAttrs.addFlashAttribute("userUpdate", "Success!");
 		return redirectHomepage;	
 	}
 }
