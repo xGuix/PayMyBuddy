@@ -7,6 +7,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.dto.BankAccountDTO;
@@ -20,6 +22,7 @@ public class HomeController
 {
 	private String homepage = "homepage";
 	private String redirectHomepage = "redirect:/homepage";
+	private String success = "Success!";
 
 	private UserService userService;
 	private BankAccountService bankAccountService;
@@ -46,7 +49,7 @@ public class HomeController
 		User user = userService.getUserByEmail(userEmail);
 		BankAccount findAccount = user.getBankAccount();
 		
-		model.addAttribute("success", "Success!");
+		model.addAttribute("success", success);
 		model.addAttribute("user", user);
 		model.addAttribute("bankaccount", findAccount);
 		return homepage; 
@@ -68,12 +71,12 @@ public class HomeController
 		{
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
 			bankAccountService.addBankAccount(newBankAccount);
-			redirAttrs.addFlashAttribute("bankaccountAdded", "Success!");
+			redirAttrs.addFlashAttribute("bankaccountAdded", success);
 			return redirectHomepage;
 		}
 		findAccount.setIbanAccount(ibanaccount);
 		findAccount.setBankName(bankname);
-		bankAccountService.updateBankAccount(userBank.getUserId(), findAccount);
+		bankAccountService.updateBankAccount(userBank.getBankAccount().getBankaccountId(), findAccount);
 		redirAttrs.addFlashAttribute("bankaccountUpdate", "Update!");
 		return redirectHomepage;
 	}
@@ -84,7 +87,8 @@ public class HomeController
 	 * @return homepage Homepage url
 	 */
 	@PostMapping("/addmoney")
-	public String addmoney (BigDecimal balance, Model model, Principal principal, RedirectAttributes redirAttrs)
+	public String addmoney (BigDecimal balance, Model model,
+			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);
@@ -98,12 +102,16 @@ public class HomeController
 	 * 
 	 * @return homepage Homepage url
 	 */
-	@PostMapping("/updateuser")
-	public String updateProfile (User user, Model model, Principal principal, RedirectAttributes redirAttrs)
+	@PostMapping(value="/updateprofile")
+	public String updateprofile (String firstname,String lastname, String city, Model model, 
+			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
-		userService.updateUser(userEmail, user);
-		redirAttrs.addFlashAttribute("userUpdate", "Success!");
+		userService.updateUser(userEmail, firstname,lastname,city);
+		
+		User userUpdate = userService.getUserByEmail(userEmail);
+		redirAttrs.addFlashAttribute("user", userUpdate);
+		redirAttrs.addFlashAttribute("userUpdate", success);
 		return redirectHomepage;	
 	}
 }

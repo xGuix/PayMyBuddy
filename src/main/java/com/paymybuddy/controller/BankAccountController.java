@@ -46,11 +46,11 @@ public class BankAccountController
 	 * @return BankAccount The bank account with user id
 	 */
 	@GetMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> getBankAccountByUser(Integer userId)
+	public ResponseEntity<BankAccount> getBankAccountById(Integer bankId)
 	{
-		BankAccount bankByid = bankAccountService.getBankAccountByUser(userId);
+		BankAccount bankByid = bankAccountService.getBankAccountById(bankId);
 		
-		logger.info("Get Bank account with id= {}", userId);	
+		logger.info("Get Bank account with id= {}", bankId);	
 		return new ResponseEntity<>(bankByid, HttpStatus.FOUND);
 	}	
 	
@@ -64,7 +64,7 @@ public class BankAccountController
 	{	
 		BankAccount bankToAdd = null;
 		
-		if(bankAccountService.getBankAccountByUser(bankAccountDto.getUser().getUserId())==null)
+		if(bankAccountService.getBankAccountById(bankAccountDto.getUser().getBankAccount().getBankaccountId())==null)
 		{
 			bankToAdd = bankAccountService.addBankAccount(bankAccountDto);
 			logger.info("Bank account added: {}",bankToAdd);
@@ -82,13 +82,13 @@ public class BankAccountController
 	 */
 	@PutMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> updateBankAccount(
-			@RequestParam Integer userId, @RequestBody BankAccountDTO bankaccountDto)
+			@RequestParam Integer bankId, @RequestBody BankAccount bankaccount)
 	{	
 		BankAccount bankToUpdate = null;
 		
-		if(getBankAccountByUser(userId)!=null)
+		if(getBankAccountById(bankId)!=null)
 		{
-			bankToUpdate = bankAccountService.updateBankAccount(userId, bankaccountDto);
+			bankToUpdate = bankAccountService.updateBankAccount(bankId, bankaccount);
 			logger.info("Bank account updated: {}", bankToUpdate);	
 		}
 		else {
@@ -103,15 +103,15 @@ public class BankAccountController
 	 * @return BankAccount Bank account deleted 
 	 */
 	@DeleteMapping(value = "/bankaccount")
-	public ResponseEntity<String> deleteBankAccount(Integer userId)
+	public ResponseEntity<String> deleteBankAccount(Integer bankId)
 	{
 		String info = null;
-		BankAccount bankToDel = bankAccountService.getBankAccountByUser(userId);
+		BankAccount bankToDel = bankAccountService.getBankAccountById(bankId);
 		
 		if (bankToDel != null)
 		{
 			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount()+" "+bankToDel.getUser();		
-			bankAccountService.deleteBankAccountById(userId);
+			bankAccountService.deleteBankAccountById(bankId);
 			logger.info("Bank account: {} have been deleted", info);
 		}
 		else {

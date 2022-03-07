@@ -8,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymybuddy.dto.SignupDTO;
@@ -89,25 +87,25 @@ public class UserController
 		return new ResponseEntity<>(userToAdd, HttpStatus.CREATED);
 	}
 	
-	/**
-	 * Update one user of list
-	 * 
-	 * @return User User updated
-	 */
-	@PutMapping(value = "/user")
-	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody User user)
-	{	
-		UserDTO userToUpdate = null;
-		if(getUserByEmail(email)!=null)
-		{
-			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
-			logger.info("User updated: {}",userToUpdate);	
-		}
-		else {
-			logger.info("User does not exists: {}", userToUpdate);	
-		}
-		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
-	}
+//	/**
+//	 * Update one user of list
+//	 * 
+//	 * @return User User updated
+//	 */
+//	@PutMapping(value = "/user")
+//	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody UserDTO user)
+//	{	
+//		UserDTO userToUpdate = null;
+//		if(getUserByEmail(email)!=null)
+//		{
+//			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
+//			logger.info("User updated: {}",userToUpdate);	
+//		}
+//		else {
+//			logger.info("User does not exists: {}", userToUpdate);	
+//		}
+//		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
+//	}
 	
 	/**
 	 * Delete one user from list

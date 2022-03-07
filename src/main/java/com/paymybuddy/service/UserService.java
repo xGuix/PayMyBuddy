@@ -11,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
@@ -19,7 +18,6 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
 @Service
-@Transactional
 public class UserService implements IUserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
@@ -179,17 +177,15 @@ public class UserService implements IUserService
 	 * 
 	 * @return User The user updated
 	 */
-	public User updateUser(String email, User user)
+	public User updateUser(String email, String firstname, String lastname, String city)
 	{	
 		User userToUpdate = userRepository.findByEmail(email);
 		if(userToUpdate.getEmail().equals(email))
 		{
-			userToUpdate.setFirstname(user.getFirstname());
-			userToUpdate.setLastname(user.getLastname());
-			userToUpdate.setCity(user.getCity());
-			userToUpdate.setBalance(user.getBalance());
-			userToUpdate.setPassword(user.getPassword());
-			userToUpdate.setFriendsList(user.getFriendsList());
+			userToUpdate.setFirstname(firstname);
+			userToUpdate.setLastname(lastname);
+			userToUpdate.setCity(city);
+			//userToUpdate.setBalance(user.getBalance())
 			userRepository.saveAndFlush(userToUpdate);
 		}
 		else {

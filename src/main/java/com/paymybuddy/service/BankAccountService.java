@@ -63,11 +63,11 @@ public class BankAccountService
 	 * 
 	 * @return BankAccount The bank account of the user
 	 */
-	public BankAccount getBankAccountByUser(Integer userId)
+	public BankAccount getBankAccountById(Integer bankId)
 	{
-		BankAccount newBankAccount = bankAccountRepository.getById(userId);
+		BankAccount newBankAccount = bankAccountRepository.getById(bankId);
 
-		logger.info("Bank account found with Id: {}",userId);
+		logger.info("Bank account found with Id: {}",bankId);
 		return newBankAccount;
 	}
 	
@@ -104,9 +104,9 @@ public class BankAccountService
 	 * 
 	 * @return BankAccount The bank account updated
 	 */
-	public BankAccount updateBankAccount(Integer userId, BankAccount findAccount)
+	public BankAccount updateBankAccount(Integer bankId, BankAccount findAccount)
 	{	
-		BankAccount baToUpdate = getBankAccountByUser(userId);
+		BankAccount baToUpdate = getBankAccountById(bankId);
 		if(baToUpdate!=null)
 		{
 			baToUpdate.setBankName(findAccount.getBankName());
@@ -125,9 +125,9 @@ public class BankAccountService
 	 * Delete bank account with userEmail :
 	 * Delete bank account from user
 	 */
-	public void deleteBankAccountById(Integer bankaccountId)
+	public void deleteBankAccountById(Integer bankId)
 	{
-		bankAccountRepository.deleteById(bankaccountId);
+		bankAccountRepository.deleteById(bankId);
 		logger.info("Bank account have been deleted");
 	}
 }
