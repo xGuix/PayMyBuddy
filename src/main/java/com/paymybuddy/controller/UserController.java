@@ -1,7 +1,5 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,9 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.paymybuddy.dto.SignupDTO;
@@ -28,20 +24,20 @@ public class UserController
 	@Autowired
 	private UserService userService;
 	
-	/**
-	 * Read All list :
-	 * Get all users
-	 * 
-	 * @return UsersList The full users list
-	 */
-	@GetMapping(value = "/users")
-	public ResponseEntity<List<UserDTO>> getUsers()
-	{
-		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
-
-		logger.info("Get all users list");			
-		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
-	}
+//	/**
+//	 * Read All list :
+//	 * Get all users
+//	 * 
+//	 * @return UsersList The full users list
+//	 */
+//	@GetMapping(value = "/users")
+//	public ResponseEntity<List<UserDTO>> getUsers()
+//	{
+//		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
+//
+//		logger.info("Get all users list");			
+//		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
+//	}
 	
 	/**
 	 * Get one user by id
@@ -91,25 +87,25 @@ public class UserController
 		return new ResponseEntity<>(userToAdd, HttpStatus.CREATED);
 	}
 	
-	/**
-	 * Update one user of list
-	 * 
-	 * @return User User updated
-	 */
-	@PutMapping(value = "/user")
-	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody User user)
-	{	
-		UserDTO userToUpdate = null;
-		if(getUserByEmail(email)!=null)
-		{
-			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
-			logger.info("User updated: {}",userToUpdate);	
-		}
-		else {
-			logger.info("User does not exists: {}", userToUpdate);	
-		}
-		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
-	}
+//	/**
+//	 * Update one user of list
+//	 * 
+//	 * @return User User updated
+//	 */
+//	@PutMapping(value = "/user")
+//	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody UserDTO user)
+//	{	
+//		UserDTO userToUpdate = null;
+//		if(getUserByEmail(email)!=null)
+//		{
+//			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
+//			logger.info("User updated: {}",userToUpdate);	
+//		}
+//		else {
+//			logger.info("User does not exists: {}", userToUpdate);	
+//		}
+//		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
+//	}
 	
 	/**
 	 * Delete one user from list

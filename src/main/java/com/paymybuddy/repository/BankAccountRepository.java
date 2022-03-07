@@ -7,6 +7,4 @@ import com.paymybuddy.model.BankAccount;
 
 @Repository
 public interface BankAccountRepository extends JpaRepository<BankAccount, Integer>
-{
-	
-}
+{}

@@ -1,7 +1,5 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
-
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.service.BankAccountService;
 
@@ -26,20 +25,20 @@ public class BankAccountController
 	@Autowired
 	private BankAccountService bankAccountService;
 
-	/**
-	 * Read all Bank accounts :
-	 * Get all Bank accounts
-	 * 
-	 * @return BankAccount The full bank accounts list
-	 */
-	@GetMapping(value = "/bankaccounts")
-	public ResponseEntity<List<BankAccount>> getBankAccounts()
-	{
-		List<BankAccount> bankAccountList = bankAccountService.getBankAccounts();
-
-		logger.info("Get all bank account list");			
-		return new ResponseEntity<>(bankAccountList, HttpStatus.FOUND);
-	}
+//	/**
+//	 * Read all Bank accounts :
+//	 * Get all Bank accounts
+//	 * 
+//	 * @return BankAccount The full bank accounts list
+//	 */
+//	@GetMapping(value = "/bankaccounts")
+//	public ResponseEntity<List<BankAccount>> getBankAccounts()
+//	{
+//		List<BankAccount> bankAccountList = bankAccountService.getBankAccounts();
+//
+//		logger.info("Get all bank account list");			
+//		return new ResponseEntity<>(bankAccountList, HttpStatus.FOUND);
+//	}
 		
 	/**
 	 * Get one bank account by user id
@@ -47,11 +46,11 @@ public class BankAccountController
 	 * @return BankAccount The bank account with user id
 	 */
 	@GetMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> getBankAccountByUser(Integer userId)
+	public ResponseEntity<BankAccount> getBankAccountById(Integer bankId)
 	{
-		BankAccount bankByid = bankAccountService.getBankAccountByUser(userId);
+		BankAccount bankByid = bankAccountService.getBankAccountById(bankId);
 		
-		logger.info("Get Bank account with id= {}", userId);	
+		logger.info("Get Bank account with id= {}", bankId);	
 		return new ResponseEntity<>(bankByid, HttpStatus.FOUND);
 	}	
 	
@@ -61,18 +60,19 @@ public class BankAccountController
 	 * @return BankAccount The bank account saved
 	 */
 	@PostMapping(value = "/bankaccount")
-	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccount bankAccount)
+	public ResponseEntity<BankAccount> addBankAccount(@RequestBody BankAccountDTO bankAccountDto)
 	{	
 		BankAccount bankToAdd = null;
-		if(bankAccountService.getBankAccountByUser(bankAccount.getUser().getUserId())==null)
+		
+		if(bankAccountService.getBankAccountById(bankAccountDto.getUser().getBankAccount().getBankaccountId())==null)
 		{
-			bankToAdd = bankAccountService.addBankAccount(bankAccount);
+			bankToAdd = bankAccountService.addBankAccount(bankAccountDto);
 			logger.info("Bank account added: {}",bankToAdd);
 		}
 		else {
-			logger.info("Bank Account already exists: {}", bankAccount);	
+			logger.info("Bank Account already exists: {}", bankAccountDto);	
 		}
-		return new ResponseEntity<>(bankAccount, HttpStatus.CREATED);
+		return new ResponseEntity<>(bankToAdd, HttpStatus.CREATED);
 	}
 	
 	/**
@@ -82,12 +82,13 @@ public class BankAccountController
 	 */
 	@PutMapping(value = "/bankaccount")
 	public ResponseEntity<BankAccount> updateBankAccount(
-			@RequestParam Integer userId, @RequestBody BankAccount bankAccount)
+			@RequestParam Integer bankId, @RequestBody BankAccount bankaccount)
 	{	
 		BankAccount bankToUpdate = null;
-		if(getBankAccountByUser(userId)!=null)
+		
+		if(getBankAccountById(bankId)!=null)
 		{
-			bankToUpdate = bankAccountService.updateBankAccount(userId, bankAccount);
+			bankToUpdate = bankAccountService.updateBankAccount(bankId, bankaccount);
 			logger.info("Bank account updated: {}", bankToUpdate);	
 		}
 		else {
@@ -102,14 +103,15 @@ public class BankAccountController
 	 * @return BankAccount Bank account deleted 
 	 */
 	@DeleteMapping(value = "/bankaccount")
-	public ResponseEntity<String> deleteBankAccount(Integer userId)
+	public ResponseEntity<String> deleteBankAccount(Integer bankId)
 	{
 		String info = null;
-		BankAccount bankToDel = bankAccountService.getBankAccountByUser(userId);
+		BankAccount bankToDel = bankAccountService.getBankAccountById(bankId);
+		
 		if (bankToDel != null)
 		{
 			info = bankToDel.getBankaccountId()+" "+bankToDel.getBankName()+" "+bankToDel.getIbanAccount()+" "+bankToDel.getUser();		
-			bankAccountService.deleteBankAccountById(userId);
+			bankAccountService.deleteBankAccountById(bankId);
 			logger.info("Bank account: {} have been deleted", info);
 		}
 		else {

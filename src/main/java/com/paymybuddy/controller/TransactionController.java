@@ -1,6 +1,6 @@
 package com.paymybuddy.controller;
 
-import java.util.List;
+import java.util.Optional;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,34 +26,34 @@ public class TransactionController
 	@Autowired
 	private TransactionService transactionService;
 
+//	/**
+//	 * Read all transactions :
+//	 * Get all transactions
+//	 * 
+//	 * @return TransactionsList The full transactions list
+//	 */
+//	@GetMapping(value = "/transactions")
+//	public ResponseEntity<List<Transaction>> getTransactions()
+//	{
+//		List<Transaction> transactionsList = transactionService.getTransactions();
+//
+//		logger.info("Get all transactions list");			
+//		return new ResponseEntity<>(transactionsList, HttpStatus.FOUND);
+//	}
+		
 	/**
-	 * Read all transactions :
-	 * Get all transactions
+	 * Get all transactions by user
 	 * 
-	 * @return TransactionsList The full transactions list
+	 * @return Transaction The transaction with email
 	 */
 	@GetMapping(value = "/transactions")
-	public ResponseEntity<List<Transaction>> getTransactions()
+	public ResponseEntity<Optional<Transaction>> getTransactionBySender(Integer sender)
 	{
-		List<Transaction> transactionsList = transactionService.getTransactions();
-
-		logger.info("Get all transactions list");			
-		return new ResponseEntity<>(transactionsList, HttpStatus.FOUND);
-	}
+		Optional<Transaction> transactionById = transactionService.getTransactionsForUser(sender);
 		
-//	/**
-//	 * Get all transactions by user
-//	 * 
-//	 * @return Transaction The transaction with email
-//	 */
-//	@GetMapping(value = "/transactionsUser")
-//	public ResponseEntity<List<Transaction>> getTransactionBySender(User sender)
-//	{
-//		List<Transaction> transactionByEmail = transactionService.getTransactionsBySender(sender);
-//		
-//		logger.info("Get transaction for email = {} is found: {}", sender, transactionByEmail);	
-//		return new ResponseEntity<>(transactionByEmail, HttpStatus.FOUND);
-//	}
+		logger.info("Get transaction for user = {} is found: {}", sender, transactionById);	
+		return new ResponseEntity<>(transactionById, HttpStatus.FOUND);
+	}
 	
 	/**
 	 * Get one transactions by id

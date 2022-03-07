@@ -1,5 +1,6 @@
 package com.paymybuddy.service;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
@@ -18,7 +18,6 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
 @Service
-@Transactional
 public class UserService implements IUserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
@@ -39,7 +38,7 @@ public class UserService implements IUserService
 		User user = userRepository.findByEmail(username);
 		if(user == null)
 		{
-			throw new UsernameNotFoundException("Invalid username or password.");
+			throw new UsernameNotFoundException("Invalid email or password.");
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
@@ -94,17 +93,17 @@ public class UserService implements IUserService
         return userListDto;
     }
     
-	/**
-	 * Get list of users :
-	 * Find all full users list
-	 * 
-	 * @return List<User> The list of all full users
-	 */
-	public List<User> getUsers()
-	{
-		logger.info("Users list found");	
-		return userRepository.findAll();
-	}
+//	/**
+//	 * Get list of users :
+//	 * Find all full users list
+//	 * 
+//	 * @return List<User> The list of all full users
+//	 */
+//	public List<User> getUsers()
+//	{
+//		logger.info("Users list to find");	
+//		return userRepository.findAll();
+//	}
 	
 	/**
 	 * Get user with id :
@@ -114,7 +113,7 @@ public class UserService implements IUserService
 	 */
 	public User getUserById(Integer userId)
 	{
-		logger.info("User found with id: {}",userId);
+		logger.info("User id to find: {}",userId);
 		return userRepository.getById(userId);
 	}
 	
@@ -126,7 +125,7 @@ public class UserService implements IUserService
 	 */
 	public User getUserByEmail(String email)
 	{
-		logger.info("User found with email: {}",email);
+		logger.info("User email to find: {}",email);
 	    return userRepository.findByEmail(email);
 	}
 	
@@ -178,17 +177,15 @@ public class UserService implements IUserService
 	 * 
 	 * @return User The user updated
 	 */
-	public User updateUser(String email, User user)
+	public User updateUser(String email, String firstname, String lastname, String city)
 	{	
 		User userToUpdate = userRepository.findByEmail(email);
 		if(userToUpdate.getEmail().equals(email))
 		{
-			userToUpdate.setFirstname(user.getFirstname());
-			userToUpdate.setLastname(user.getLastname());
-			userToUpdate.setCity(user.getCity());
-			userToUpdate.setBalance(user.getBalance());
-			userToUpdate.setPassword(user.getPassword());
-			userToUpdate.setFriendsList(user.getFriendsList());
+			userToUpdate.setFirstname(firstname);
+			userToUpdate.setLastname(lastname);
+			userToUpdate.setCity(city);
+			//userToUpdate.setBalance(user.getBalance())
 			userRepository.saveAndFlush(userToUpdate);
 		}
 		else {
@@ -214,9 +211,22 @@ public class UserService implements IUserService
 	 * 
 	 * @return Message Information string
 	 */
-	public String addToContact(User user, User friendToAdd)
+	public String addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
-		return "You have a new friend";
+		return "Friend add to your list";
+	}
+	
+	/**
+	 * Add money to balance :
+	 * New cash deposite add to balance
+	 * 
+	 * @return newBalance Operation on balance
+	 */
+	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
+	{
+		BigDecimal balance = user.getBalance().add(deposit);	
+		user.setBalance(balance);
+		return balance;
 	}
 }

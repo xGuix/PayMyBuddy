@@ -10,14 +10,15 @@ import org.springframework.web.bind.annotation.GetMapping;
 public class LoginController
 {
 	@GetMapping(value = "/login")
-	public String loginPage(Model model)
+	public String loginPage()
 	{
 		return "login";
 	}
 	
 	@GetMapping(value = "/error")
-	public String accessDenied(Model model, Principal principal) {
-		String message = "Hi " + principal.getName() //
+	public String accessDenied(Model model, Principal principal)
+	{
+		String message = "Sorry " + principal.getName()	
 				+ "<br> You do not have permission to access this page!";
 		model.addAttribute("message", message);
 		return "error";

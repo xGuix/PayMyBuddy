@@ -11,10 +11,11 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 //	/**
 //	 * {@inheritDoc}
 //	 */
-//	List<Transaction> getByEmailSender(User user);
-//	
-////	/**
-////	 * {@inheritDoc}
-////	 */
-////	List<Transaction> findSenderTransactionByEmail(String sender);
+//	List<Transaction> findAllById(Integer userId);
+	
+//	/**
+//	 * {@inheritDoc}
+//	 */
+//	List<Transaction> getTransactionsForUser(User sender);
+	
 }

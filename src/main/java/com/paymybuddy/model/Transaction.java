@@ -1,6 +1,7 @@
 package com.paymybuddy.model;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import javax.persistence.Column;
@@ -39,21 +40,20 @@ public class Transaction implements Serializable
 	private LocalDateTime dateTime;
 	
 	@Column(name="amount")
-	private float amount;
+	private BigDecimal amount;
 	
 	@Column(name="description")
 	private String description;
 	
 	@Column(name="transactionfee")
-	private float transcationFee;
+	private BigDecimal transcationFee;
 
 	public Transaction()
 	{}
 	
-	public Transaction(Integer transactionId, User sender, User receiver,
-			LocalDateTime dateTime,	float amount, String description, float transcationFee)
+	public Transaction(User sender, User receiver,
+			LocalDateTime dateTime,	BigDecimal amount, String description, BigDecimal transcationFee)
 	{
-		this.transactionId = transactionId;
 		this.sender = sender;
 		this.receiver = receiver;
 		this.dateTime = dateTime;
@@ -107,11 +107,12 @@ public class Transaction implements Serializable
 		this.dateTime = dateTime;
 	}
 
-	public float getAmount() {
+	public BigDecimal getAmount()
+	{
 		return amount;
 	}
 
-	public void setAmount(float amount)
+	public void setAmount(BigDecimal amount)
 	{
 		this.amount = amount;
 	}
@@ -126,12 +127,12 @@ public class Transaction implements Serializable
 		this.description = description;
 	}
 
-	public float getTranscationFee()
+	public BigDecimal getTranscationFee()
 	{
 		return transcationFee;
 	}
 
-	public void setTranscationFee(float transcationFee)
+	public void setTranscationFee(BigDecimal transcationFee)
 	{
 		this.transcationFee = transcationFee;
 	}

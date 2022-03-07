@@ -15,16 +15,15 @@
 		<nav class="navbar navbar-expand-lg navbar-light">
 			<div class="container-fluid">
 		   		<a class="navbar-brand" href="#" th:href="@{/}"> ─=≡Σ((( つ•̀ω•́)つ PAY MY BUDDY </a>
-		   		<button class="navbar-toggler" type="button" 
-		    		data-bs-toggle="collapse" data-bs-target="#navbar"
+		   		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar"
 		    		aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
 		     	<span class="navbar-toggler-icon"></span>
 		    </button>
 		    <div class="collapse navbar-collapse" id="navbar">
 		      <div class="navbar-nav">
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/friend}">FRIEND</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/paid}">PAID</a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}">logout</a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/friend"> FRIEND </a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/send"> SEND </a>
+		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}"> logout</a>
 		      </div>		     
 		    </div>
 		  </div>
