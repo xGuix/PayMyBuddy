@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.dto.SignupDTO;
-import com.paymybuddy.service.UserService;
+import com.paymybuddy.service.IUserService;
 
 @Controller
 public class SignupController
 {
-	private final UserService userService;
+	private final IUserService userService;
 
-	public SignupController(UserService userService)
+	public SignupController(IUserService userService)
 	{
 		this.userService = userService;
 	}

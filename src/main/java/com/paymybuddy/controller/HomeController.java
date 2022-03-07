@@ -3,19 +3,18 @@ package com.paymybuddy.controller;
 import java.math.BigDecimal;
 import java.security.Principal;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.BankAccountService;
-import com.paymybuddy.service.UserService;
+import com.paymybuddy.service.IUserService;
 
 @Controller
 public class HomeController
@@ -23,11 +22,12 @@ public class HomeController
 	private String homepage = "homepage";
 	private String redirectHomepage = "redirect:/homepage";
 	private String success = "Success!";
-
-	private UserService userService;
+	
+	@Autowired
+	private IUserService userService;
 	private BankAccountService bankAccountService;
 
-	public HomeController(UserService userService, BankAccountService bankAccountService)
+	public HomeController(IUserService userService, BankAccountService bankAccountService)
 	{
 		this.userService = userService;
 		this.bankAccountService = bankAccountService;
@@ -87,7 +87,7 @@ public class HomeController
 	 * @return homepage Homepage url
 	 */
 	@PostMapping("/addmoney")
-	public String addmoney (BigDecimal balance, Model model,
+	public String addmoney(BigDecimal balance, Model model,
 			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
@@ -102,8 +102,8 @@ public class HomeController
 	 * 
 	 * @return homepage Homepage url
 	 */
-	@PostMapping(value="/updateprofile")
-	public String updateprofile (String firstname,String lastname, String city, Model model, 
+	@PostMapping("/homepage")
+	public String homepage(String firstname,String lastname, String city, Model model, 
 			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();

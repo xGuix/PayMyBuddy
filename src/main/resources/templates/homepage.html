@@ -88,7 +88,7 @@
 					<div th:if="${userUpdate}" th:class="${alert}">
 						<div class="alert alert-success"> Profile update and saved :) </div>
 					</div>
-					<form action="@{/updateprofile}" th:method="post" th:object="${user}">
+					<form action="@{/homepage}" th:method="post" th:object="${user}">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center"> First name </span>
 	  						<input type="text" class="form-control" name="firstname" th:value="${user.firstname}">
@@ -101,10 +101,10 @@
 							<span class="input-group-text col-4 justify-content-center"> City </span>
 	  						<input type="text" class="form-control" name="city" th:value="${user.city}">
 						</div>
-<!-- 						<div class="input-group input-group-sm mb-3"> -->
-<!-- 							<span class="input-group-text col-4 justify-content-center"> Email </span> -->
-<!-- 	  						<input type="text" class="form-control" name="email" th:value="${user.email}"> -->
-<!-- 						</div> -->
+						<div class="input-group input-group-sm mb-3">
+							<span class="input-group-text col-4 justify-content-center"> Email </span>
+	  						<input type="text" class="form-control" name="email" th:value="${user.email}">
+						</div>
 						<!-- Save button -->
 						<div class="d-grid gap-2 col-6 mx-auto">
 						  	<input class="form-control btn btn-success btn-sm" type="submit" name="user-submit" value="Save update">

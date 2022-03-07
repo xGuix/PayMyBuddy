@@ -3,6 +3,7 @@ package com.paymybuddy.controller;
 import java.security.Principal;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,15 +12,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.model.User;
-import com.paymybuddy.service.UserService;
+import com.paymybuddy.service.IUserService;
 
 @Controller
 public class FriendController
 {
-	private final UserService userService;
+	@Autowired
+	private final IUserService userService;
 	private String friend = "redirect:/friend";
 
-	public FriendController(UserService userService)
+	public FriendController(IUserService userService)
 	{
 		this.userService = userService;
 	}

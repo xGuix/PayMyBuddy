@@ -7,17 +7,16 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import com.paymybuddy.model.User;
+import com.paymybuddy.service.IUserService;
 import com.paymybuddy.service.TransactionService;
-import com.paymybuddy.service.UserService;
 
 @Controller
 public class SendController
 {
-	private UserService userService;
+	private IUserService userService;
 	private TransactionService transactionService;
-	//private String send = "redirect:/send";
 
-	public SendController(UserService userService, TransactionService transactionService)
+	public SendController(IUserService userService, TransactionService transactionService)
 	{
 		this.userService = userService;
 		this.transactionService = transactionService;

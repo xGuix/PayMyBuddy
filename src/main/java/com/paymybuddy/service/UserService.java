@@ -21,7 +21,6 @@ import com.paymybuddy.repository.UserRepository;
 public class UserService implements IUserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
-	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
 	@Autowired
@@ -92,19 +91,7 @@ public class UserService implements IUserService
         }
         return userListDto;
     }
-    
-//	/**
-//	 * Get list of users :
-//	 * Find all full users list
-//	 * 
-//	 * @return List<User> The list of all full users
-//	 */
-//	public List<User> getUsers()
-//	{
-//		logger.info("Users list to find");	
-//		return userRepository.findAll();
-//	}
-	
+
 	/**
 	 * Get user with id :
 	 * Find the user with user id
@@ -161,6 +148,7 @@ public class UserService implements IUserService
 			newUser.setFirstname(signupDto.getFirstname());
 			newUser.setLastname(signupDto.getLastname());
 			newUser.setCity(signupDto.getCity());
+			newUser.setBalance(BigDecimal.ZERO);
 			newUser.setEmail(signupDto.getEmail());
 			newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
 			
@@ -214,6 +202,7 @@ public class UserService implements IUserService
 	public String addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
+		userRepository.saveAndFlush(user);
 		return "Friend add to your list";
 	}
 	
@@ -227,6 +216,7 @@ public class UserService implements IUserService
 	{
 		BigDecimal balance = user.getBalance().add(deposit);	
 		user.setBalance(balance);
+		userRepository.saveAndFlush(user);
 		return balance;
 	}
 }
