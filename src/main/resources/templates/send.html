@@ -36,22 +36,22 @@
 	    		<div class="col-lg-5 text-center">
 	    			<h3>SEND MONEY</h3>
 	    			<br>
-					<form action="@{/send}" method="post" th:object="${transaction}">
-					 	<div class="mb-3">
-					    	<label for="receiver" class="form-label"> Receiver </label>
-					    	<input type="email" class="form-control" id="receiver">
-					  	</div>
-					  	<div class="mb-3">
-					  		<label for="amount" class="form-label"> Amount </label>
-					    	<input type="text" class="form-control" id="amount" placeholder="15.00€">
+					<form action="@{/send}" method="post" th:object="${transactions}">
+						<div class="input-group input-group-sm mb-3">
+					  		<span class="input-group-text col-3 justify-content-center"> € </span>
+					    	<input type="text" class="form-control" placeholder="1.00€">
 					 	</div>
-						<div class="form-floating">
-						    <textarea class="form-control" id="comment"></textarea>
-						  	<label for="comment" class="form-label"> Write a message:</label>
+					 	<div class="input-group input-group-sm mb-3">
+					    	<span class="input-group-text col-3 justify-content-center"> Receiver</span>
+					    	<input type="email" class="form-control" placeholder="exemple@email.com">
+					  	</div>
+						<div class="input-group input-group-sm mb-3">
+							<span class="input-group-text col-3 justify-content-center"> Message </span>
+						    <textarea class="form-control" placeholder="Write your message..."></textarea>
 						</div>
 						<br>
 						<div class="col">
-						 	<button type="submit" class="btn btn-success" name="send" id="send"> Send money </button>
+						 	<button type="submit" class="btn btn-success" name="send"> Send money </button>
 						</div>
 					</form>
 					<br><br>
@@ -68,13 +68,13 @@
 				            <th scope="col" style="font-size:0.9em"> Fee </th>
 				        </tr>
 				        </thead>
-				        <tbody th:each="transaction: ${transactions}" th:remove="tag">
+				        <tbody th:each="transactions: ${transaction}" th:remove="tag">
 				        	<tr>
-				              	<td th:text="${transaction.receiver.user.firstname}" style="font-size:0.9em"></td>
-				               	<td th:text="${transaction.datetime}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.amount}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.description}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.transactionfee}" style="font-size:0.9em"></td>
+				              	<td th:text="${transactions.receiver}" style="font-size:0.9em"></td>
+				               	<td th:text="${transactions.dateTime}" style="font-size:0.9em"></td>
+				                <td th:text="${transactions.amount}" style="font-size:0.9em"></td>
+				                <td th:text="${transactions.description}" style="font-size:0.9em"></td>
+				                <td th:text="${transactions.transactionFee}" style="font-size:0.9em"></td>
 			               	</tr>
 			            </tbody>
 			        </table>

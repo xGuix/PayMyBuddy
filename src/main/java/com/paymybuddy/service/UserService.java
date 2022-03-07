@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
+import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 

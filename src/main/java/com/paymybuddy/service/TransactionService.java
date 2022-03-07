@@ -2,7 +2,7 @@ package com.paymybuddy.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,30 +27,24 @@ public class TransactionService
 	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
 	private LocalDateTime dateTime;
 	
-//	/**
-//	 * Get list of all transactions :
-//	 * Find all transactions saved
-//	 * 
-//	 * @return List<Transaction> The list of all transactions
-//	 */
-//	public List<Transaction> getTransactions()
-//	{
-//		logger.info("Transactions list found");	
-//		return transactionRepository.findAll();
-//	}
-	
 	/**
 	 * Get list of all transactions with sender email :
 	 * Find all transactions saved with user email
 	 * 
 	 * @return List<Transaction> The list of user transactions
 	 */
-	public Optional<Transaction> getTransactionsForUser(Integer userId)
+	public List<Transaction> getTransactionsByUserId()
 	{
 		logger.info("Transactions list found for user");	
-		return transactionRepository.findById(userId);
+		return transactionRepository.findAll();
 	}
 	
+	/**
+	 * Send money to friend :
+	 * check both balance and calculate figures
+	 * 
+	 * @return void No return
+	 */
 	public synchronized void sendMoney(User sender, User receiver, String description, BigDecimal amount) throws YourBalanceIsNotEnough
 	{
 		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));

@@ -26,7 +26,7 @@ public class FriendController
 		this.userService = userService;
 	}
 	
-	@GetMapping(value ="/friend")
+	@GetMapping("/friend")
 	public String transfer(Model model, Principal principal) 
 	{
 		String userEmail = principal.getName();
