@@ -30,32 +30,35 @@
 		</nav>
 		<br><br>
 		<br><br>
-		<br><br>
 	    <div class="container-fluid">
 	    	<div class="row justify-content-center" >
 	    		<div class="col-lg-5 text-center">
+	    			<!-- Send money form -->
 	    			<h3>SEND MONEY</h3>
 	    			<br>
-					<form th:action="@{/send}" method="post" th:object="${transactions}">
+					<form th:action="@{/sendmoney}" method="post" th:object="${transactions}">
 						<div class="input-group input-group-sm mb-3">
-					  		<span class="input-group-text col-3 justify-content-center"> € </span>
-					    	<input type="text" class="form-control" placeholder="1.00€">
-					 	</div>
+							<span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
+							<span class="input-group-text"> € </span>
+							<input type="text" class="form-control" name="balance" placeholder="1.00" required>
+						</div>
 					 	<div class="input-group input-group-sm mb-3">
 					    	<span class="input-group-text col-3 justify-content-center"> Friends</span>
-					    	<input type="email" class="form-control" placeholder="Choose a friend">
+					    	<select class="form-select form-select-sm">
+								<option selected> Select friend to send money... </option>
+								<option th:each="user: ${friend}" th:text="${user.firstname}+' '+${user.lastname}" th:value="${user.email}"> </option>
+							</select>
 					  	</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center"> Message </span>
 						    <textarea class="form-control" placeholder="Write your message..."></textarea>
 						</div>
-						<br>
-						<div class="col">
-						 	<button type="submit" class="btn btn-success" name="send"> Send money </button>
+						<!-- Send money button -->
+						<div class="d-grid gap-2 col-3 mx-auto">
+							<input class="form-control btn btn-success btn-sm" type="submit" name="sendMoney" value="Send money">
 						</div>
 					</form>
 					<br><br>
-					<br>
 			        <h3>MY TRANSACTIONS</h3>
 			        <br>
 			        <table class="table table-striped">
@@ -68,13 +71,13 @@
 				            <th scope="col" style="font-size:0.9em"> Fee </th>
 				        </tr>
 				        </thead>
-				        <tbody th:each="transactions: ${transaction}" th:remove="tag">
+				        <tbody th:each="transaction: ${transactions}" th:remove="tag">
 				        	<tr>
-				              	<td th:text="${transactions.receiver}" style="font-size:0.9em"></td>
-				               	<td th:text="${transactions.dateTime}" style="font-size:0.9em"></td>
-				                <td th:text="${transactions.amount}" style="font-size:0.9em"></td>
-				                <td th:text="${transactions.description}" style="font-size:0.9em"></td>
-				                <td th:text="${transactions.transactionFee}" style="font-size:0.9em"></td>
+				              	<td th:text="${transaction.receiver}" style="font-size:0.9em"></td>
+				               	<td th:text="${transaction.dateTime}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.amount}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.description}" style="font-size:0.9em"></td>
+				                <td th:text="${transaction.transactionFee}" style="font-size:0.9em"></td>
 			               	</tr>
 			            </tbody>
 			        </table>

@@ -48,16 +48,16 @@ public class HomeController
 	public String homepage(Model model, Principal principal)
 	{
 		String userEmail = principal.getName();
-		User user = userService.getUserByEmail(userEmail);
-		BankAccount findAccount = user.getBankAccount();
+		User userActiv = userService.getUserByEmail(userEmail);
+		BankAccount findAccount = userActiv.getBankAccount();
 		if(findAccount==null)
 		{
 			model.addAttribute(success, successString);
-			model.addAttribute("user", user);
+			model.addAttribute("user", userActiv);
 			return homepage; 
 		}
 		model.addAttribute(success, successString);
-		model.addAttribute("user", user);
+		model.addAttribute("user", userActiv);
 		model.addAttribute("bankaccount", findAccount);
 		return homepage; 
 	}

@@ -23,7 +23,8 @@ public class TransactionService
 	
 	@Autowired
 	private TransactionRepository transactionRepository;
-	 
+	
+	private UserService userService; 
 	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
 	private LocalDateTime dateTime;
 	
@@ -45,8 +46,9 @@ public class TransactionService
 	 * 
 	 * @return void No return
 	 */
-	public synchronized void sendMoney(User sender, User receiver, String message, BigDecimal amount) throws YourBalanceIsNotEnough
+	public synchronized void sendMoney(User sender, String email, String message, BigDecimal amount) throws YourBalanceIsNotEnough
 	{
+		User receiver = userService.getUserByEmail(email);
 		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));
 		BigDecimal fromCurrentBalance = sender.getBalance();
 		BigDecimal toCurrentBalance = receiver.getBalance();

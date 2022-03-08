@@ -30,8 +30,8 @@ public class FriendController
 	public String transfer(Model model, Principal principal) 
 	{
 		String userEmail = principal.getName();
-		User userToFind = userService.getUserByEmail(userEmail);
-		List<User> friendList = userToFind.getFriendsList();
+		User userActiv = userService.getUserByEmail(userEmail);
+		List<User> friendList = userActiv.getFriendsList();
 		model.addAttribute("friend", friendList);
 		return "friend";
 	}
