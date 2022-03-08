@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.dto.UserDTO;
-import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
@@ -166,15 +165,15 @@ public class UserService implements IUserService
 	 * 
 	 * @return User The user updated
 	 */
-	public User updateUser(String email, String firstname, String lastname, String city)
+	public User updateUser(String userEmail, String firstname, String lastname, String city, String email)
 	{	
-		User userToUpdate = userRepository.findByEmail(email);
-		if(userToUpdate.getEmail().equals(email))
+		User userToUpdate = userRepository.findByEmail(userEmail);
+		if(userToUpdate.getEmail().equals(userEmail))
 		{
 			userToUpdate.setFirstname(firstname);
 			userToUpdate.setLastname(lastname);
 			userToUpdate.setCity(city);
-			//userToUpdate.setBalance(user.getBalance())
+			userToUpdate.setEmail(email);
 			userRepository.saveAndFlush(userToUpdate);
 		}
 		else {
@@ -216,6 +215,20 @@ public class UserService implements IUserService
 	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
 	{
 		BigDecimal balance = user.getBalance().add(deposit);	
+		user.setBalance(balance);
+		userRepository.saveAndFlush(user);
+		return balance;
+	}
+	
+	/**
+	 * Withdraw money from balance :
+	 * New cash deposite to bank account
+	 * 
+	 * @return newBalance Operation on balance
+	 */
+	public BigDecimal withdrawMoneyToBank(User user , BigDecimal withdraw)
+	{
+		BigDecimal balance = user.getBalance().subtract(withdraw);	
 		user.setBalance(balance);
 		userRepository.saveAndFlush(user);
 		return balance;

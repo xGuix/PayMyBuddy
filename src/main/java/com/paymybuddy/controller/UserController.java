@@ -24,21 +24,6 @@ public class UserController
 	@Autowired
 	private UserService userService;
 	
-//	/**
-//	 * Read All list :
-//	 * Get all users
-//	 * 
-//	 * @return UsersList The full users list
-//	 */
-//	@GetMapping(value = "/users")
-//	public ResponseEntity<List<UserDTO>> getUsers()
-//	{
-//		List<UserDTO> userDtoList = userService.convertListToDTOList(userService.getUsers());
-//
-//		logger.info("Get all users list");			
-//		return new ResponseEntity<>(userDtoList, HttpStatus.FOUND);
-//	}
-	
 	/**
 	 * Get one user by id
 	 * 
@@ -86,26 +71,6 @@ public class UserController
 		}
 		return new ResponseEntity<>(userToAdd, HttpStatus.CREATED);
 	}
-	
-//	/**
-//	 * Update one user of list
-//	 * 
-//	 * @return User User updated
-//	 */
-//	@PutMapping(value = "/user")
-//	public ResponseEntity<UserDTO> updateUser(@RequestParam String email, @RequestBody UserDTO user)
-//	{	
-//		UserDTO userToUpdate = null;
-//		if(getUserByEmail(email)!=null)
-//		{
-//			userToUpdate = userService.entityToDto(userService.updateUser(email, user));
-//			logger.info("User updated: {}",userToUpdate);	
-//		}
-//		else {
-//			logger.info("User does not exists: {}", userToUpdate);	
-//		}
-//		return new ResponseEntity<>(userToUpdate, HttpStatus.OK);
-//	}
 	
 	/**
 	 * Delete one user from list

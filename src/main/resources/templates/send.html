@@ -36,14 +36,14 @@
 	    		<div class="col-lg-5 text-center">
 	    			<h3>SEND MONEY</h3>
 	    			<br>
-					<form action="@{/send}" method="post" th:object="${transactions}">
+					<form th:action="@{/send}" method="post" th:object="${transactions}">
 						<div class="input-group input-group-sm mb-3">
 					  		<span class="input-group-text col-3 justify-content-center"> € </span>
 					    	<input type="text" class="form-control" placeholder="1.00€">
 					 	</div>
 					 	<div class="input-group input-group-sm mb-3">
-					    	<span class="input-group-text col-3 justify-content-center"> Receiver</span>
-					    	<input type="email" class="form-control" placeholder="exemple@email.com">
+					    	<span class="input-group-text col-3 justify-content-center"> Friends</span>
+					    	<input type="email" class="form-control" placeholder="Choose a friend">
 					  	</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center"> Message </span>

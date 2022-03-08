@@ -45,7 +45,7 @@ public class TransactionService
 	 * 
 	 * @return void No return
 	 */
-	public synchronized void sendMoney(User sender, User receiver, String description, BigDecimal amount) throws YourBalanceIsNotEnough
+	public synchronized void sendMoney(User sender, User receiver, String message, BigDecimal amount) throws YourBalanceIsNotEnough
 	{
 		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));
 		BigDecimal fromCurrentBalance = sender.getBalance();
@@ -57,7 +57,7 @@ public class TransactionService
 		}
 		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
 		receiver.setBalance(toCurrentBalance.add(amount));
-		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, description, PERCENT);
+		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, message, PERCENT);
 		transactionRepository.save(transaction);
 	}
 	

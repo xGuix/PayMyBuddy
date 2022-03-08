@@ -2,6 +2,7 @@ package com.paymybuddy.controller;
 
 import java.math.BigDecimal;
 import java.security.Principal;
+import java.util.Objects;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,8 @@ public class HomeController
 {
 	private String homepage = "homepage";
 	private String redirectHomepage = "redirect:/homepage";
-	private String success = "Success!";
+	private String success = "success";
+	private String successString = "Success!";
 	
 	@Autowired
 	private IUserService userService;
@@ -48,8 +50,13 @@ public class HomeController
 		String userEmail = principal.getName();
 		User user = userService.getUserByEmail(userEmail);
 		BankAccount findAccount = user.getBankAccount();
-		
-		model.addAttribute("success", success);
+		if(findAccount==null)
+		{
+			model.addAttribute(success, successString);
+			model.addAttribute("user", user);
+			return homepage; 
+		}
+		model.addAttribute(success, successString);
 		model.addAttribute("user", user);
 		model.addAttribute("bankaccount", findAccount);
 		return homepage; 
@@ -67,6 +74,7 @@ public class HomeController
 		String userEmail = principal.getName();
 		User userBank = userService.getUserByEmail(userEmail);
 		BankAccount findAccount = userBank.getBankAccount();
+		
 		if(findAccount==null)
 		{
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
@@ -92,7 +100,25 @@ public class HomeController
 	{
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);
+		
 		userService.addMoneyToBalance(userBalance, balance);
+		redirAttrs.addFlashAttribute("balance", userBalance);
+		return redirectHomepage;	
+	}
+	
+	/**
+	 *  Withdraw money to bank:
+	 * 
+	 * @return homepage Homepage url
+	 */
+	@PostMapping("/withdrawmoney")
+	public String withdrawmoney(BigDecimal balance, Model model,
+			Principal principal, RedirectAttributes redirAttrs)
+	{
+		String userEmail = principal.getName();
+		User userBalance = userService.getUserByEmail(userEmail);
+		
+		userService.withdrawMoneyToBank(userBalance, balance);
 		redirAttrs.addFlashAttribute("balance", userBalance);
 		return redirectHomepage;	
 	}
@@ -102,16 +128,21 @@ public class HomeController
 	 * 
 	 * @return homepage Homepage url
 	 */
-	@PostMapping("/homepage")
-	public String homepage(String firstname,String lastname, String city, Model model, 
+	@PostMapping("/updateprofile")
+	public String updateprofile(String firstname,String lastname, String city, String email, Model model, 
 			Principal principal, RedirectAttributes redirAttrs)
 	{
 		String userEmail = principal.getName();
-		userService.updateUser(userEmail, firstname,lastname,city);
+		userService.updateUser(userEmail, firstname,lastname,city, email);
 		
-		User userUpdate = userService.getUserByEmail(userEmail);
-		redirAttrs.addFlashAttribute("user", userUpdate);
-		redirAttrs.addFlashAttribute("userUpdate", success);
+		if (!Objects.equals(userEmail, email))
+		{
+			redirAttrs.addFlashAttribute(success, successString);
+			return "redirect:/login";
+		}	
+		User userUpdate = userService.getUserByEmail(email);
+		model.addAttribute("user", userUpdate);
+		redirAttrs.addFlashAttribute("userUpdate", successString);
 		return redirectHomepage;	
 	}
 }
