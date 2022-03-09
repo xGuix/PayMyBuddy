@@ -33,6 +33,9 @@
 	    <div class="container-fluid">
 	    	<div class="row justify-content-center" >
 	    		<div class="col-lg-5 text-center">
+	    			<div th:if="${errorNegative}" th:class="${alert}" >
+						<div class="alert alert-danger" th:text="${errorNegative}" style="font-weight:750"></div>
+					</div>	
 	    			<!-- Send money form -->
 	    			<h3>SEND MONEY</h3>
 	    			<br>
@@ -40,18 +43,18 @@
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
 							<span class="input-group-text"> € </span>
-							<input type="text" class="form-control" name="balance" placeholder="1.00" required>
+							<input type="text" class="form-control" name="balance" placeholder="1.00" th:text="${amount}" required>
 						</div>
 					 	<div class="input-group input-group-sm mb-3">
 					    	<span class="input-group-text col-3 justify-content-center"> Friends</span>
 					    	<select class="form-select form-select-sm">
 								<option selected> Select friend to send money... </option>
-								<option th:each="user: ${friend}" th:text="${user.firstname}+' '+${user.lastname}" th:value="${user.email}"> </option>
+								<option th:each="user: ${friend}" th:text="${user.firstname}+' '+${user.lastname}" th:value="${user}"> </option>
 							</select>
 					  	</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center"> Message </span>
-						    <textarea class="form-control" placeholder="Write your message..."></textarea>
+						    <textarea class="form-control" th:value="${description}" placeholder="Write your message..."></textarea>
 						</div>
 						<!-- Send money button -->
 						<div class="d-grid gap-2 col-3 mx-auto">
@@ -71,7 +74,7 @@
 				            <th scope="col" style="font-size:0.9em"> Fee </th>
 				        </tr>
 				        </thead>
-				        <tbody th:each="transaction: ${transactions}" th:remove="tag">
+				        <tbody th:each="transaction: ${transaction}" th:remove="tag">
 				        	<tr>
 				              	<td th:text="${transaction.receiver}" style="font-size:0.9em"></td>
 				               	<td th:text="${transaction.dateTime}" style="font-size:0.9em"></td>

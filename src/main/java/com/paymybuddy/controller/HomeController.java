@@ -101,6 +101,11 @@ public class HomeController
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);
 		
+		if(balance.compareTo(BigDecimal.ZERO) <= 0)
+		{
+			redirAttrs.addFlashAttribute("errorNegative", "You cannot deposite negative amount!");
+			return redirectHomepage;
+		}
 		userService.addMoneyToBalance(userBalance, balance);
 		redirAttrs.addFlashAttribute("balance", userBalance);
 		return redirectHomepage;	
@@ -117,6 +122,12 @@ public class HomeController
 	{
 		String userEmail = principal.getName();
 		User userBalance = userService.getUserByEmail(userEmail);
+		
+		if(balance.compareTo(BigDecimal.ZERO) <= 0)
+		{
+			redirAttrs.addFlashAttribute("errorNegative", "You cannot withdraw negative amount!");
+			return redirectHomepage;
+		}
 		
 		userService.withdrawMoneyToBank(userBalance, balance);
 		redirAttrs.addFlashAttribute("balance", userBalance);

@@ -36,7 +36,7 @@ public class SendController
 		String userEmail = principal.getName();
 		User userActiv = userService.getUserByEmail(userEmail);
 		List<User> friendList = userActiv.getFriendsList();
-		List<Transaction> transactions = transactionService.getTransactionsByUserId();
+		List<Transaction> transactions = transactionService.getTransactiondsBySender(userActiv);
 		
 		model.addAttribute("user", userActiv);
 		model.addAttribute("friend",friendList);
@@ -49,6 +49,12 @@ public class SendController
 	{
 		String userEmail = principal.getName();
 		User userActiv = userService.getUserByEmail(userEmail);
+		
+		if(amount.compareTo(BigDecimal.ZERO) <= 1) 
+		{
+			redirAttrs.addFlashAttribute("errorNegative", "You cannot deposite negative amount!");
+			return sendRedirect;
+		}
 		
 		transactionService.sendMoney(userActiv, email, message, amount);
 		redirAttrs.addFlashAttribute("transactionSuccess", "Looks all good");

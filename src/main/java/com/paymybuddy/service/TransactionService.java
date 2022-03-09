@@ -25,7 +25,7 @@ public class TransactionService
 	private TransactionRepository transactionRepository;
 	
 	private UserService userService; 
-	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
+	private BigDecimal percent = BigDecimal.valueOf(0.5);
 	private LocalDateTime dateTime;
 	
 	/**
@@ -39,41 +39,18 @@ public class TransactionService
 		logger.info("Transactions list found for user");	
 		return transactionRepository.findAll();
 	}
-	
-	/**
-	 * Send money to friend :
-	 * check both balance and calculate figures
-	 * 
-	 * @return void No return
-	 */
-	public synchronized void sendMoney(User sender, String email, String message, BigDecimal amount) throws YourBalanceIsNotEnough
-	{
-		User receiver = userService.getUserByEmail(email);
-		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));
-		BigDecimal fromCurrentBalance = sender.getBalance();
-		BigDecimal toCurrentBalance = receiver.getBalance();
 		
-		if (fromCurrentBalance.compareTo(quantityAfterPercent) < 0)
-		{
-			throw new YourBalanceIsNotEnough();
-		}
-		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
-		receiver.setBalance(toCurrentBalance.add(amount));
-		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, message, PERCENT);
-		transactionRepository.save(transaction);
+	/**
+	 * Get one transaction with user email :
+	 * Find the transactions for sender
+	 * 
+	 * @return Transaction The transaction with email & id
+	 */
+	public List<Transaction> getTransactiondsBySender(User sender)
+	{
+		logger.info("The transactions for {} is found",sender);
+		return transactionRepository.getTransactionsBySender(sender);
 	}
-	
-//	/**
-//	 * Get one transaction with user email :
-//	 * Find the transactions for sender
-//	 * 
-//	 * @return Transaction The transaction with email & id
-//	 */
-//	public Transaction getTransactiondBySender(String sender)
-//	{
-//		logger.info("The transactions for {} is found",sender);
-//		return transactionRepository.getByEmailSender(sender);
-//	}
 	
 	/**
 	 * Get one transaction with transactionId :
@@ -98,33 +75,28 @@ public class TransactionService
 		logger.info("Transaction add and saved");		
 		return transactionRepository.save(transaction);
 	}
+
 	
 	/**
-	 * Add a new transaction :
-	 * Create & save transaction in list
+	 * Send money to friend :
+	 * check both balance and calculate figures
 	 * 
-	 * @return Transaction The transaction added
+	 * @return void No return
 	 */
-	public Transaction updateTransaction(Integer transactionId, Transaction transaction)
+	public synchronized void sendMoney(User sender, String email, String message, BigDecimal amount) throws YourBalanceIsNotEnough
 	{
-		Transaction newTransaction = new Transaction();
-		newTransaction.setSender(transaction.getReceiver());
-		newTransaction.setReceiver(transaction.getReceiver());
-		newTransaction.setAmount(transaction.getAmount());
-		newTransaction.setDescription(transaction.getDescription());
-		newTransaction.setTranscationFee(transaction.getTranscationFee());
+		User receiver = userService.getUserByEmail(email);
+		BigDecimal quantityAfterPercent = amount.add(amount.multiply(percent));
+		BigDecimal fromCurrentBalance = sender.getBalance();
+		BigDecimal toCurrentBalance = receiver.getBalance();
 		
-		logger.info("Transaction update and saved");		
-		return transactionRepository.saveAndFlush(newTransaction);
-	}
-	
-	/**
-	 * Delete transaction from list :
-	 * Delete a transaction with id
-	 */
-	public void deleteTransactionById(Integer transactionId)
-	{
-		transactionRepository.deleteById(transactionId);
-		logger.info("Transaction have been deleted");
+		if (fromCurrentBalance.compareTo(quantityAfterPercent) < 0)
+		{
+			throw new YourBalanceIsNotEnough();
+		}
+		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
+		receiver.setBalance(toCurrentBalance.add(amount));
+		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, message, percent);
+		transactionRepository.save(transaction);
 	}
 }
