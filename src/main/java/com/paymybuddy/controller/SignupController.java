@@ -1,5 +1,7 @@
 package com.paymybuddy.controller;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -10,14 +12,16 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.paymybuddy.dto.SignupDTO;
-import com.paymybuddy.service.UserService;
+import com.paymybuddy.service.IUserService;
 
 @Controller
 public class SignupController
 {
-	private final UserService userService;
+	private static Logger logger = LogManager.getLogger("SignupControllerLog");
+	
+	private final IUserService userService;
 
-	public SignupController(UserService userService)
+	public SignupController(IUserService userService)
 	{
 		this.userService = userService;
 	}
@@ -41,9 +45,11 @@ public class SignupController
 	    if (result.hasErrors())
 	    {
 	    	redirAttrs.addFlashAttribute("error", err);
+	    	logger.info("Data error, no signup");
 	        return "redirect:/signup";
 	    }
 	    redirAttrs.addFlashAttribute("success", "Success!");
+	    logger.info("New user to save: {}", user);
 	    userService.addUser(user);
 	    return "redirect:/login";
 	}

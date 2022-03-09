@@ -28,9 +28,8 @@
 		    </div>
 		  </div>
 		</nav>
-		<br><br>
-		<br><br>
-		<br><br>
+		<br><br><br>
+		<br><br><br>
 	    <div class="container-fluid">
 			<div class="row justify-content-center" >
 				<div class="col-lg-auto text-center">
@@ -75,22 +74,23 @@
 				    </div>
 				    <!-- Table of actual friends list -->
 				    <br><br>
-				    <p><strong> Your friends list </strong></p>
+				    <h3> FRIENDS LIST </h3>
+				    <br>
 				    <table class="table table-striped">
 				   		<thead class="table-light">
 				        <tr>
-				            <th scope="col" style="font-size:0.9em"> First name </th>
-				            <th scope="col" style="font-size:0.9em"> Last name </th>
+				            <th scope="col" style="font-size:0.9em"> Name </th>
 				            <th scope="col" style="font-size:0.9em"> City </th>
 				            <th scope="col" style="font-size:0.9em"> Email </th>
+				            <th scope="col" style="font-size:0.9em"> Balance </th>
 				        </tr>
 				        </thead>
 				        <tbody th:each="user : ${friend}" th:remove="tag">
 				        	<tr>
-				              	<td th:text="${user.firstname}" style="font-size:0.9em"></td>
-				               	<td th:text="${user.lastname}" style="font-size:0.9em"></td>
+				              	<td th:text="${user.firstname}+' '+${user.lastname}" style="font-size:0.9em"></td>
 				                <td th:text="${user.city}" style="font-size:0.9em"></td>
-				                <td th:text="${user.email}" style="font-size:0.9em"></td>
+				                <td th:text="${user.email}" style="font-size:0.9em;color:grey;"></td>
+				                <td th:text="${user.balance}" style="font-size:0.9em"></td>
 			               	</tr>
 			            </tbody>
 			        </table>

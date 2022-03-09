@@ -46,20 +46,20 @@ public class Transaction implements Serializable
 	private String description;
 	
 	@Column(name="transactionfee")
-	private BigDecimal transcationFee;
+	private BigDecimal transactionFee;
 
 	public Transaction()
 	{}
 	
-	public Transaction(User sender, User receiver,
-			LocalDateTime dateTime,	BigDecimal amount, String description, BigDecimal transcationFee)
+	public Transaction(User sender, User receiver, LocalDateTime dateTime,
+			BigDecimal amount, String description, BigDecimal transactionFee)
 	{
 		this.sender = sender;
 		this.receiver = receiver;
 		this.dateTime = dateTime;
 		this.amount = amount;
 		this.description = description;
-		this.transcationFee = transcationFee;
+		this.transactionFee = transactionFee;
 	}
 	
 	public static long getSerialversionuid()
@@ -127,13 +127,13 @@ public class Transaction implements Serializable
 		this.description = description;
 	}
 
-	public BigDecimal getTranscationFee()
+	public BigDecimal getTransactionFee()
 	{
-		return transcationFee;
+		return transactionFee;
 	}
 
-	public void setTranscationFee(BigDecimal transcationFee)
+	public void setTransactionFee(BigDecimal transactionFee)
 	{
-		this.transcationFee = transcationFee;
+		this.transactionFee = transactionFee;
 	}
 }

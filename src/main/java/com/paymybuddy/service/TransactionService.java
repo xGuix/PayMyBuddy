@@ -2,133 +2,96 @@ package com.paymybuddy.service;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
-import java.util.Optional;
+import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
-import com.paymybuddy.exception.YourBalanceIsNotEnough;
+import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
 
 @Service
-@Transactional
-public class TransactionService
+public class TransactionService implements ITransactionService
 {
 	private static Logger logger = LogManager.getLogger("TransactionServiceLog");
 	
 	@Autowired
 	private TransactionRepository transactionRepository;
-	 
-	private BigDecimal PERCENT = BigDecimal.valueOf(0.5);
-	private LocalDateTime dateTime;
 	
-//	/**
-//	 * Get list of all transactions :
-//	 * Find all transactions saved
-//	 * 
-//	 * @return List<Transaction> The list of all transactions
-//	 */
-//	public List<Transaction> getTransactions()
-//	{
-//		logger.info("Transactions list found");	
-//		return transactionRepository.findAll();
-//	}
+	@Autowired
+	private IUserService userService; 
 	
-	/**
-	 * Get list of all transactions with sender email :
-	 * Find all transactions saved with user email
-	 * 
-	 * @return List<Transaction> The list of user transactions
-	 */
-	public Optional<Transaction> getTransactionsForUser(Integer userId)
+	private BigDecimal percent = BigDecimal.valueOf(0.05);
+	private LocalDateTime dateTime = LocalDateTime.now();
+
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		logger.info("Transactions list found for user");	
-		return transactionRepository.findById(userId);
-	}
-	
-	public synchronized void sendMoney(User sender, User receiver, String description, BigDecimal amount) throws YourBalanceIsNotEnough
-	{
-		BigDecimal quantityAfterPercent = amount.add(amount.multiply(PERCENT));
-		BigDecimal fromCurrentBalance = sender.getBalance();
-		BigDecimal toCurrentBalance = receiver.getBalance();
-		
-		if (fromCurrentBalance.compareTo(quantityAfterPercent) < 0)
+		User user = userService.getUserByEmail(username);
+		if(user == null)
 		{
-			throw new YourBalanceIsNotEnough();
+			throw new UsernameNotFoundException("Invalid email or password.");
 		}
-		sender.setBalance(fromCurrentBalance.subtract(quantityAfterPercent));
-		receiver.setBalance(toCurrentBalance.add(amount));
-		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, description, PERCENT);
-		transactionRepository.save(transaction);
+		return  new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
 	
-//	/**
-//	 * Get one transaction with user email :
-//	 * Find the transactions for sender
-//	 * 
-//	 * @return Transaction The transaction with email & id
-//	 */
-//	public Transaction getTransactiondBySender(String sender)
-//	{
-//		logger.info("The transactions for {} is found",sender);
-//		return transactionRepository.getByEmailSender(sender);
-//	}
-	
 	/**
-	 * Get one transaction with transactionId :
-	 * Find the transactions id
+	 * Get list of all transactions sent :
+	 * Find the transactions for sender
 	 * 
-	 * @return Transaction The transaction with id
+	 * @return List<Transaction> The transactions of user 
 	 */
-	public Transaction getTransactiondById(Integer transactionId)
+	public List<Transaction> getTransactiondsBySender(User sender)
 	{
-		logger.info("The transaction N°{} is found}",transactionId);
-		return transactionRepository.getById(transactionId);
+		logger.info("The transactions for {} is found",sender);
+		return transactionRepository.getTransactionsBySender(sender);
 	}
 	
 	/**
-	 * Add a new transaction :
-	 * Create & save transaction in list
+	 * Get list of all transactions received :
+	 * Find the transactions for sender
 	 * 
-	 * @return Transaction The transaction added
+	 * @return List<Transaction> The transactions of user 
 	 */
-	public Transaction addTransaction(Transaction transaction)
-	{	
-		logger.info("Transaction add and saved");		
-		return transactionRepository.save(transaction);
-	}
-	
-	/**
-	 * Add a new transaction :
-	 * Create & save transaction in list
-	 * 
-	 * @return Transaction The transaction added
-	 */
-	public Transaction updateTransaction(Integer transactionId, Transaction transaction)
+	public List<Transaction> getTransactiondsByReceiver(User receiver)
 	{
-		Transaction newTransaction = new Transaction();
-		newTransaction.setSender(transaction.getReceiver());
-		newTransaction.setReceiver(transaction.getReceiver());
-		newTransaction.setAmount(transaction.getAmount());
-		newTransaction.setDescription(transaction.getDescription());
-		newTransaction.setTranscationFee(transaction.getTranscationFee());
+		logger.info("The transactions from {} is found",receiver);
+		return transactionRepository.getTransactionsByReceiver(receiver);
+	}
+
+	/**
+	 * Send money to friend :
+	 * check both balance and calculate figures
+	 * 
+	 * @return void No return
+	 */
+	public Transaction sendMoney(User sender, String email, String message, BigDecimal amount) throws BalanceNotEnough
+	{
+		User receiver = userService.getUserByEmail(email);
+		BigDecimal transactionFee = amount.multiply(percent);
+		BigDecimal receiveAmount = amount.subtract(transactionFee);
+		BigDecimal senderBalance = sender.getBalance();
+		BigDecimal receiverBalance = receiver.getBalance();
 		
-		logger.info("Transaction update and saved");		
-		return transactionRepository.saveAndFlush(newTransaction);
-	}
-	
-	/**
-	 * Delete transaction from list :
-	 * Delete a transaction with id
-	 */
-	public void deleteTransactionById(Integer transactionId)
-	{
-		transactionRepository.deleteById(transactionId);
-		logger.info("Transaction have been deleted");
+		if (senderBalance.compareTo(receiveAmount) < 0)
+		{
+			logger.info("Balance is not enough: {}, sending amount: {}", senderBalance, amount);
+			throw new BalanceNotEnough();
+		}
+		
+		sender.setBalance(senderBalance.subtract(amount));
+		receiver.setBalance(receiverBalance.add(receiveAmount));
+		Transaction transaction = new Transaction(sender, receiver, dateTime, receiveAmount, message, transactionFee);
+		
+		logger.info("Transaction to save: {}",transaction);
+		transactionRepository.save(transaction);
+		return transaction;
 	}
 }

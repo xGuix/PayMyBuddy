@@ -21,14 +21,14 @@
 		    	</button>
 		   		 <div class="collapse navbar-collapse" id="navbar">
 		    		<div class="navbar-nav ">
-		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/friend"> FRIEND </a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" href="/send"> SEND </a>
-		        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}"> logout</a>
+				        <a class="nav-link" sec:authorize="isAuthenticated()" href="/friend"> FRIEND </a>
+				        <a class="nav-link" sec:authorize="isAuthenticated()" href="/send"> SEND </a>
+				        <a class="nav-link" sec:authorize="isAuthenticated()" th:href="@{/logout}"> logout</a>
 		     		</div>		     
 				</div>
 			</div>
 		</nav>
-		<br>
+		<br><br>
 		<div class="container-fluid">
 			<div class="row justify-content-center" >
 				<div class="col-lg-auto text-center">
@@ -39,23 +39,40 @@
 					</div>
 					<br>
 					<!-- User informations update -->
-					<h3> ADD MONEY </h3>
+					<h3> MONEY BALANCE </h3>
 					<br>
 					<div th:if="${balance}" th:class="${alert}">
 						<div class="alert alert-success"> Deposite successful. Balance update :) </div>
 					</div>
-					<form th:action="@{/addmoney}" method="post" th:object="${user}">
+					<div th:if="${errorNegative}" th:class="${alert}" >
+						<div class="alert alert-danger" th:text="${errorNegative}"></div>
+					</div>	
 					<!-- Balance View and add money -->
-					<div class="input-group input-group-sm mb-3">
-						  <span class="input-group-text"> € </span>
-						  <span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
-						  <input type="text" class="form-control" name="balance" placeholder="10.00" required>
+					<div class="d-inline-flex flexbd-highlight mb-3">
+						<!-- Balance View and withdraw money -->
+						<form th:action="@{/withdrawmoney}" method="post" th:object="${user}" style="margin-right: 15px;">
+							<div class="input-group input-group-sm mb-3">	  
+								<span class="input-group-text"> € </span>
+								<span class="input-group-text col-5 justify-content-center" th:text="${user.balance}"></span>
+								<input type="text" class="form-control" name="balance" placeholder="10.00 mini" style="text-align:center" required>
+							</div>
+							<!-- Withdraw money button -->
+							<div class="d-grid gap-2 col-6 mx-auto">
+							  	<input class="form-control btn btn-success btn-sm" type="submit" name="withdraw" value="Withdraw">
+							</div>
+						</form>
+						<form th:action="@{/addmoney}" method="post" th:object="${user}" style="margin-left: 15px;">
+							<div class="input-group input-group-sm mb-3">
+								<span class="input-group-text"> € </span>
+								<span class="input-group-text col-5 justify-content-center" th:text="${user.balance}"></span>
+								<input type="text" class="form-control" name="balance" placeholder="10.00 mini" style="text-align:center" required>
+							</div>
+							<!-- Add money button -->
+							<div class="d-grid gap-2 col-6 mx-auto">
+							  	<input class="form-control btn btn-success btn-sm" type="submit" name="deposite" value="Deposite">
+							</div>
+						</form>
 					</div>
-					<!-- Add money button -->
-					<div class="d-grid gap-2 col-6 mx-auto">
-					  	<input class="form-control btn btn-success btn-sm" type="submit" name="addMoney" value="add money">
-					</div>
-					</form>
 					<br><br>
 					<!-- User informations update -->
 					<h3> ADD BANK ACCOUNT </h3>
@@ -70,14 +87,14 @@
 						<!-- Add bank account fields -->
 						<div class="input-group input-group-sm mb-3">
 						  	<span class="input-group-text col-4 justify-content-center"> Iban number </span>
-  							<input type="text" class="form-control" name="ibanaccount" th:value="${bankaccount.ibanAccount}" autofocus="autofocus">
+  							<input type="text" class="form-control" name="ibanaccount" th:value="${bankaccount?.ibanAccount}" autofocus="autofocus">
 						</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center"> Bank name </span>
-  							<input type="text" class="form-control" name="bankname" th:value="${bankaccount.bankName}" autofocus="autofocus">
+  							<input type="text" class="form-control" name="bankname" th:value="${bankaccount?.bankName}" autofocus="autofocus">
 						</div>
 					 	<!-- Add account button -->
-					 	<div class="d-grid gap-2 col-6 mx-auto">
+					 	<div class="d-grid gap-2 col-4 mx-auto">
 					  		<input class="form-control btn btn-success btn-sm" type="submit" name="bank-submit" value="Save account">
 					  	</div>
 					</form>
@@ -88,7 +105,7 @@
 					<div th:if="${userUpdate}" th:class="${alert}">
 						<div class="alert alert-success"> Profile update and saved :) </div>
 					</div>
-					<form action="@{/updateprofile}" th:method="post" th:object="${user}">
+					<form th:action="@{/updateprofile}" method="post" th:object="${user}">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-4 justify-content-center"> First name </span>
 	  						<input type="text" class="form-control" name="firstname" th:value="${user.firstname}">
@@ -101,12 +118,12 @@
 							<span class="input-group-text col-4 justify-content-center"> City </span>
 	  						<input type="text" class="form-control" name="city" th:value="${user.city}">
 						</div>
-<!-- 						<div class="input-group input-group-sm mb-3"> -->
-<!-- 							<span class="input-group-text col-4 justify-content-center"> Email </span> -->
-<!-- 	  						<input type="text" class="form-control" name="email" th:value="${user.email}"> -->
-<!-- 						</div> -->
+						<div class="input-group input-group-sm mb-3">
+							<span class="input-group-text col-4 justify-content-center"> Email </span>
+	  						<input type="text" class="form-control" name="email" th:value="${user.email}">
+						</div>
 						<!-- Save button -->
-						<div class="d-grid gap-2 col-6 mx-auto">
+						<div class="d-grid gap-2 col-4 mx-auto">
 						  	<input class="form-control btn btn-success btn-sm" type="submit" name="user-submit" value="Save update">
 						</div>
 					</form>			        

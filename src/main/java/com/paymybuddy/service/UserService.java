@@ -1,8 +1,6 @@
 package com.paymybuddy.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dto.SignupDTO;
-import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
@@ -21,7 +18,6 @@ import com.paymybuddy.repository.UserRepository;
 public class UserService implements IUserService
 {
 	private static Logger logger = LogManager.getLogger("UserServiceLog");
-	
 	private final BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
 	
 	@Autowired
@@ -43,68 +39,6 @@ public class UserService implements IUserService
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
 
-	/**
-	 * Convert Entity :
-	 * Get userDTO with user
-	 * 
-	 * @return UsersDTO The user convert in DTO
-	 */
-    public UserDTO entityToDto(User user)
-    {
-    	UserDTO newUserDto = new UserDTO();
-    	newUserDto.setUserId(user.getUserId());
-    	newUserDto.setFirstname(user.getFirstname());
-    	newUserDto.setLastname(user.getLastname());
-    	newUserDto.setCity(user.getCity());
-    	newUserDto.setEmail(user.getEmail());
-    	newUserDto.setBalance(user.getBalance());
-    	newUserDto.setFriendsList(null);
-    	
-       	List<UserDTO> friendListDto = new ArrayList<>();
-        	for(User uf : user.getFriendsList())
-        	{ 
-	    		UserDTO friendDto = new UserDTO();
-	    		friendDto.setUserId(uf.getUserId());
-	    		friendDto.setFirstname(uf.getFirstname());
-	    		friendDto.setLastname(uf.getLastname());
-	    		friendDto.setCity(uf.getCity());
-	    		friendDto.setEmail(uf.getEmail());
-	    		friendDto.setBalance(uf.getBalance());
-	    		friendDto.setFriendsList(null);
-	    		friendListDto.add(friendDto);
-        	}
-        newUserDto.setFriendsList(friendListDto);       
-        return newUserDto;
-    }
-    
-	/**
-	 * Convert List of Entity :
-	 * Get userDTO list with user list
-	 * 
-	 * @return List<UserDTO> The list of user convert in DTO list
-	 */
-    public List<UserDTO> convertListToDTOList(List<User> friendsList)
-    {
-        List<UserDTO> userListDto = new ArrayList<>();
-        for(User u : friendsList)
-        {  
-        	userListDto.add(entityToDto(u));
-        }
-        return userListDto;
-    }
-    
-//	/**
-//	 * Get list of users :
-//	 * Find all full users list
-//	 * 
-//	 * @return List<User> The list of all full users
-//	 */
-//	public List<User> getUsers()
-//	{
-//		logger.info("Users list to find");	
-//		return userRepository.findAll();
-//	}
-	
 	/**
 	 * Get user with id :
 	 * Find the user with user id
@@ -161,6 +95,7 @@ public class UserService implements IUserService
 			newUser.setFirstname(signupDto.getFirstname());
 			newUser.setLastname(signupDto.getLastname());
 			newUser.setCity(signupDto.getCity());
+			newUser.setBalance(BigDecimal.ZERO);
 			newUser.setEmail(signupDto.getEmail());
 			newUser.setPassword(bCryptPasswordEncoder.encode(signupDto.getPassword()));
 			
@@ -177,15 +112,15 @@ public class UserService implements IUserService
 	 * 
 	 * @return User The user updated
 	 */
-	public User updateUser(String email, String firstname, String lastname, String city)
+	public User updateUser(String userEmail, String firstname, String lastname, String city, String email)
 	{	
-		User userToUpdate = userRepository.findByEmail(email);
-		if(userToUpdate.getEmail().equals(email))
+		User userToUpdate = userRepository.findByEmail(userEmail);
+		if(userToUpdate.getEmail().equals(userEmail))
 		{
 			userToUpdate.setFirstname(firstname);
 			userToUpdate.setLastname(lastname);
 			userToUpdate.setCity(city);
-			//userToUpdate.setBalance(user.getBalance())
+			userToUpdate.setEmail(email);
 			userRepository.saveAndFlush(userToUpdate);
 		}
 		else {
@@ -194,27 +129,19 @@ public class UserService implements IUserService
 		logger.info("User update and saved");		
 		return userToUpdate;
 	}
-	
-	/**
-	 * Delete user from list :
-	 * Delete a user with id
-	 */
-	public void deleteUserById(Integer userId)
-	{
-		userRepository.deleteById(userId);
-		logger.info("User deleted");
-	}
 
 	/**
 	 * Add a connection between users :
 	 * New friend add to friends list
 	 * 
-	 * @return Message Information string
+	 * @return UserToAdd User friend to add
 	 */
-	public String addToFriends(User user, User friendToAdd)
+	public User addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
-		return "Friend add to your list";
+		userRepository.saveAndFlush(user);
+		logger.info("User added to your friend list");
+		return friendToAdd;
 	}
 	
 	/**
@@ -223,10 +150,27 @@ public class UserService implements IUserService
 	 * 
 	 * @return newBalance Operation on balance
 	 */
-	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
+	public BigDecimal addMoneyToBalance(User user, BigDecimal deposit)
 	{
 		BigDecimal balance = user.getBalance().add(deposit);	
 		user.setBalance(balance);
+		userRepository.saveAndFlush(user);
+		logger.info("Money deposite to balance");
+		return balance;
+	}
+	
+	/**
+	 * Withdraw money from balance :
+	 * New cash deposite to bank account
+	 * 
+	 * @return newBalance Operation on balance
+	 */
+	public BigDecimal withdrawMoneyToBank(User user, BigDecimal withdraw)
+	{
+		BigDecimal balance = user.getBalance().subtract(withdraw);	
+		user.setBalance(balance);
+		userRepository.saveAndFlush(user);
+		logger.info("Money withdraw from balance");
 		return balance;
 	}
 }
