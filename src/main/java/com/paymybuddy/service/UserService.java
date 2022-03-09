@@ -182,28 +182,19 @@ public class UserService implements IUserService
 		logger.info("User update and saved");		
 		return userToUpdate;
 	}
-	
-	/**
-	 * Delete user from list :
-	 * Delete a user with id
-	 */
-	public void deleteUserById(Integer userId)
-	{
-		userRepository.deleteById(userId);
-		logger.info("User deleted");
-	}
 
 	/**
 	 * Add a connection between users :
 	 * New friend add to friends list
 	 * 
-	 * @return Message Information string
+	 * @return UserToAdd User friend to add
 	 */
-	public String addToFriends(User user, User friendToAdd)
+	public User addToFriends(User user, User friendToAdd)
 	{
 		user.addUserFriend(friendToAdd);
 		userRepository.saveAndFlush(user);
-		return "Friend add to your list";
+		logger.info("User added to your friend list");
+		return friendToAdd;
 	}
 	
 	/**
@@ -212,11 +203,12 @@ public class UserService implements IUserService
 	 * 
 	 * @return newBalance Operation on balance
 	 */
-	public BigDecimal addMoneyToBalance(User user , BigDecimal deposit)
+	public BigDecimal addMoneyToBalance(User user, BigDecimal deposit)
 	{
 		BigDecimal balance = user.getBalance().add(deposit);	
 		user.setBalance(balance);
 		userRepository.saveAndFlush(user);
+		logger.info("Money deposite to balance");
 		return balance;
 	}
 	
@@ -226,11 +218,12 @@ public class UserService implements IUserService
 	 * 
 	 * @return newBalance Operation on balance
 	 */
-	public BigDecimal withdrawMoneyToBank(User user , BigDecimal withdraw)
+	public BigDecimal withdrawMoneyToBank(User user, BigDecimal withdraw)
 	{
 		BigDecimal balance = user.getBalance().subtract(withdraw);	
 		user.setBalance(balance);
 		userRepository.saveAndFlush(user);
+		logger.info("Money withdraw from balance");
 		return balance;
 	}
 }

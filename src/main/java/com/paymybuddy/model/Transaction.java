@@ -51,8 +51,8 @@ public class Transaction implements Serializable
 	public Transaction()
 	{}
 	
-	public Transaction(User sender, User receiver,
-			LocalDateTime dateTime,	BigDecimal amount, String description, BigDecimal transactionFee)
+	public Transaction(User sender, User receiver, LocalDateTime dateTime,
+			BigDecimal amount, String description, BigDecimal transactionFee)
 	{
 		this.sender = sender;
 		this.receiver = receiver;
@@ -127,12 +127,12 @@ public class Transaction implements Serializable
 		this.description = description;
 	}
 
-	public BigDecimal getTranscationFee()
+	public BigDecimal getTransactionFee()
 	{
 		return transactionFee;
 	}
 
-	public void setTranscationFee(BigDecimal transactionFee)
+	public void setTransactionFee(BigDecimal transactionFee)
 	{
 		this.transactionFee = transactionFee;
 	}

@@ -15,4 +15,9 @@ public interface TransactionRepository extends JpaRepository<Transaction, Intege
 	 * {@inheritDoc}
 	 */
 	List<Transaction> getTransactionsBySender(User sender);
+
+	/**
+	 * {@inheritDoc}
+	 */
+	List<Transaction> getTransactionsByReceiver(List<User> friendList);
 }

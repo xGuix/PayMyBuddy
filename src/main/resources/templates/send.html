@@ -33,28 +33,33 @@
 	    <div class="container-fluid">
 	    	<div class="row justify-content-center" >
 	    		<div class="col-lg-5 text-center">
+	    			<!-- Success message -->
+	    			<div th:if="${transactionSuccess}" th:class="${alert}">
+						<div class="alert alert-success"> Transaction successful! Receiver said: Thanks buddy :) </div>
+					</div>
+					<!-- Error message -->
 	    			<div th:if="${errorNegative}" th:class="${alert}" >
-						<div class="alert alert-danger" th:text="${errorNegative}" style="font-weight:750"></div>
+						<div class="alert alert-danger" th:text="${errorNegative}" style="font-weight:500"></div>
 					</div>	
 	    			<!-- Send money form -->
 	    			<h3>SEND MONEY</h3>
 	    			<br>
-					<form th:action="@{/sendmoney}" method="post" th:object="${transactions}">
+					<form th:action="@{/sendmoney}" method="post" th:object="${transaction}">
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
 							<span class="input-group-text"> € </span>
-							<input type="text" class="form-control" name="balance" placeholder="1.00" th:text="${amount}" required>
+							<input type="text" class="form-control" name="amount" placeholder="1.00" required>
 						</div>
 					 	<div class="input-group input-group-sm mb-3">
 					    	<span class="input-group-text col-3 justify-content-center"> Friends</span>
-					    	<select class="form-select form-select-sm">
-								<option selected> Select friend to send money... </option>
-								<option th:each="user: ${friend}" th:text="${user.firstname}+' '+${user.lastname}" th:value="${user}"> </option>
+					    	<select class="form-select form-select-sm" name="email">
+								<option selected th:value="email" > Select friend to send money... </option>
+								<option th:each="user: ${friend}" th:text="${user.firstname}+' '+${user.lastname}" th:value="${user.email}"> </option>
 							</select>
 					  	</div>
 						<div class="input-group input-group-sm mb-3">
 							<span class="input-group-text col-3 justify-content-center"> Message </span>
-						    <textarea class="form-control" th:value="${description}" placeholder="Write your message..."></textarea>
+						    <textarea class="form-control" name="message" placeholder="Write your message..."></textarea>
 						</div>
 						<!-- Send money button -->
 						<div class="d-grid gap-2 col-3 mx-auto">
@@ -62,28 +67,50 @@
 						</div>
 					</form>
 					<br><br>
+					<!-- User Transaction history: all transactions saved -->
 			        <h3>MY TRANSACTIONS</h3>
 			        <br>
-			        <table class="table table-striped">
-				   		<thead class="table-light">
-				        <tr>
-				            <th scope="col" style="font-size:0.9em"> Receiver </th>
-				            <th scope="col" style="font-size:0.9em"> DateTime </th>
-				            <th scope="col" style="font-size:0.9em"> Amount </th>
-				            <th scope="col" style="font-size:0.9em"> Description </th>
-				            <th scope="col" style="font-size:0.9em"> Fee </th>
-				        </tr>
-				        </thead>
-				        <tbody th:each="transaction: ${transaction}" th:remove="tag">
-				        	<tr>
-				              	<td th:text="${transaction.receiver}" style="font-size:0.9em"></td>
-				               	<td th:text="${transaction.dateTime}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.amount}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.description}" style="font-size:0.9em"></td>
-				                <td th:text="${transaction.transactionFee}" style="font-size:0.9em"></td>
-			               	</tr>
-			            </tbody>
-			        </table>
+			       	<table class="table table-striped">
+						<thead class="table-light">
+					    <tr>
+					    	<th scope="col" style="font-size:0.9em"> Receiver </th>
+					        <th scope="col" style="font-size:0.9em"> Date </th>
+					        <th scope="col" style="font-size:0.9em"> Message </th>
+					        <th scope="col" style="font-size:0.9em"> Fee </th>
+					        <th scope="col" style="font-size:0.9em"> Amount </th>
+					    </tr>
+					    </thead>
+					    <tbody th:each="transactions: ${transactions}" th:remove="tag">
+					     	<tr>
+					           	<td th:text="${transactions.receiver.firstname}+' '+${transactions.receiver.lastname}" style="font-size:0.9em"></td>
+					           	<td th:text="${transactions.dateTime}" style="font-size:0.8em;vertical-align: middle;"></td>
+					            <td th:text="${transactions.description}" style="font-size:0.9em;vertical-align: middle;"></td>
+					            <td th:text="${transactions.transactionFee}" style="font-size:0.9em;color:grey;"></td>
+					            <td th:text="${transactions.amount}" style="font-size:0.9em"></td>
+				           	</tr>
+				        </tbody>
+			       	</table>
+			       	<br>
+			       	<table class="table table-striped">
+						<thead class="table-light">
+					    <tr>
+					    	<th scope="col" style="font-size:0.9em"> Sender </th>
+					        <th scope="col" style="font-size:0.9em"> Date </th>
+					        <th scope="col" style="font-size:0.9em"> Message </th>
+					        <th scope="col" style="font-size:0.9em"> Fee </th>
+					        <th scope="col" style="font-size:0.9em"> Amount </th>
+					    </tr>
+					    </thead>
+					    <tbody th:each="transactions: ${transactionsReceive}" th:remove="tag">
+					     	<tr>
+					           	<td th:text="${transactionsReceive.sender.firstname}+' '+${transactionsReceive.sender.lastname}" style="font-size:0.9em"></td>
+					           	<td th:text="${transactionsReceive.dateTime}" style="font-size:0.8em;vertical-align: middle;"></td>
+					            <td th:text="${transactionsReceive.description}" style="font-size:0.9em;vertical-align: middle;"></td>
+					            <td th:text="${transactionsReceive.transactionFee}" style="font-size:0.9em;color:grey;"></td>
+					            <td th:text="${transactionsReceive.amount}" style="font-size:0.9em"></td>
+				           	</tr>
+				        </tbody>
+			       	</table>
 				</div>
 			</div>
 	    </div>

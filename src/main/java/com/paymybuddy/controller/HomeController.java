@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,6 +22,8 @@ import com.paymybuddy.service.IUserService;
 @Controller
 public class HomeController
 {
+	private static Logger logger = LogManager.getLogger("HomeControllerLog");
+	
 	private String homepage = "homepage";
 	private String redirectHomepage = "redirect:/homepage";
 	private String success = "success";
@@ -54,11 +58,13 @@ public class HomeController
 		{
 			model.addAttribute(success, successString);
 			model.addAttribute("user", userActiv);
+			logger.info("No bank account recorded");
 			return homepage; 
 		}
 		model.addAttribute(success, successString);
 		model.addAttribute("user", userActiv);
 		model.addAttribute("bankaccount", findAccount);
+		logger.info("Full user loaded");
 		return homepage; 
 	}
 	
@@ -80,12 +86,14 @@ public class HomeController
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
 			bankAccountService.addBankAccount(newBankAccount);
 			redirAttrs.addFlashAttribute("bankaccountAdded", success);
+			logger.info("New bank account saved");
 			return redirectHomepage;
 		}
 		findAccount.setIbanAccount(ibanaccount);
 		findAccount.setBankName(bankname);
 		bankAccountService.updateBankAccount(userBank.getBankAccount().getBankaccountId(), findAccount);
 		redirAttrs.addFlashAttribute("bankaccountUpdate", "Update!");
+		logger.info("Bank account updated & saved");
 		return redirectHomepage;
 	}
 	
@@ -104,10 +112,12 @@ public class HomeController
 		if(balance.compareTo(BigDecimal.ZERO) <= 0)
 		{
 			redirAttrs.addFlashAttribute("errorNegative", "You cannot deposite negative amount!");
+			logger.info("Negative amount not allowed");
 			return redirectHomepage;
 		}
 		userService.addMoneyToBalance(userBalance, balance);
 		redirAttrs.addFlashAttribute("balance", userBalance);
+		logger.info("Money add to balance");
 		return redirectHomepage;	
 	}
 	
@@ -126,11 +136,13 @@ public class HomeController
 		if(balance.compareTo(BigDecimal.ZERO) <= 0)
 		{
 			redirAttrs.addFlashAttribute("errorNegative", "You cannot withdraw negative amount!");
+			logger.info("Negative amount not allowed");
 			return redirectHomepage;
 		}
 		
 		userService.withdrawMoneyToBank(userBalance, balance);
 		redirAttrs.addFlashAttribute("balance", userBalance);
+		logger.info("Money withdraw from balance");
 		return redirectHomepage;	
 	}
 	
@@ -149,11 +161,13 @@ public class HomeController
 		if (!Objects.equals(userEmail, email))
 		{
 			redirAttrs.addFlashAttribute(success, successString);
+			logger.info("user email successfully update");
 			return "redirect:/login";
 		}	
 		User userUpdate = userService.getUserByEmail(email);
 		model.addAttribute("user", userUpdate);
 		redirAttrs.addFlashAttribute("userUpdate", successString);
+		logger.info("Profile info update & saved");
 		return redirectHomepage;	
 	}
 }

@@ -4,6 +4,8 @@ import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,8 +21,11 @@ import com.paymybuddy.service.TransactionService;
 @Controller
 public class SendController
 {
+	private static Logger logger = LogManager.getLogger("SendControllerLog");
+	
 	private IUserService userService;
 	private TransactionService transactionService;
+	
 	private String send = "send";
 	private String sendRedirect = "redirect:/send";
 
@@ -30,34 +35,54 @@ public class SendController
 		this.transactionService = transactionService;
 	}
 	
+	/**
+	 *  Get send data of user:
+	 *  All stuff on profile :
+	 *  - User parametres
+	 * 	- Friends list
+	 *  - Transactions list
+	 * 
+	 * @return send Send page url
+	 */
 	@GetMapping("/send")
 	public String send(Model model, Principal principal)
 	{
 		String userEmail = principal.getName();
 		User userActiv = userService.getUserByEmail(userEmail);
 		List<User> friendList = userActiv.getFriendsList();
-		List<Transaction> transactions = transactionService.getTransactiondsBySender(userActiv);
+		List<Transaction> transactionsSent = transactionService.getTransactiondsBySender(userActiv);
+		List<Transaction> transactionsReceive = transactionService.getTransactiondsByReceiver(friendList);
 		
 		model.addAttribute("user", userActiv);
 		model.addAttribute("friend",friendList);
-		model.addAttribute("transactions", transactions);
+		model.addAttribute("transactions", transactionsSent);
+		model.addAttribute("transactionsReceive", transactionsReceive);
+		logger.info("User data upload: {}",userActiv);
 		return send;
 	}
 	
+	/**
+	 *  Send money to friends:
+	 * 	Allow transactions between buddies
+	 * 
+	 * @return Redirect Send page url
+	 */
 	@PostMapping("/sendmoney")
-	public String sendmoney(String email, String message, BigDecimal amount, Model model, Principal principal, RedirectAttributes redirAttrs) throws YourBalanceIsNotEnough
+	public String sendmoney(String email, String message, BigDecimal amount,
+			Model model, Principal principal, RedirectAttributes redirAttrs) throws YourBalanceIsNotEnough
 	{
 		String userEmail = principal.getName();
 		User userActiv = userService.getUserByEmail(userEmail);
 		
-		if(amount.compareTo(BigDecimal.ZERO) <= 1) 
+		if(amount.compareTo(BigDecimal.ZERO) < 1)
 		{
-			redirAttrs.addFlashAttribute("errorNegative", "You cannot deposite negative amount!");
+			redirAttrs.addFlashAttribute("errorNegative", "Negative amount error");
 			return sendRedirect;
 		}
 		
 		transactionService.sendMoney(userActiv, email, message, amount);
-		redirAttrs.addFlashAttribute("transactionSuccess", "Looks all good");
+		redirAttrs.addFlashAttribute("transactionSuccess", "Success!");
+		logger.info("User transaction sent to: {}", email);
 		return sendRedirect;
 	}
 }
