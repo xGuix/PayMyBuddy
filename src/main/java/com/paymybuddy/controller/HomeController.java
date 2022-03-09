@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
-import com.paymybuddy.service.BankAccountService;
+import com.paymybuddy.service.IBankAccountService;
 import com.paymybuddy.service.IUserService;
 
 @Controller
@@ -31,9 +31,9 @@ public class HomeController
 	
 	@Autowired
 	private IUserService userService;
-	private BankAccountService bankAccountService;
+	private IBankAccountService bankAccountService;
 
-	public HomeController(IUserService userService, BankAccountService bankAccountService)
+	public HomeController(IUserService userService, IBankAccountService bankAccountService)
 	{
 		this.userService = userService;
 		this.bankAccountService = bankAccountService;

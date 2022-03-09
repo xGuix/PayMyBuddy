@@ -3,6 +3,8 @@ package com.paymybuddy.service;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dto.BankAccountDTO;
@@ -11,51 +13,26 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.repository.BankAccountRepository;
 
 @Service
-public class BankAccountService
+public class BankAccountService implements IBankAccountService
 {
 	private static Logger logger = LogManager.getLogger("BankAccountServiceLog");
 	
 	@Autowired
 	private BankAccountRepository bankAccountRepository;
-   
-//	/**
-//	 * Convert User Entity in bank account :
-//	 * Get Bank account user without password and friend list
-//	 * 
-//	 * @return BankAccount The user simplify
-//	 */
-//    public BankAccount entityToSimpleDto(BankAccountDTO bankAccountDto)
-//    {
-//    	User user = bankAccountDto.getUser();
-//		User simpleUser = new User(
-//				user.getUserId(),
-//				user.getFirstname(),
-//				user.getLastname(),
-//				user.getEmail(),
-//				user.getBalance()); 
-//		bankAccountDto.setUser(simpleUser);
-//		BankAccount bankAccount = new  ;
-//    	  	
-//    	return bankAccount;
-//    }
-//    
-//	/**
-//	 * Get list of all bank account :
-//	 * Find all Bank account saved
-//	 * 
-//	 * @return List<BankAccount> The list of all bank account
-//	 */
-//	public List<BankAccount> getBankAccounts()
-//	{
-//		List<BankAccount> allAccount = bankAccountRepository.findAll();
-//		for (BankAccount ba : allAccount) 
-//		{	
-//			this.entityToSimpleUser(ba);		
-//			allAccount.set(allAccount.indexOf(ba),ba);
-//		}	
-//		logger.info("Bank accounts list found");	
-//		return allAccount;
-//	}
+	
+	@Autowired
+	private IUserService userService; 
+	
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
+	{
+		User user = userService.getUserByEmail(username);
+		if(user == null)
+		{
+			throw new UsernameNotFoundException("Invalid email or password.");
+		}
+		return  new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
+	}
 	
 	/**
 	 * Get the bank account for user:
@@ -96,8 +73,7 @@ public class BankAccountService
 		logger.info("Already one registered bank account");
 		return checkBankAccount;
 	}
-	
-	
+		
 	/**
 	 * Update bank account of user:
 	 * Modify & save the bank account of user by email
@@ -119,15 +95,5 @@ public class BankAccountService
 		}
 		logger.info("Bank account update and saved");		
 		return baToUpdate;
-	}
-	
-	/**
-	 * Delete bank account with userEmail :
-	 * Delete bank account from user
-	 */
-	public void deleteBankAccountById(Integer bankId)
-	{
-		bankAccountRepository.deleteById(bankId);
-		logger.info("Bank account have been deleted");
 	}
 }

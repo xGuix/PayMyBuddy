@@ -7,15 +7,17 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.paymybuddy.exception.YourBalanceIsNotEnough;
+import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
 
 @Service
-public class TransactionService
+public class TransactionService implements ITransactionService
 {
 	private static Logger logger = LogManager.getLogger("TransactionServiceLog");
 	
@@ -27,17 +29,17 @@ public class TransactionService
 	
 	private BigDecimal percent = BigDecimal.valueOf(0.05);
 	private LocalDateTime dateTime = LocalDateTime.now();
+
 	
-	/**
-	 * Get one transaction with transactionId :
-	 * Find the transactions id
-	 * 
-	 * @return Transaction The transaction with id
-	 */
-	public Transaction getTransactiondById(Integer transactionId)
+	@Override
+	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
-		logger.info("The transaction N°{} is found}",transactionId);
-		return transactionRepository.getById(transactionId);
+		User user = userService.getUserByEmail(username);
+		if(user == null)
+		{
+			throw new UsernameNotFoundException("Invalid email or password.");
+		}
+		return  new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
 	
 	/**
@@ -58,22 +60,10 @@ public class TransactionService
 	 * 
 	 * @return List<Transaction> The transactions of user 
 	 */
-	public List<Transaction> getTransactiondsByReceiver(List<User> friendList)
+	public List<Transaction> getTransactiondsByReceiver(User receiver)
 	{
-		logger.info("The transactions from {} is found",friendList);
-		return transactionRepository.getTransactionsByReceiver(friendList);
-	}
-	
-	/**
-	 * Add a new transaction :
-	 * Create & save transaction in list
-	 * 
-	 * @return Transaction The transaction added
-	 */
-	public Transaction addTransaction(Transaction transaction)
-	{	
-		logger.info("Transaction add and saved");		
-		return transactionRepository.save(transaction);
+		logger.info("The transactions from {} is found",receiver);
+		return transactionRepository.getTransactionsByReceiver(receiver);
 	}
 
 	/**
@@ -82,7 +72,7 @@ public class TransactionService
 	 * 
 	 * @return void No return
 	 */
-	public Transaction sendMoney(User sender, String email, String message, BigDecimal amount) throws YourBalanceIsNotEnough
+	public Transaction sendMoney(User sender, String email, String message, BigDecimal amount) throws BalanceNotEnough
 	{
 		User receiver = userService.getUserByEmail(email);
 		BigDecimal transactionFee = amount.multiply(percent);
@@ -93,12 +83,12 @@ public class TransactionService
 		if (senderBalance.compareTo(receiveAmount) < 0)
 		{
 			logger.info("Balance is not enough: {}, sending amount: {}", senderBalance, amount);
-			throw new YourBalanceIsNotEnough();
+			throw new BalanceNotEnough();
 		}
 		
 		sender.setBalance(senderBalance.subtract(amount));
 		receiver.setBalance(receiverBalance.add(receiveAmount));
-		Transaction transaction = new Transaction(sender, receiver, dateTime, amount, message, transactionFee);
+		Transaction transaction = new Transaction(sender, receiver, dateTime, receiveAmount, message, transactionFee);
 		
 		logger.info("Transaction to save: {}",transaction);
 		transactionRepository.save(transaction);

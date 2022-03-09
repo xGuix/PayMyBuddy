@@ -30,7 +30,6 @@ public class SignupController
 	public String signUpView(Model model)
 	{
 		model.addAttribute("user", new SignupDTO());
-		logger.info("User signupDTO loaded");
 		return "signup"; 
 	}
 

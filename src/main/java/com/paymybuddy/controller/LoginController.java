@@ -21,7 +21,6 @@ public class LoginController
 	@GetMapping(value = "/login")
 	public String loginPage()
 	{
-		logger.info("Login page loaded");	
 		return "login";
 	}
 	

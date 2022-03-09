@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.paymybuddy.exception.YourBalanceIsNotEnough;
+import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.IUserService;
@@ -51,12 +51,12 @@ public class SendController
 		User userActiv = userService.getUserByEmail(userEmail);
 		List<User> friendList = userActiv.getFriendsList();
 		List<Transaction> transactionsSent = transactionService.getTransactiondsBySender(userActiv);
-		List<Transaction> transactionsReceive = transactionService.getTransactiondsByReceiver(friendList);
+		List<Transaction> transactionsReceiver = transactionService.getTransactiondsByReceiver(userActiv);
 		
 		model.addAttribute("user", userActiv);
 		model.addAttribute("friend",friendList);
 		model.addAttribute("transactions", transactionsSent);
-		model.addAttribute("transactionsReceive", transactionsReceive);
+		model.addAttribute("transactionsReceiver", transactionsReceiver);
 		logger.info("User data upload: {}",userActiv);
 		return send;
 	}
@@ -69,7 +69,7 @@ public class SendController
 	 */
 	@PostMapping("/sendmoney")
 	public String sendmoney(String email, String message, BigDecimal amount,
-			Model model, Principal principal, RedirectAttributes redirAttrs) throws YourBalanceIsNotEnough
+			Model model, Principal principal, RedirectAttributes redirAttrs) throws BalanceNotEnough
 	{
 		String userEmail = principal.getName();
 		User userActiv = userService.getUserByEmail(userEmail);

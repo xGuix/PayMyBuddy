@@ -1,8 +1,6 @@
 package com.paymybuddy.service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -13,7 +11,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import com.paymybuddy.dto.SignupDTO;
-import com.paymybuddy.dto.UserDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
@@ -41,56 +38,6 @@ public class UserService implements IUserService
 		}
 		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), null);
 	}
-
-	/**
-	 * Convert Entity :
-	 * Get userDTO with user
-	 * 
-	 * @return UsersDTO The user convert in DTO
-	 */
-    public UserDTO entityToDto(User user)
-    {
-    	UserDTO newUserDto = new UserDTO();
-    	newUserDto.setUserId(user.getUserId());
-    	newUserDto.setFirstname(user.getFirstname());
-    	newUserDto.setLastname(user.getLastname());
-    	newUserDto.setCity(user.getCity());
-    	newUserDto.setEmail(user.getEmail());
-    	newUserDto.setBalance(user.getBalance());
-    	newUserDto.setFriendsList(null);
-    	
-       	List<UserDTO> friendListDto = new ArrayList<>();
-        	for(User uf : user.getFriendsList())
-        	{ 
-	    		UserDTO friendDto = new UserDTO();
-	    		friendDto.setUserId(uf.getUserId());
-	    		friendDto.setFirstname(uf.getFirstname());
-	    		friendDto.setLastname(uf.getLastname());
-	    		friendDto.setCity(uf.getCity());
-	    		friendDto.setEmail(uf.getEmail());
-	    		friendDto.setBalance(uf.getBalance());
-	    		friendDto.setFriendsList(null);
-	    		friendListDto.add(friendDto);
-        	}
-        newUserDto.setFriendsList(friendListDto);       
-        return newUserDto;
-    }
-    
-	/**
-	 * Convert List of Entity :
-	 * Get userDTO list with user list
-	 * 
-	 * @return List<UserDTO> The list of user convert in DTO list
-	 */
-    public List<UserDTO> convertListToDTOList(List<User> friendsList)
-    {
-        List<UserDTO> userListDto = new ArrayList<>();
-        for(User u : friendsList)
-        {  
-        	userListDto.add(entityToDto(u));
-        }
-        return userListDto;
-    }
 
 	/**
 	 * Get user with id :

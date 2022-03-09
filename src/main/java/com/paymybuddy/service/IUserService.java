@@ -13,9 +13,7 @@ public interface IUserService extends UserDetailsService
 	User updateUser(String userEmail, String firstname, String lastname, String city, String email);
 	User getUserByEmail(String userEmail);
 	User addToFriends(User user, User friendToAdd);
-	
 	BigDecimal addMoneyToBalance(User userBalance, BigDecimal balance);
 	BigDecimal withdrawMoneyToBank(User userBalance, BigDecimal balance);
-	
 	String validateUser(SignupDTO user);
 }

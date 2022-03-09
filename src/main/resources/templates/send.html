@@ -29,7 +29,6 @@
 		  </div>
 		</nav>
 		<br><br>
-		<br><br>
 	    <div class="container-fluid">
 	    	<div class="row justify-content-center" >
 	    		<div class="col-lg-5 text-center">
@@ -49,6 +48,7 @@
 							<span class="input-group-text col-3 justify-content-center" th:text="${user.balance}"></span>
 							<span class="input-group-text"> € </span>
 							<input type="text" class="form-control" name="amount" placeholder="1.00" required>
+							<span class="input-group-text"> -5% fee </span>
 						</div>
 					 	<div class="input-group input-group-sm mb-3">
 					    	<span class="input-group-text col-3 justify-content-center"> Friends</span>
@@ -68,8 +68,7 @@
 					</form>
 					<br><br>
 					<!-- User Transaction history: all transactions saved -->
-			        <h3>MY TRANSACTIONS</h3>
-			        <br>
+			        <h3> MY TRANSACTIONS SENT </h3>
 			       	<table class="table table-striped">
 						<thead class="table-light">
 					    <tr>
@@ -90,7 +89,8 @@
 				           	</tr>
 				        </tbody>
 			       	</table>
-			       	<br>
+			       	<br><br>
+			       	<h3> MY TRANSACTIONS RECEIVED </h3>
 			       	<table class="table table-striped">
 						<thead class="table-light">
 					    <tr>
@@ -101,13 +101,13 @@
 					        <th scope="col" style="font-size:0.9em"> Amount </th>
 					    </tr>
 					    </thead>
-					    <tbody th:each="transactions: ${transactionsReceive}" th:remove="tag">
+					    <tbody th:each="transactionsReceiver: ${transactionsReceiver}" th:remove="tag">
 					     	<tr>
-					           	<td th:text="${transactionsReceive.sender.firstname}+' '+${transactionsReceive.sender.lastname}" style="font-size:0.9em"></td>
-					           	<td th:text="${transactionsReceive.dateTime}" style="font-size:0.8em;vertical-align: middle;"></td>
-					            <td th:text="${transactionsReceive.description}" style="font-size:0.9em;vertical-align: middle;"></td>
-					            <td th:text="${transactionsReceive.transactionFee}" style="font-size:0.9em;color:grey;"></td>
-					            <td th:text="${transactionsReceive.amount}" style="font-size:0.9em"></td>
+					           	<td th:text="${transactionsReceiver.sender.firstname}+' '+${transactionsReceiver.sender.lastname}" style="font-size:0.9em"></td>
+					           	<td th:text="${transactionsReceiver.dateTime}" style="font-size:0.8em;vertical-align: middle;"></td>
+					            <td th:text="${transactionsReceiver.description}" style="font-size:0.9em;vertical-align: middle;"></td>
+					            <td th:text="${transactionsReceiver.transactionFee}" style="font-size:0.9em;color:grey;"></td>
+					            <td th:text="${transactionsReceiver.amount}" style="font-size:0.9em"></td>
 				           	</tr>
 				        </tbody>
 			       	</table>
