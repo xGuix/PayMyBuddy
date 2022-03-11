@@ -16,6 +16,9 @@ import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
 
+/**
+ * Class Transaction service
+ */
 @Service
 public class TransactionService implements ITransactionService
 {
@@ -30,7 +33,12 @@ public class TransactionService implements ITransactionService
 	private BigDecimal percent = BigDecimal.valueOf(0.05);
 	private LocalDateTime dateTime = LocalDateTime.now();
 
-	
+	/**
+	 * Load User details
+	 * 
+	 * @param username String username
+	 * @return UserDetails User details 
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
@@ -46,7 +54,8 @@ public class TransactionService implements ITransactionService
 	 * Get list of all transactions sent :
 	 * Find the transactions for sender
 	 * 
-	 * @return List<Transaction> The transactions of user 
+	 * @param sender User sender
+	 * @return TransactionList The transactions of user 
 	 */
 	public List<Transaction> getTransactiondsBySender(User sender)
 	{
@@ -58,7 +67,8 @@ public class TransactionService implements ITransactionService
 	 * Get list of all transactions received :
 	 * Find the transactions for sender
 	 * 
-	 * @return List<Transaction> The transactions of user 
+	 * @param receiver User receiver
+	 * @return TransactionList The transactions of user 
 	 */
 	public List<Transaction> getTransactiondsByReceiver(User receiver)
 	{
@@ -70,7 +80,13 @@ public class TransactionService implements ITransactionService
 	 * Send money to friend :
 	 * check both balance and calculate figures
 	 * 
+	 * @param sender User
+	 * @param email String
+	 * @param message String
+	 * @param amount BigDecimal
+	 * 
 	 * @return void No return
+	 * @throws BalanceNotEnough Exception class
 	 */
 	public Transaction sendMoney(User sender, String email, String message, BigDecimal amount) throws BalanceNotEnough
 	{

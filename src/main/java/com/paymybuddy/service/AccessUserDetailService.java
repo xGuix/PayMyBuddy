@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
+/**
+ * Class Access User Detail Service
+ */
 @Service
 public class AccessUserDetailService implements UserDetailsService
 {

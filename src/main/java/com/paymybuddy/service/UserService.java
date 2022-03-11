@@ -14,6 +14,9 @@ import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
+/**
+ * UserService class
+ */
 @Service
 public class UserService implements IUserService
 {
@@ -22,12 +25,22 @@ public class UserService implements IUserService
 	
 	@Autowired
 	private UserRepository userRepository;
-	  
+	
+	/**
+	 * Constructor user service
+	 * 
+	 * @param userRepository User repository
+	 */
 	public UserService(UserRepository userRepository)
 	{
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Load User details
+	 * 
+	 * @return UserDetails User details 
+	 */
 	@Override
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
@@ -43,6 +56,7 @@ public class UserService implements IUserService
 	 * Get user with id :
 	 * Find the user with user id
 	 * 
+	 * @param userId Integer Id of user
 	 * @return User The user with id
 	 */
 	public User getUserById(Integer userId)
@@ -82,7 +96,7 @@ public class UserService implements IUserService
 	
 	/**
 	 * Add a new user :
-	 * Create & save user in list
+	 * Create and save user in list
 	 * 
 	 * @return User The user added
 	 */
@@ -108,7 +122,7 @@ public class UserService implements IUserService
 	
 	/**
 	 * Update a new user :
-	 * Modify & save user in list
+	 * Modify and save user in list
 	 * 
 	 * @return User The user updated
 	 */

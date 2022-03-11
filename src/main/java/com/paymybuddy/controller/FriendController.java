@@ -25,7 +25,10 @@ public class FriendController
 	private final IUserService userService;
 	
 	private String friend = "redirect:/friend";
-
+	
+	/**
+	 *  Constructor friend controller
+	 */
 	public FriendController(IUserService userService)
 	{
 		this.userService = userService;
@@ -35,7 +38,7 @@ public class FriendController
 	 *  Get friends data of user:
 	 * 	- Friends list
 	 * 
-	 * @return friend Friend page url
+	 *  @return friend Friend page url
 	 */
 	@GetMapping("/friend")
 	public String transfer(Model model, Principal principal) 
@@ -52,7 +55,7 @@ public class FriendController
 	 *  Search one friend :
 	 * 	Email of user as request parameter
 	 * 
-	 * @return friend Friend page url
+	 *  @return friend Friend page url
 	 */
 	@GetMapping("/findFriend")
 	public String findFriends(Model model, RedirectAttributes redirAttrs,
@@ -75,7 +78,7 @@ public class FriendController
 	 * 	Email of user as request parameter
 	 * 	if found user will be added to your friends list
 	 * 
-	 * @return friend Friend page url
+	 *  @return friend Friend page url
 	 */
 	@PostMapping("/friend")
 	public String addFriend(Model model, RedirectAttributes redirAttrs, 

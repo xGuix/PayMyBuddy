@@ -12,6 +12,9 @@ import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.BankAccountRepository;
 
+/**
+ * Class BankAccount service
+ */
 @Service
 public class BankAccountService implements IBankAccountService
 {
@@ -38,6 +41,7 @@ public class BankAccountService implements IBankAccountService
 	 * Get the bank account for user:
 	 * Find the bank account of a user with user id
 	 * 
+	 * @param bankId Integer bank id
 	 * @return BankAccount The bank account of the user
 	 */
 	public BankAccount getBankAccountById(Integer bankId)
@@ -50,7 +54,7 @@ public class BankAccountService implements IBankAccountService
 	
 	/**
 	 * Add bank account of user:
-	 * Create & save the bank account of user with email
+	 * Create and save the bank account of user with email
 	 * 
 	 * @return BankAccount The bank account added
 	 */
@@ -76,7 +80,7 @@ public class BankAccountService implements IBankAccountService
 		
 	/**
 	 * Update bank account of user:
-	 * Modify & save the bank account of user by email
+	 * Modify and save the bank account of user by email
 	 * 
 	 * @return BankAccount The bank account updated
 	 */
