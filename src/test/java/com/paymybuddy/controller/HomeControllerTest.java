@@ -29,13 +29,13 @@ class HomeControllerTest
 	
 	@MockBean
 	UserService userService;
-	
+
 	@MockBean
 	BankAccountService bankAccountService;
 	
 	@MockBean
 	SpringSecurityConfig springSecurityConfig;
-
+	
 	User userTest;
 	BigDecimal balance = BigDecimal.ZERO;
 	List<User> userListTest;
@@ -44,7 +44,7 @@ class HomeControllerTest
     String bankName = "Banque de France";
 	
 	@BeforeEach
-	void setupTest(SpringSecurityConfig springSecurityConfig)
+	void setupTest()
 	{
 		userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, userListTest);
 		bankAccount = new BankAccount(ibanAccount,bankName,userTest);
