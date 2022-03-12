@@ -1,8 +1,11 @@
 package com.paymybuddy.dto;
 
+import groovy.transform.Generated;
+
 /**
  *  User DTO Model Object
  */
+@Generated
 public class SignupDTO
 {
 	private String firstname;

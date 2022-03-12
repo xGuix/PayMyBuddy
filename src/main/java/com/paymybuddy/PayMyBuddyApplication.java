@@ -8,15 +8,18 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 import com.paymybuddy.repository.UserRepository;
 
+import groovy.transform.Generated;
+
 /**
  *  PAY MY BUDDY v1.0:
  *  -
- *  Spring boot service application
+ *  Spring boot service
  *  Jpa repositories
  * 
  *  @author xGuix
  *  @version v1.0
  */
+@Generated
 @SpringBootApplication
 @EnableJpaRepositories(basePackageClasses = UserRepository.class)
 public class PayMyBuddyApplication

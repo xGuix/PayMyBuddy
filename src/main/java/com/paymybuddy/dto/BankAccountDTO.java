@@ -2,9 +2,12 @@ package com.paymybuddy.dto;
 
 import com.paymybuddy.model.User;
 
+import groovy.transform.Generated;
+
 /**
  *  BankAccount DTO Model Object
  */
+@Generated
 public class BankAccountDTO
 {
 	private User user;

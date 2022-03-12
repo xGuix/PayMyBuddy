@@ -4,9 +4,12 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+import groovy.transform.Generated;
+
 /**
  *  User DTO Model object
  */
+@Generated
 public class UserDTO
 {
 	private Integer userId;

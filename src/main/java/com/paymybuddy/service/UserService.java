@@ -14,6 +14,8 @@ import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
+import groovy.transform.Generated;
+
 /**
  * UserService class
  */
@@ -39,9 +41,11 @@ public class UserService implements IUserService
 	/**
 	 * Load User details
 	 * 
+	 * @param username String username
 	 * @return UserDetails User details 
 	 */
 	@Override
+	@Generated
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		User user = userRepository.findByEmail(username);

@@ -12,6 +12,8 @@ import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.BankAccountRepository;
 
+import groovy.transform.Generated;
+
 /**
  * Class BankAccount service
  */
@@ -26,7 +28,14 @@ public class BankAccountService implements IBankAccountService
 	@Autowired
 	private IUserService userService; 
 	
+	/**
+	 * Load User details
+	 * 
+	 * @param username String username
+	 * @return UserDetails User details 
+	 */
 	@Override
+	@Generated
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		User user = userService.getUserByEmail(username);

@@ -98,16 +98,16 @@ class TransactionServiceTest
 		assertEquals(userTest, transactionsToTest.getSender());
 		assertEquals(userFriendTest, transactionsToTest.getReceiver());
 		assertEquals(message, transactionsToTest.getDescription());
-		assertEquals(BigDecimal.valueOf(475.00), transactionsToTest.getAmount().setScale(1));
+		assertEquals(BigDecimal.valueOf(475.0), transactionsToTest.getAmount().setScale(1));
 		verify(transactionRepository, Mockito.times(1)).save(transactionsToTest);
 	}
 	
 	@Test
-	void TestIfsendMoneyReturnBalanceExecption() throws BalanceNotEnough
+	void TestIfsendMoneyReturnBalanceExecption()
 	{
 		when(userService.getUserByEmail("bl@paymybuddy.com")).thenReturn(userFriendTest);
-		
-		transactionService.sendMoney(userTest,	userFriendTest.getEmail(), message, BigDecimal.valueOf(5000.00));
-		assertThrows(BalanceNotEnough.class, () -> transactionTest.getAmount());
+		BigDecimal balanceNotEnought = BigDecimal.valueOf(5000.00);
+
+		assertThrows(BalanceNotEnough.class, () -> transactionService.sendMoney(userTest, userFriendTest.getEmail(), message, balanceNotEnought));
 	}
 }

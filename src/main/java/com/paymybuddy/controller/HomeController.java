@@ -19,6 +19,9 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.service.IBankAccountService;
 import com.paymybuddy.service.IUserService;
 
+/**
+ *  Homepage Thymeleaf controller
+ */
 @Controller
 public class HomeController
 {
@@ -31,8 +34,16 @@ public class HomeController
 	
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
 	private IBankAccountService bankAccountService;
-
+	
+	/**
+	 *  Specific constructor
+	 * 
+	 * 	@param userService User service
+	 *  @param bankAccountService Bank account Service
+	 */
 	public HomeController(IUserService userService, IBankAccountService bankAccountService)
 	{
 		this.userService = userService;

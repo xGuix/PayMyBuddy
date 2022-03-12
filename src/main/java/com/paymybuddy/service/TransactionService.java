@@ -16,6 +16,8 @@ import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.TransactionRepository;
 
+import groovy.transform.Generated;
+
 /**
  * Class Transaction service
  */
@@ -40,6 +42,7 @@ public class TransactionService implements ITransactionService
 	 * @return UserDetails User details 
 	 */
 	@Override
+	@Generated
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		User user = userService.getUserByEmail(username);
