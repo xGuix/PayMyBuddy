@@ -44,7 +44,7 @@ https://www.mysql.com/downloads/
 After downloading and installing it, no specific setup required.
 
 
-### App Data & start up
+### App Data
 You will have to set up your own data base.
 
 Schemas are provided in folder :
@@ -62,6 +62,9 @@ Schemas are provided in folder :
 
 <img src="https://github.com/xGuix/PayMyBuddy/blob/feature/tests/DiagramUML/ModelPhysique_UML.jpg" alt="dataDiagram"/>
 
+
+### Start up
+You will have to set up SQL tables.
 
 Scripts are provided in folders :
 
