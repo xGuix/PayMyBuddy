@@ -55,12 +55,12 @@ Schemas are provided in folder :
 
 **CLASS DIAGRAM**
 
-<img src="https://github.com/xGuix/PayMyBuddy/DiagramUML/DomainModel_UML.jpg" alt="classDiagram"/>
+<img src="https://github.com/xGuix/PayMyBuddy/blob/feature/tests/DiagramUML/DomainModel_UML.jpg" alt="classDiagram"/>
 
 
 **UML DATA**
 
-<img src="https://github.com/xGuix/PayMyBuddy/DiagramUML/ModelPhysique_UML.jpg" alt="dataDiagram"/>
+<img src="https://github.com/xGuix/PayMyBuddy/blob/feature/tests/DiagramUML/ModelPhysique_UML.jpg" alt="dataDiagram"/>
 
 
 Scripts are provided in folders :
