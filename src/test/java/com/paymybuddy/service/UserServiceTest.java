@@ -25,7 +25,7 @@ import com.paymybuddy.repository.UserRepository;
  * Test Class for user service
  */
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest 
+class UserServiceTest 
 {
     @InjectMocks
     UserService userService;
