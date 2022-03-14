@@ -1,63 +1,64 @@
 package com.paymybuddy.controller;
 
-import static org.mockito.Mockito.RETURNS_DEFAULTS;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import com.paymybuddy.configuration.SpringSecurityConfig;
 import com.paymybuddy.model.BankAccount;
 import com.paymybuddy.model.User;
-import com.paymybuddy.service.BankAccountService;
-import com.paymybuddy.service.UserService;
+import com.paymybuddy.service.IUserService;
 
-@WebMvcTest(controllers = HomeController.class)
+@SpringBootTest
+@AutoConfigureMockMvc
 class HomeControllerTest
-{
+{		
 	@Autowired
 	MockMvc mockMvc;
 	
 	@MockBean
-	UserService userService;
-
-	@MockBean
-	BankAccountService bankAccountService;
+	IUserService userService;
+		
+	@Autowired
+	HomeController homeController;
 	
-	@MockBean
-	SpringSecurityConfig springSecurityConfig;
-	
-	User userTest;
 	BigDecimal balance = BigDecimal.ZERO;
 	List<User> userListTest;
-	BankAccount bankAccount;
+	User userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, userListTest);
+
     String ibanAccount = "FR111333999222777";
     String bankName = "Banque de France";
+	BankAccount bankAccount= new BankAccount(ibanAccount,bankName,userTest);
 	
-	@BeforeEach
-	void setupTest()
-	{
-		userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, userListTest);
-		bankAccount = new BankAccount(ibanAccount,bankName,userTest);
+    String homepage ="http://localhost/homepage";
+    String redirectLogin = "http://localhost/login";
+
+	@Test
+	void getHomepageWhenNotLoginReturnLoginPage() throws Exception
+	{	
+		mockMvc.perform(get("/homepage"))
+	        	.andExpect(status().isFound())
+				.andExpect(result -> result.equals(userTest))
+				.andExpect(redirectedUrl(redirectLogin));
 	}
 	
 	@Test
-	void whenCallHomepage() throws Exception
+	void getHomepageLoginReturnHomepage() throws Exception
 	{	
-		when(userService.getUserByEmail("gb@paymybuddy.com")).then(RETURNS_DEFAULTS);
-		
-	    mockMvc.perform(get("/homepage")
-				.param("email", "gb@paymybuddy.com"))
-	        	.andExpect(status().isFound())
-	    		.andReturn();
+		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
+		mockMvc.perform(get("/homepage")
+				.param("principal", "gb@paymybuddy.com")
+				.param("model", " "))
+	        	.andExpect(status().isFound());
 	}
 }
