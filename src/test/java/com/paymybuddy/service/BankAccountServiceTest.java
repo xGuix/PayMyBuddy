@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.paymybuddy.dto.BankAccountDTO;
 import com.paymybuddy.model.BankAccount;
@@ -28,6 +29,9 @@ import com.paymybuddy.repository.BankAccountRepository;
 @ExtendWith(MockitoExtension.class)
 class BankAccountServiceTest 
 {
+	@MockBean
+	AccessUserDetailService accessUserDetailService;
+	
     @InjectMocks
     BankAccountService bankAccountService;
     

@@ -16,6 +16,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.model.User;
@@ -27,6 +28,9 @@ import com.paymybuddy.repository.UserRepository;
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest 
 {
+	@MockBean
+	AccessUserDetailService accessUserDetailService;
+	
     @InjectMocks
     UserService userService;
     

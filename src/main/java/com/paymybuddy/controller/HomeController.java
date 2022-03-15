@@ -96,7 +96,7 @@ public class HomeController
 		{
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
 			bankAccountService.addBankAccount(newBankAccount);
-			redirAttrs.addFlashAttribute("bankaccountAdded", success);
+			redirAttrs.addFlashAttribute("bankaccountAdded", successString);
 			logger.info("New bank account saved");
 			return redirectHomepage;
 		}

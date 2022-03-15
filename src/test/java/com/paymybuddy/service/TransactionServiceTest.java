@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.boot.test.mock.mockito.MockBean;
 
 import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
@@ -29,6 +30,9 @@ import com.paymybuddy.repository.TransactionRepository;
 @ExtendWith(MockitoExtension.class)
 class TransactionServiceTest 
 {
+	@MockBean
+	AccessUserDetailService accessUserDetailService;
+	
     @InjectMocks
     TransactionService transactionService;
     
