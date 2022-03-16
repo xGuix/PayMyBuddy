@@ -1,7 +1,9 @@
 package com.paymybuddy.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,22 +22,31 @@ import com.paymybuddy.service.AccessUserDetailService;
 class LoginControllerTest
 {		
 	@Autowired
-	MockMvc mockMvc;
+	private MockMvc mockMvc;
 	
 	@MockBean
-	AccessUserDetailService accessUserDetailService;
+	private AccessUserDetailService accessUserDetailService;
 	
 	@Test
 	void getLoginReturnLoginPage() throws Exception
 	{	
 		mockMvc.perform(get("/login"))
-	        	.andExpect(status().isOk());
+	        	.andExpect(status().isOk())
+	        	.andExpect(view().name("login"))
+	        	.andExpect(model().hasNoErrors())
+	        	.andExpect(model().size(0))
+	        	.andReturn();
 	}
 	
 	@Test
 	void getAccessDeniedReturnError() throws Exception
 	{	
 		mockMvc.perform(get("/error"))
-	        	.andExpect(status().isOk());
+	        	.andExpect(status().isOk())
+	        	.andExpect(view().name("error"))
+	        	.andExpect(model().hasNoErrors())
+	        	.andExpect(model().size(1))
+	        	.andExpect(model().attributeExists("message"))
+	        	.andReturn();
 	}
 }

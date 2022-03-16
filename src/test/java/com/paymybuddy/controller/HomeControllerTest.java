@@ -10,8 +10,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.math.BigDecimal;
-import java.util.List;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,32 +38,50 @@ class HomeControllerTest
 	private MockMvc mockMvc;
 	
 	@MockBean
-	AccessUserDetailService accessUserDetailService;
+	private AccessUserDetailService accessUserDetailService;
 	
 	@MockBean
-	IUserService userService;
+	private IUserService userService;
 
 	@MockBean
-	IBankAccountService bankAccountService;
+	private IBankAccountService bankAccountService;
 	
 	@MockBean
-	ITransactionService transactionService;
+	private ITransactionService transactionService;
 			
-	BigDecimal balance = BigDecimal.valueOf(100.00);
-	List<User> userListTest;
-	User userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, userListTest);
+	BigDecimal balance;
+	User userTest;
+	User userUpdateEmail;
+	User userUpdateWithoutEmail;
+	
+	String firstnameTest;
+	String lastnameTest;
+	String cityTest;
+	String emailTest;
+	
+    String ibanAccount;
+    String bankName;
+	BankAccount bankAccount;
 
-    String ibanAccount = "FR111333999222777";
-    String bankName = "Banque de France";
-	BankAccount bankAccount= new BankAccount(ibanAccount,bankName,userTest);
-	
-	String firstnameTest = "firstname";
-	String lastnameTest = "lastname";
-	String cityTest = "city";
-	String emailTest = "email@test.com";
-	
-	User userUpdateEmail = new User(firstnameTest,lastnameTest,cityTest,emailTest,"Admin",balance,userListTest);
-	User userUpdateWithoutEmail = new User(firstnameTest,lastnameTest,cityTest,"gb@paymybuddy.com","Admin",balance,userListTest);
+	@BeforeEach
+	void setup()
+	{
+		balance = BigDecimal.valueOf(100.00);
+		userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, null);
+		
+	    ibanAccount = "FR111333999222777";
+	    bankName = "Banque de France";
+		bankAccount= new BankAccount(ibanAccount,bankName,userTest);
+		
+		firstnameTest = "firstname";
+		lastnameTest = "lastname";
+		cityTest = "city";
+		emailTest = "email@test.com";
+		
+		userUpdateEmail = new User(firstnameTest,lastnameTest,cityTest,emailTest,"Admin",balance,null);
+		userUpdateWithoutEmail = new User(firstnameTest,lastnameTest,cityTest,"gb@paymybuddy.com","Admin",balance,null);
+
+	}
 
 	@Test
 	void getHomepageWhenNotBankAccountReturnHomepageWithInfoNoBankAccount() throws Exception
@@ -77,7 +95,8 @@ class HomeControllerTest
 	        	.andExpect(model().hasNoErrors())
 	        	.andExpect(model().size(2))
 	        	.andExpect(model().attributeExists("success"))
-	        	.andExpect(model().attributeExists("user"));
+	        	.andExpect(model().attributeExists("user"))
+				.andReturn();
 	}
 	
 	@Test
@@ -95,11 +114,12 @@ class HomeControllerTest
 		    	.andExpect(model().size(3))
 	        	.andExpect(model().attributeExists("success"))
 		    	.andExpect(model().attributeExists("user"))
-		    	.andExpect(model().attributeExists("bankaccount"));
+		    	.andExpect(model().attributeExists("bankaccount"))
+				.andReturn();
 	}
 	
 	@Test
-	void getAddbankReturnRedirectUpdateHomepageWithNoBankAccount() throws Exception
+	void postAddbankReturnRedirectUpdateHomepageWithNoBankAccount() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
@@ -110,11 +130,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("bankaccountAdded", "Success!"))
-				.andExpect(redirectedUrl("/homepage"));
+				.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getAddbankReturnRedirectUpdateHomepageWithBankAccount() throws Exception
+	void postAddbankReturnRedirectUpdateHomepageWithBankAccount() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		userTest.setBankAccount(bankAccount);
@@ -126,11 +147,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("bankaccountUpdate", "Update!"))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getAddmoneyReturnRedirectUpdateHomepageWithNegativeBalance() throws Exception
+	void postAddmoneyReturnRedirectUpdateHomepageWithNegativeBalance() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
@@ -142,11 +164,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("errorNegative", "You cannot deposite negative amount!"))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getAddmoneyReturnRedirectUpdateHomepageWithPositiveBalance() throws Exception
+	void postAddmoneyReturnRedirectUpdateHomepageWithPositiveBalance() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
@@ -158,11 +181,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("balance", userTest))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getWithdrawmoneyReturnRedirectUpdateHomepageWithNegativeBalance() throws Exception
+	void postWithdrawmoneyReturnRedirectUpdateHomepageWithNegativeBalance() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
@@ -174,11 +198,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("errorNegative", "You cannot withdraw negative amount!"))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getWithdrawmoneyReturnRedirectUpdateHomepageWithPositiveBalance() throws Exception
+	void postWithdrawmoneyReturnRedirectUpdateHomepageWithPositiveBalance() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
@@ -190,11 +215,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("balance", userTest))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getUpdateprofileReturnRedirectUpdateProfileHomepageWithNewInfos() throws Exception
+	void postUpdateprofileReturnRedirectUpdateProfileHomepageWithNewInfos() throws Exception
 	{	
 		when(userService.updateUser(userTest.getEmail(),firstnameTest,lastnameTest,cityTest,"gb@paymybuddy.com")).thenReturn(userUpdateWithoutEmail);
 		
@@ -209,11 +235,12 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("userUpdate", "Success!"))
-		    	.andExpect(redirectedUrl("/homepage"));
+		    	.andExpect(redirectedUrl("/homepage"))
+				.andReturn();
 	}
 	
 	@Test
-	void getUpdateprofileReturnRedirectLoginPageWithEmailUpdate() throws Exception
+	void postUpdateprofileReturnRedirectLoginPageWithEmailUpdate() throws Exception
 	{	
 		when(userService.updateUser(userTest.getEmail(),firstnameTest,lastnameTest,cityTest,emailTest)).thenReturn(userUpdateEmail);
 		
@@ -228,6 +255,7 @@ class HomeControllerTest
 		    	.andExpect(model().hasNoErrors())
 		    	.andExpect(flash().attributeCount(1))
 		    	.andExpect(flash().attribute("success", "Success!"))
-		    	.andExpect(redirectedUrl("/login"));
+		    	.andExpect(redirectedUrl("/login"))
+				.andReturn();
 	}
 }
