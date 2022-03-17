@@ -8,6 +8,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ *  Login Thymeleaf controller
+ */
 @Controller
 public class LoginController
 {
@@ -26,6 +29,9 @@ public class LoginController
 	
 	/**
 	 *  Error denied access:
+	 * 
+	 * @param model Model
+	 * @param principal Principal
 	 * 
 	 * @return error Error page url
 	 */

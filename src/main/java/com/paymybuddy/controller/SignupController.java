@@ -14,6 +14,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.service.IUserService;
 
+/**
+ *  Signup Thymeleaf controller
+ */
 @Controller
 public class SignupController
 {
@@ -21,11 +24,24 @@ public class SignupController
 	
 	private final IUserService userService;
 
+	/**
+	 *  Constructor friend controller
+	 *  
+	 *  @param userService User service
+	 */
 	public SignupController(IUserService userService)
 	{
 		this.userService = userService;
 	}
 
+	/**
+	 *  Get signup page:
+	 * 	- user model
+	 * 
+	 *  @param model Model
+	 * 
+	 *  @return signup Signup page url
+	 */
 	@GetMapping(value = "/signup")
 	public String signUpView(Model model)
 	{
@@ -33,6 +49,17 @@ public class SignupController
 		return "signup"; 
 	}
 
+	/**
+	 *  Post signup form:
+	 * 	- create a new user
+	 * 
+	 *  @param user SignupDTO
+	 *  @param result BindingResult
+	 *  @param model Model
+	 *  @param redirAttrs RedirectAttributes
+	 * 
+	 *  @return signup Signup page url
+	 */
 	@PostMapping(value = "/signup")
 	public String signUp(@Validated SignupDTO user, BindingResult result, Model model, RedirectAttributes redirAttrs)
 	{

@@ -57,6 +57,9 @@ public class HomeController
 	 * 	- Add money to balance
 	 *  - Update user info
 	 * 
+	 * @param model Model
+	 * @param principal Principal
+	 * 
 	 * @return homepage Homepage url
 	 */
 	@GetMapping({"/","/homepage"})
@@ -81,6 +84,12 @@ public class HomeController
 	
 	/**
 	 *  Add or update bank account:
+	 * 
+	 * @param ibanaccount String
+	 * @param bankname String
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
 	 * 
 	 * @return homepage Homepage url
 	 */
@@ -111,6 +120,11 @@ public class HomeController
 	/**
 	 *  Add money to balance:
 	 * 
+	 * @param balance BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
 	 * @return homepage Homepage url
 	 */
 	@PostMapping("/addmoney")
@@ -135,6 +149,11 @@ public class HomeController
 	/**
 	 *  Withdraw money to bank:
 	 * 
+	 * @param balance BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
 	 * @return homepage Homepage url
 	 */
 	@PostMapping("/withdrawmoney")
@@ -158,7 +177,15 @@ public class HomeController
 	}
 	
 	/**
-	 *  Update user profile:
+	 * Update user profile:
+	 * 
+	 * @param firstname String
+	 * @param lastname String
+	 * @param city String
+	 * @param email String
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
 	 * 
 	 * @return homepage Homepage url
 	 */

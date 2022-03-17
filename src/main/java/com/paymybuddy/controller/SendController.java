@@ -18,6 +18,9 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.service.IUserService;
 import com.paymybuddy.service.TransactionService;
 
+/**
+ *  Send Thymeleaf controller
+ */
 @Controller
 public class SendController
 {
@@ -29,6 +32,12 @@ public class SendController
 	private String send = "send";
 	private String sendRedirect = "redirect:/send";
 
+	/**
+	 *  Specific constructor
+	 * 
+	 * 	@param userService User service
+	 *  @param transactionService Transaction Service
+	 */
 	public SendController(IUserService userService, TransactionService transactionService)
 	{
 		this.userService = userService;
@@ -41,6 +50,9 @@ public class SendController
 	 *  - User parametres
 	 * 	- Friends list
 	 *  - Transactions list
+	 *  
+	 * @param model Model
+	 * @param principal Principal
 	 * 
 	 * @return send Send page url
 	 */
@@ -65,6 +77,14 @@ public class SendController
 	 *  Send money to friends:
 	 * 	Allow transactions between buddies
 	 * 
+	 * @param email String
+	 * @param message String
+	 * @param amount BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
+	 * @throws BalanceNotEnough Balance exception
 	 * @return Redirect Send page url
 	 */
 	@PostMapping("/sendmoney")

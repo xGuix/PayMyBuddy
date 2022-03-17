@@ -16,6 +16,9 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.paymybuddy.model.User;
 import com.paymybuddy.service.IUserService;
 
+/**
+ *  Friend Thymeleaf controller
+ */
 @Controller
 public class FriendController
 {
@@ -28,6 +31,8 @@ public class FriendController
 	
 	/**
 	 *  Constructor friend controller
+	 *  
+	 *  @param userService User service
 	 */
 	public FriendController(IUserService userService)
 	{
@@ -37,6 +42,9 @@ public class FriendController
 	/**
 	 *  Get friends data of user:
 	 * 	- Friends list
+	 * 
+	 *  @param model Model
+	 *  @param principal Principal
 	 * 
 	 *  @return friend Friend page url
 	 */
@@ -54,6 +62,11 @@ public class FriendController
 	/**
 	 *  Search one friend :
 	 * 	Email of user as request parameter
+	 * 
+	 *  @param model Model
+	 *  @param redirAttrs RedirectAttributes
+	 *  @param email String
+	 *  @param principal Principal
 	 * 
 	 *  @return friend Friend page url
 	 */
@@ -78,6 +91,11 @@ public class FriendController
 	 * 	Email of user as request parameter
 	 * 	if found user will be added to your friends list
 	 * 
+	 *  @param model Model
+	 *  @param redirAttrs RedirectAttributes
+	 *  @param email String
+	 *  @param principal Principal
+	 *  
 	 *  @return friend Friend page url
 	 */
 	@PostMapping("/friend")
