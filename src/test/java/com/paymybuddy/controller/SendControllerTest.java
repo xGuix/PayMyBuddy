@@ -2,6 +2,7 @@ package com.paymybuddy.controller;
 
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.flash;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -83,16 +84,35 @@ class SendControllerTest
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
 		
-		mockMvc.perform(get("/sendmoney")
-				.param("principal", "gb@paymybuddy.com")
-				.param("model", "user"))
-	        	.andExpect(status().isOk())
-	        	.andExpect(view().name("send"))
+		mockMvc.perform(post("/sendmoney")
+				.param("email", "bl@zone51.com")
+				.param("message", "It's a gift test")
+				.param("amount", "10.00")
+				.param("model", "user")
+				.param("principal", "gb@paymybuddy.com"))
+	        	.andExpect(status().isFound())
+	        	.andExpect(view().name("redirect:/send"))
 	        	.andExpect(model().hasNoErrors())
-	        	.andExpect(model().size(1))
-	        	.andExpect(model().attributeExists("user"))
 	        	.andExpect(flash().attributeCount(1))
 	        	.andExpect(flash().attribute("transactionSuccess", "Success!"))
+				.andReturn();
+	}
+	
+	@Test
+	void postSendMoneyReturnSendpageWithNegativeAmount() throws Exception
+	{	
+		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
+		
+		mockMvc.perform(post("/sendmoney")
+				.param("email", "bl@zone51.com")
+				.param("message", "It's a gift test")
+				.param("amount", "-100.00")
+				.param("model", "user")
+				.param("principal", "gb@paymybuddy.com"))
+	        	.andExpect(status().isFound())
+	        	.andExpect(view().name("redirect:/send"))
+	        	.andExpect(flash().attributeCount(1))
+	        	.andExpect(flash().attribute("errorNegative", "Negative amount error"))
 				.andReturn();
 	}
 }

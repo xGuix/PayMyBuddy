@@ -32,8 +32,8 @@ class SignupControllerTest
 	private AccessUserDetailService accessUserDetailService;
 	
 	@MockBean
-	IUserService userService;
-
+	private IUserService userService;
+	
 	String err;
 	SignupDTO signupTest;
 	User userSetup ;
@@ -62,6 +62,7 @@ class SignupControllerTest
 	@Test
 	void postSignUpWhenReturnNotFound() throws Exception
 	{	
+
 		when(userService.validateUser(signupTest)).thenReturn(err);
 		
 		mockMvc.perform(post("/signup")

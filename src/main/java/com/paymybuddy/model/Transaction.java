@@ -14,10 +14,13 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import groovy.transform.Generated;
+
 /**
  *  Model Object Transaction
  */
 @Entity
+@Generated
 @Table(name ="transaction")
 public class Transaction implements Serializable
 {

@@ -1,8 +1,11 @@
 package com.paymybuddy.model;
 
+import groovy.transform.Generated;
+
 /**
  *  Model Object Role
  */
+@Generated
 public class Role
 {
 	private String name;

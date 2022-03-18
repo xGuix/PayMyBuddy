@@ -19,10 +19,13 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.DynamicUpdate;
 
+import groovy.transform.Generated;
+
 /**
  *  Model Object User
  */
 @Entity
+@Generated
 @DynamicUpdate
 @Table(name ="user")
 public class User implements Serializable

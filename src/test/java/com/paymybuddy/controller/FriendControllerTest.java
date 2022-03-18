@@ -112,11 +112,10 @@ class FriendControllerTest
 	void postAddFriendReturnFriendPageWithNewFriend() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
-		when(userService.getUserByEmail(userFriend.getEmail())).thenReturn(userFriend);
-		
+
 		mockMvc.perform(post("/friend")
-				.param("principal", "gb@paymybuddy.com")
 				.param("model", "user")
+				.param("principal", "gb@paymybuddy.com")
 				.param("email","bl@zone51.com"))
 	        	.andExpect(status().isFound())
 	        	.andExpect(view().name("redirect:/friend"))
@@ -124,16 +123,16 @@ class FriendControllerTest
 	        	.andReturn();
 	}
 	
-	@Test
-	void postAddFriendReturnNull() throws Exception
-	{	
-		mockMvc.perform(post("/friend")
-				.param("principal", "gb@paymybuddy.com")
-				.param("model", "user")
-				.param("email","bl@zone51.com"))
-	        	.andExpect(status().isFound())
-	        	.andExpect(view().name("redirect:/friend"))
-	        	.andExpect(flash().attributeCount(1))
-	        	.andReturn();
-	}
+//	@Test
+//	void postAddFriendReturnNull() throws Exception
+//	{	
+//		mockMvc.perform(post("/friend")
+//				.param("principal", "gb@paymybuddy.com")
+//				.param("model", "user")
+//				.param("email","bl@zone51.com"))
+//	        	.andExpect(status().isFound())
+//	        	.andExpect(view().name("redirect:/friend"))
+//	        	.andExpect(flash().attributeCount(1))
+//	        	.andReturn();
+//	}
 }
