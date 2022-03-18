@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,8 +16,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
+import com.paymybuddy.service.ITransactionService;
 import com.paymybuddy.service.IUserService;
-import com.paymybuddy.service.TransactionService;
 
 /**
  *  Send Thymeleaf controller
@@ -26,8 +27,11 @@ public class SendController
 {
 	private static Logger logger = LogManager.getLogger("SendControllerLog");
 	
+	@Autowired
 	private IUserService userService;
-	private TransactionService transactionService;
+	
+	@Autowired
+	private ITransactionService transactionService;
 	
 	private String send = "send";
 	private String sendRedirect = "redirect:/send";
@@ -38,7 +42,7 @@ public class SendController
 	 * 	@param userService User service
 	 *  @param transactionService Transaction Service
 	 */
-	public SendController(IUserService userService, TransactionService transactionService)
+	public SendController(IUserService userService, ITransactionService transactionService)
 	{
 		this.userService = userService;
 		this.transactionService = transactionService;
