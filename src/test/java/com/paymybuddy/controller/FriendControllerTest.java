@@ -38,31 +38,35 @@ class FriendControllerTest
 	
 	@MockBean
 	private IUserService userService;
-			
+	
+	@MockBean
+	private List<User> friendList;
+	
+	
 	User userTest;
 	User userFriend;
 	BigDecimal balance;
-	List<User> friendList;
 
 	@BeforeEach
 	void setup()
 	{
 		balance = BigDecimal.valueOf(100.00);
-		userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, friendList);
-		userFriend = new User("Bob","Lazar","Groomlake","bl@zone51.com", "Zone51",balance, friendList);
+		userFriend = new User("Bob","Lazar","Groomlake","bl@zone51.com", "Zone51", balance, null);
+		userTest = new User("Guix","Debrens","Orion","gb@paymybuddy.com", "Admin", balance, null);
+
 	}
 
 	@Test
 	void getTransferReturnFriendpageWithFriendInfo() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
+		
 		mockMvc.perform(get("/friend")
-				.param("principal", "gb@paymybuddy.com")
-				.param("model", "user"))
+				.param("model", "user")
+				.param("principal", "gb@paymybuddy.com"))
 	        	.andExpect(status().isOk())
 	        	.andExpect(view().name("friend"))
 	        	.andExpect(model().size(1))
-	        	.andExpect(model().attribute("friend",friendList))
 				.andReturn();
 	}
 
@@ -70,6 +74,7 @@ class FriendControllerTest
 	void getFindFriendsReturnFriendPageWithNewFriend() throws Exception
 	{	
 		when(userService.getUserByEmail(userFriend.getEmail())).thenReturn(userFriend);
+		
 		mockMvc.perform(get("/findFriend")
 				.param("principal", "gb@paymybuddy.com")
 				.param("model", "user")
@@ -84,6 +89,7 @@ class FriendControllerTest
 	void getFindFriendsReturnNull() throws Exception
 	{	
 		when(userService.getUserByEmail(userFriend.getEmail())).thenReturn(null);
+		
 		mockMvc.perform(get("/findFriend")
 				.param("principal", "gb@paymybuddy.com")
 				.param("model", "user")
@@ -98,6 +104,7 @@ class FriendControllerTest
 	void getFindFriendsReturnFriendPageWithSearchError() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
+		
 		mockMvc.perform(get("/findFriend")
 				.param("principal", "gb@paymybuddy.com")
 				.param("model", "user")
@@ -112,27 +119,33 @@ class FriendControllerTest
 	void postAddFriendReturnFriendPageWithNewFriend() throws Exception
 	{	
 		when(userService.getUserByEmail(userTest.getEmail())).thenReturn(userTest);
-
+		when(userService.getUserByEmail(userFriend.getEmail())).thenReturn(userFriend);
+		
+		friendList.add(0, userFriend);
+		userTest.setFriendsList(friendList);
+		
 		mockMvc.perform(post("/friend")
-				.param("model", "user")
 				.param("principal", "gb@paymybuddy.com")
-				.param("email","bl@zone51.com"))
+				.param("model", "user")
+				.param("email", "bl@zone51.com"))
 	        	.andExpect(status().isFound())
 	        	.andExpect(view().name("redirect:/friend"))
 	        	.andExpect(flash().attributeCount(1))
 	        	.andReturn();
 	}
 	
-//	@Test
-//	void postAddFriendReturnNull() throws Exception
-//	{	
-//		mockMvc.perform(post("/friend")
-//				.param("principal", "gb@paymybuddy.com")
-//				.param("model", "user")
-//				.param("email","bl@zone51.com"))
-//	        	.andExpect(status().isFound())
-//	        	.andExpect(view().name("redirect:/friend"))
-//	        	.andExpect(flash().attributeCount(1))
-//	        	.andReturn();
-//	}
+	@Test
+	void postAddFriendReturnNull() throws Exception
+	{	
+		when(userService.getUserByEmail(userFriend.getEmail())).thenReturn(null);
+		
+		mockMvc.perform(post("/friend")
+				.param("principal", "gb@paymybuddy.com")
+				.param("model", "user")
+				.param("email","bl@zone51.com"))
+	        	.andExpect(status().isFound())
+	        	.andExpect(view().name("redirect:/friend"))
+	        	.andExpect(flash().attributeCount(1))
+	        	.andReturn();
+	}
 }

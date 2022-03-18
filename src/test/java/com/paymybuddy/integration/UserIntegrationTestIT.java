@@ -1,9 +1,10 @@
 package com.paymybuddy.integration;
 
-import static org.mockito.Mockito.RETURNS_DEFAULTS;
-import static org.mockito.Mockito.when;
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -13,22 +14,19 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import com.paymybuddy.model.User;
-import com.paymybuddy.service.UserService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@WithMockUser(username="gb@paymybuddy.com")
 class UserIntegrationTestIT
 {
 	@Autowired
-	MockMvc mockMvc;
-		
-	@MockBean
-	UserService userService;
-
+	private MockMvc mockMvc;
+	
 	User userTest;
 	BigDecimal balance = BigDecimal.ZERO;
 	List<User> userListTest;
@@ -41,12 +39,16 @@ class UserIntegrationTestIT
 	
 	@Test
 	void whenCallHomepage() throws Exception
-	{	
-		when(userService.getUserByEmail("gb@paymybuddy.com")).then(RETURNS_DEFAULTS);
-		
+	{		
 	    mockMvc.perform(get("/homepage")
-				.param("principal", "gb@paymybuddy.com"))
-	        	.andExpect(status().isFound())
+				.param("principal", "gb@paymybuddy.com")
+				.param("model", "user"))
+	        	.andExpect(status().isOk())
+	        	.andExpect(view().name("homepage"))
+	        	.andExpect(content().string(containsString("Guix")))
+	        	.andExpect(content().string(containsString("Debrens")))
+	        	.andExpect(content().string(containsString("Orion")))
+	        	.andExpect(content().string(containsString("gb@paymybuddy.com")))
 	    		.andReturn();
 	}
 }
