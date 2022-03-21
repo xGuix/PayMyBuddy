@@ -127,7 +127,7 @@ public class HomeController
 	 * 
 	 * @return homepage Homepage url
 	 */
-	@PostMapping("/addmoney")
+	@PostMapping("/addmoney") 
 	public String addmoney(BigDecimal balance, Model model,
 			Principal principal, RedirectAttributes redirAttrs)
 	{
