@@ -13,6 +13,10 @@ import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import com.paymybuddy.service.AccessUserDetailService;
 
+/**
+ *  SpringSecurityConfig Class
+ *  Configure and enable spring boot Web security
+ */
 @Configuration
 @EnableWebSecurity
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
@@ -20,18 +24,29 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter
 	@Autowired
 	AccessUserDetailService userDetailService;
 	
+	/**
+	 *  Password Encoder
+	 *  
+	 *  @return BCryptPasswordEncoder User password encoded
+ 	 */
 	@Bean
 	public PasswordEncoder passwordEncoder()
 	{
 		return new BCryptPasswordEncoder();
 	}
 	
+	/**
+	 *  Configure authentification
+ 	 */
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception
     {
         auth.userDetailsService(userDetailService).passwordEncoder(passwordEncoder());
     }
 	
+	/**
+	 *  Configure permissions
+ 	 */
 	@Override
 	public void configure(HttpSecurity http) throws Exception
 	{

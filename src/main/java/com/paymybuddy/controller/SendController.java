@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,21 +16,33 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import com.paymybuddy.exception.BalanceNotEnough;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
+import com.paymybuddy.service.ITransactionService;
 import com.paymybuddy.service.IUserService;
-import com.paymybuddy.service.TransactionService;
 
+/**
+ *  Send Thymeleaf controller
+ */
 @Controller
 public class SendController
 {
 	private static Logger logger = LogManager.getLogger("SendControllerLog");
 	
+	@Autowired
 	private IUserService userService;
-	private TransactionService transactionService;
+	
+	@Autowired
+	private ITransactionService transactionService;
 	
 	private String send = "send";
 	private String sendRedirect = "redirect:/send";
 
-	public SendController(IUserService userService, TransactionService transactionService)
+	/**
+	 *  Specific constructor
+	 * 
+	 * 	@param userService User service
+	 *  @param transactionService Transaction Service
+	 */
+	public SendController(IUserService userService, ITransactionService transactionService)
 	{
 		this.userService = userService;
 		this.transactionService = transactionService;
@@ -41,6 +54,9 @@ public class SendController
 	 *  - User parametres
 	 * 	- Friends list
 	 *  - Transactions list
+	 *  
+	 * @param model Model
+	 * @param principal Principal
 	 * 
 	 * @return send Send page url
 	 */
@@ -65,6 +81,14 @@ public class SendController
 	 *  Send money to friends:
 	 * 	Allow transactions between buddies
 	 * 
+	 * @param email String
+	 * @param message String
+	 * @param amount BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
+	 * @throws BalanceNotEnough Balance exception
 	 * @return Redirect Send page url
 	 */
 	@PostMapping("/sendmoney")

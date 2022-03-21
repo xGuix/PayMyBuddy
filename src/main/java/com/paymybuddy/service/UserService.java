@@ -14,6 +14,11 @@ import com.paymybuddy.dto.SignupDTO;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
+import groovy.transform.Generated;
+
+/**
+ * UserService class
+ */
 @Service
 public class UserService implements IUserService
 {
@@ -22,13 +27,25 @@ public class UserService implements IUserService
 	
 	@Autowired
 	private UserRepository userRepository;
-	  
+	
+	/**
+	 * Constructor user service
+	 * 
+	 * @param userRepository User repository
+	 */
 	public UserService(UserRepository userRepository)
 	{
 		this.userRepository = userRepository;
 	}
 
+	/**
+	 * Load User details
+	 * 
+	 * @param username String username
+	 * @return UserDetails User details 
+	 */
 	@Override
+	@Generated
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException
 	{
 		User user = userRepository.findByEmail(username);
@@ -43,6 +60,7 @@ public class UserService implements IUserService
 	 * Get user with id :
 	 * Find the user with user id
 	 * 
+	 * @param userId Integer Id of user
 	 * @return User The user with id
 	 */
 	public User getUserById(Integer userId)
@@ -82,7 +100,7 @@ public class UserService implements IUserService
 	
 	/**
 	 * Add a new user :
-	 * Create & save user in list
+	 * Create and save user in list
 	 * 
 	 * @return User The user added
 	 */
@@ -108,7 +126,7 @@ public class UserService implements IUserService
 	
 	/**
 	 * Update a new user :
-	 * Modify & save user in list
+	 * Modify and save user in list
 	 * 
 	 * @return User The user updated
 	 */

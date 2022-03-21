@@ -14,7 +14,13 @@ import org.springframework.stereotype.Service;
 import com.paymybuddy.model.User;
 import com.paymybuddy.repository.UserRepository;
 
+import groovy.transform.Generated;
+
+/**
+ * Class Access User Detail Service
+ */
 @Service
+@Generated
 public class AccessUserDetailService implements UserDetailsService
 {
 	private static Logger logger = LogManager.getLogger("TransactionControllerLog");
@@ -27,16 +33,17 @@ public class AccessUserDetailService implements UserDetailsService
     {
         User user = userRepository.findByEmail(email);
 
-     	if (user == null) {
+     	if (user == null)
+     	{
      		logger.info("User not found: {}",email);
      		throw new UsernameNotFoundException("User " + email + " was not found in the database");
-	}
+     	}
 
-	logger.info("Found User: {}", user);
+     	logger.info("Found User: {}", user);
 
-	return new org.springframework.security.core.userdetails.User(
-			user.getEmail(),
-			user.getPassword(),
-			Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+     	return new org.springframework.security.core.userdetails.User(
+     			user.getEmail(),
+     			user.getPassword(),
+     			Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
     }
 }

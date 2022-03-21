@@ -8,6 +8,9 @@ import org.springframework.stereotype.Repository;
 import com.paymybuddy.model.Transaction;
 import com.paymybuddy.model.User;
 
+/**
+ * Transaction Interface JPA Repository
+ */
 @Repository
 public interface TransactionRepository extends JpaRepository<Transaction, Integer>
 {

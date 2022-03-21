@@ -5,6 +5,9 @@ import org.springframework.stereotype.Repository;
 
 import com.paymybuddy.model.User;
 
+/**
+ * User Interface JPA Repository
+ */
 @Repository
 public interface UserRepository extends JpaRepository<User, Integer>
 {

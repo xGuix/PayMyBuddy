@@ -19,6 +19,9 @@ import com.paymybuddy.model.User;
 import com.paymybuddy.service.IBankAccountService;
 import com.paymybuddy.service.IUserService;
 
+/**
+ *  Homepage Thymeleaf controller
+ */
 @Controller
 public class HomeController
 {
@@ -31,8 +34,16 @@ public class HomeController
 	
 	@Autowired
 	private IUserService userService;
+	
+	@Autowired
 	private IBankAccountService bankAccountService;
-
+	
+	/**
+	 *  Specific constructor
+	 * 
+	 * 	@param userService User service
+	 *  @param bankAccountService Bank account Service
+	 */
 	public HomeController(IUserService userService, IBankAccountService bankAccountService)
 	{
 		this.userService = userService;
@@ -45,6 +56,9 @@ public class HomeController
 	 *  - Add bank account
 	 * 	- Add money to balance
 	 *  - Update user info
+	 * 
+	 * @param model Model
+	 * @param principal Principal
 	 * 
 	 * @return homepage Homepage url
 	 */
@@ -71,6 +85,12 @@ public class HomeController
 	/**
 	 *  Add or update bank account:
 	 * 
+	 * @param ibanaccount String
+	 * @param bankname String
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
 	 * @return homepage Homepage url
 	 */
 	@PostMapping("/addbank")
@@ -85,7 +105,7 @@ public class HomeController
 		{
 			BankAccountDTO newBankAccount = new BankAccountDTO(userBank,ibanaccount,bankname);
 			bankAccountService.addBankAccount(newBankAccount);
-			redirAttrs.addFlashAttribute("bankaccountAdded", success);
+			redirAttrs.addFlashAttribute("bankaccountAdded", successString);
 			logger.info("New bank account saved");
 			return redirectHomepage;
 		}
@@ -100,9 +120,14 @@ public class HomeController
 	/**
 	 *  Add money to balance:
 	 * 
+	 * @param balance BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
+	 * 
 	 * @return homepage Homepage url
 	 */
-	@PostMapping("/addmoney")
+	@PostMapping("/addmoney") 
 	public String addmoney(BigDecimal balance, Model model,
 			Principal principal, RedirectAttributes redirAttrs)
 	{
@@ -123,6 +148,11 @@ public class HomeController
 	
 	/**
 	 *  Withdraw money to bank:
+	 * 
+	 * @param balance BigDecimal
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
 	 * 
 	 * @return homepage Homepage url
 	 */
@@ -147,7 +177,15 @@ public class HomeController
 	}
 	
 	/**
-	 *  Update user profile:
+	 * Update user profile:
+	 * 
+	 * @param firstname String
+	 * @param lastname String
+	 * @param city String
+	 * @param email String
+	 * @param model Model
+	 * @param principal Principal
+	 * @param redirAttrs RedirectAttributes
 	 * 
 	 * @return homepage Homepage url
 	 */
