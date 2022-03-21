@@ -60,18 +60,6 @@ class SignupControllerTest
 		    	.andReturn();
 	}
 	
-//	@Test
-//	void postSignUpWhenReturnNotFound() throws Exception
-//	{	
-//		when(userService.validateUser(signupTest)).thenReturn(err);
-//
-//		mockMvc.perform(post("/signup")
-//				.param("SignupDTO", "signupTest")
-//				.param("model", "user"))
-//	        	.andExpect(status().isFound())
-//				.andReturn();
-//	}
-	
 	@Test
 	void postSignUpWhenReturnError() throws Exception
 	{
