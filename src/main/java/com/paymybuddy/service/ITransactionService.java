@@ -27,7 +27,7 @@ public interface ITransactionService extends UserDetailsService
 	/**
 	 * {@inheritDoc}
 	 * 
-	 * @throws BalanceNotEnough 
+	 * @throws BalanceNotEnough Balance not enough for transaction
 	 */
 	Transaction sendMoney(User userActiv, String email, String message, BigDecimal amount) throws BalanceNotEnough;
 }

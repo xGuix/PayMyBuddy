@@ -116,13 +116,32 @@ class UserIntegrationTestIT
 	}
 	
 	@Test
-	void whenSendTransactionToFriend() throws Exception
+	void whenSendTransactionToFriendIsOk() throws Exception
+	{
+		mockMvc.perform(post("/sendmoney")
+				.param("email", "bl@zone51.com")
+				.param("message", "This is a gift!")
+				.param("amount", "100.00")
+				.param("principal", "gb@paymybuddy.com")
+				.param("model", "user"))
+				.andExpect(status().isFound())
+				.andExpect(view().name("redirect:/send"))
+				.andReturn();
+	}
+	
+	@Test
+	void whenSendTransactionToFriendReturnSendPageWithTransactionList() throws Exception
 	{
 		mockMvc.perform(get("/send")
 				.param("principal", "gb@paymybuddy.com")
 				.param("model", "user"))
 				.andExpect(status().isOk())
 				.andExpect(view().name("send"))
+				.andExpect(content().string(containsString("friend")))
+				.andExpect(content().string(containsString("bl@zone51.com")))
+				.andExpect(content().string(containsString("95.00")))
+				.andExpect(content().string(containsString("5.00")))
+				.andExpect(content().string(containsString("This is a gift!")))
 				.andReturn();
 	}
 }
