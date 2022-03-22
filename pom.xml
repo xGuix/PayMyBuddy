@@ -138,7 +138,17 @@
 				<version>4.4.1</version>
 			</plugin>
 			 <plugin>
-		        <artifactId>maven-javadoc-plugin</artifactId>
+			    <artifactId>maven-javadoc-plugin</artifactId>
+			    <configuration>
+			        <aggregate>true</aggregate>
+			        <show>private</show>
+			        <doclet>org.umlgraph.doclet.UmlGraphDoc</doclet>
+			        <docletArtifact>
+			            <groupId>org.umlgraph</groupId>
+			            <artifactId>umlgraph</artifactId>
+			            <version>5.6.6</version>
+			        </docletArtifact>
+			    </configuration>
 		    </plugin>
 		</plugins>
 	</build>
