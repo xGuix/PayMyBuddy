@@ -32,7 +32,7 @@ public class TransactionService implements ITransactionService
 	@Autowired
 	private IUserService userService; 
 	
-	private BigDecimal percent = BigDecimal.valueOf(0.05);
+	private BigDecimal percent = BigDecimal.valueOf(0.005);
 	private LocalDateTime dateTime = LocalDateTime.now();
 
 	/**

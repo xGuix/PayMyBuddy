@@ -63,8 +63,8 @@ Schemas are provided in folder :
 <img src="https://github.com/xGuix/PayMyBuddy/blob/feature/tests/DiagramUML/ModelPhysique_UML.jpg" alt="dataDiagram"/>
 
 
-### Start up
-You will have to set up SQL tables.
+## Setup Database
+You will have to set up SQL tables and Admin user if needed.
 
 Scripts are provided in folders :
 
@@ -78,11 +78,26 @@ First run script for data structure
 ScriptSQL-architectureData.sql
 ```
 
-Setup your config in application.properties file
-Launch with :
+Create a specific admin user or use {root} {rootroot} to execute run 
+
+
+## Run the App
+
+Setup your config in application.properties file if wanted for eclipse Startup for exemple.
+
+{application.properties} is blank for following startup 
 
 ```shell
-mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasource.username=root --spring.datasource.password=rootroot"
+spring.datasource.username=
+spring.datasource.password=
+```
+
+**Run Maven commande  with {root} or {adminUser}** <br>
+Replace {xGuix} with user and {Admin} with password <br>
+Launch app commande :
+
+```shell
+mvn spring-boot:run -Dspring-boot.run.arguments="--spring.datasource.username=xGuix --spring.datasource.password=Admin"
 ```
 
 
@@ -94,9 +109,15 @@ Open your browser and get localhost:8080
 https://localhost:8080/
 ```
 
+Shutdown server
+
+```shell
+Ctrl + C
+```
+
 
 ### Testing
-The existing tests need to be triggered from maven-surefire plugin while we try to generate the final executable jar file.
+The existing tests need to be triggered from maven-surefire plugin while we try to generate the final executable jar file.<br>
 Run the tests from maven, go to the folder that contains the pom.xml file and execute the below command.
 
 * Run unit tests, use command:
@@ -118,7 +139,7 @@ mvn verify
 ```
 
 
-## Reports
+### Reports
 Maven site to get all reports:
 
 - **SureFire Report** for all unit Tests.
@@ -135,7 +156,7 @@ Access file directory : `target/site`
 Run the `index.html` in your web browser.
 
 
-## Jacoco Coverage
+### Jacoco Coverage
 Jacoco coverage is automatically done with tests.
 
 Access file directory : `target/site/jacoco/index.html`
